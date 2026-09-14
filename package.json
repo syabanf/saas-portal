@@ -1,0 +1,23 @@
+{
+  "name": "saas-gate",
+  "private": true,
+  "packageManager": "pnpm@9.15.9",
+  "scripts": {
+    "dev": "turbo run dev",
+    "dev:admin": "pnpm --filter @scp/admin dev",
+    "dev:portal": "pnpm --filter @scp/portal dev",
+    "build": "turbo run build",
+    "typecheck": "turbo run typecheck",
+    "format": "prettier --write \"**/*.{ts,tsx,css,md,json}\"",
+    "gen:fixtures": "tsx scripts/generate-fixtures.ts",
+    "test": "tsx --test tests/*.test.ts"
+  },
+  "devDependencies": {
+    "@types/node": "22",
+    "prettier": "^3.9.6",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "tsx": "^4.23.13",
+    "turbo": "^2.10.13",
+    "typescript": "^5.9.3"
+  }
+}

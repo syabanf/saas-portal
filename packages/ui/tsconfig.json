@@ -1,0 +1,1 @@
+{ "extends": "@scp/tsconfig/library.json", "include": ["src"] }

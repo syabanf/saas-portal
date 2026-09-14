@@ -1,0 +1,1100 @@
+[
+  {
+    "id": "pay-alpha-iot-mobile",
+    "tenantId": "ten-alpha",
+    "subscriptionId": "sub-alpha-iot-mobile",
+    "invoiceId": "inv-alpha-iot-mobile",
+    "provider": "xendit",
+    "providerReference": "xnd_alpha-iot-mobile00101425",
+    "externalId": "INV-2026-1081",
+    "method": "qris",
+    "channel": "QRIS",
+    "amount": 333000,
+    "fee": 2331,
+    "currency": "IDR",
+    "status": "success",
+    "instructions": {
+      "accountNumber": null,
+      "qrString": "0002010102122647960404016400291958147397376056986674825802ID",
+      "paymentCode": null,
+      "checkoutUrl": null,
+      "cardLast4": null
+    },
+    "expiresAt": "2026-09-20T01:30:00.000Z",
+    "paidAt": "2026-09-20T02:00:00.000Z",
+    "createdAt": "2026-09-20T01:00:00.000Z",
+    "events": [
+      {
+        "at": "2026-09-20T01:00:00.000Z",
+        "type": "created",
+        "note": "QRIS · xnd_alpha-iot-mobile00101425"
+      },
+      {
+        "at": "2026-09-20T01:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 30 minutes"
+      },
+      {
+        "at": "2026-09-20T02:00:00.000Z",
+        "type": "callback",
+        "note": "status PAID"
+      },
+      {
+        "at": "2026-09-20T02:00:00.000Z",
+        "type": "paid",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-beta-crm",
+    "tenantId": "ten-beta",
+    "subscriptionId": "sub-beta-crm",
+    "invoiceId": "inv-beta-crm",
+    "provider": "xendit",
+    "providerReference": "xnd_beta-crm49665778",
+    "externalId": "INV-2026-1083",
+    "method": "ewallet",
+    "channel": "OVO",
+    "amount": 999000,
+    "fee": 14985,
+    "currency": "IDR",
+    "status": "success",
+    "instructions": {
+      "accountNumber": null,
+      "qrString": null,
+      "paymentCode": null,
+      "checkoutUrl": "https://checkout.xendit.co/ovo/xnd_beta-crm49665778",
+      "cardLast4": null
+    },
+    "expiresAt": "2026-09-11T01:15:00.000Z",
+    "paidAt": "2026-09-11T02:00:00.000Z",
+    "createdAt": "2026-09-11T01:00:00.000Z",
+    "events": [
+      {
+        "at": "2026-09-11T01:00:00.000Z",
+        "type": "created",
+        "note": "OVO · xnd_beta-crm49665778"
+      },
+      {
+        "at": "2026-09-11T01:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 15 minutes"
+      },
+      {
+        "at": "2026-09-11T02:00:00.000Z",
+        "type": "callback",
+        "note": "status PAID"
+      },
+      {
+        "at": "2026-09-11T02:00:00.000Z",
+        "type": "paid",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-delta-crm",
+    "tenantId": "ten-delta",
+    "subscriptionId": "sub-delta-crm",
+    "invoiceId": "inv-delta-crm",
+    "provider": "xendit",
+    "providerReference": "xnd_delta-crm30403488",
+    "externalId": "INV-2026-1086",
+    "method": "virtual_account",
+    "channel": "BNI",
+    "amount": 9990000,
+    "fee": 4000,
+    "currency": "IDR",
+    "status": "pending",
+    "instructions": {
+      "accountNumber": "880840140787296",
+      "qrString": null,
+      "paymentCode": null,
+      "checkoutUrl": null,
+      "cardLast4": null
+    },
+    "expiresAt": "2026-09-09T02:00:00.000Z",
+    "paidAt": null,
+    "createdAt": "2026-09-08T02:00:00.000Z",
+    "events": [
+      {
+        "at": "2026-09-08T02:00:00.000Z",
+        "type": "created",
+        "note": "BNI Virtual Account · xnd_delta-crm30403488"
+      },
+      {
+        "at": "2026-09-08T02:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 24 hours"
+      }
+    ]
+  },
+  {
+    "id": "pay-zeta-iot",
+    "tenantId": "ten-zeta",
+    "subscriptionId": "sub-zeta-iot",
+    "invoiceId": "inv-zeta-iot",
+    "provider": "xendit",
+    "providerReference": "xnd_zeta-iot85511334",
+    "externalId": "INV-2026-1088",
+    "method": "card",
+    "channel": "CARD",
+    "amount": 1665000,
+    "fee": 50285,
+    "currency": "IDR",
+    "status": "expired",
+    "instructions": {
+      "accountNumber": null,
+      "qrString": null,
+      "paymentCode": null,
+      "checkoutUrl": null,
+      "cardLast4": "6652"
+    },
+    "expiresAt": null,
+    "paidAt": null,
+    "createdAt": "2026-09-08T02:00:00.000Z",
+    "events": [
+      {
+        "at": "2026-09-08T02:00:00.000Z",
+        "type": "created",
+        "note": "Visa, Mastercard, JCB · xnd_zeta-iot85511334"
+      },
+      {
+        "at": "2026-09-08T02:00:00.000Z",
+        "type": "pending",
+        "note": null
+      },
+      {
+        "at": "2026-09-08T04:00:00.000Z",
+        "type": "callback",
+        "note": "status EXPIRED"
+      },
+      {
+        "at": "2026-09-08T04:00:00.000Z",
+        "type": "expired",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-kappa-iot",
+    "tenantId": "ten-kappa",
+    "subscriptionId": "sub-kappa-iot",
+    "invoiceId": "inv-kappa-iot",
+    "provider": "xendit",
+    "providerReference": "xnd_kappa-iot15436551",
+    "externalId": "INV-2026-1092",
+    "method": "virtual_account",
+    "channel": "BNI",
+    "amount": 16650000,
+    "fee": 4000,
+    "currency": "IDR",
+    "status": "pending",
+    "instructions": {
+      "accountNumber": "880825010477416",
+      "qrString": null,
+      "paymentCode": null,
+      "checkoutUrl": null,
+      "cardLast4": null
+    },
+    "expiresAt": "2026-09-09T02:00:00.000Z",
+    "paidAt": null,
+    "createdAt": "2026-09-08T02:00:00.000Z",
+    "events": [
+      {
+        "at": "2026-09-08T02:00:00.000Z",
+        "type": "created",
+        "note": "BNI Virtual Account · xnd_kappa-iot15436551"
+      },
+      {
+        "at": "2026-09-08T02:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 24 hours"
+      }
+    ]
+  },
+  {
+    "id": "pay-theta-crm",
+    "tenantId": "ten-theta",
+    "subscriptionId": "sub-theta-crm",
+    "invoiceId": "inv-theta-crm",
+    "provider": "xendit",
+    "providerReference": "xnd_theta-crm87651102",
+    "externalId": "INV-2026-1090",
+    "method": "virtual_account",
+    "channel": "BRI",
+    "amount": 999000,
+    "fee": 4000,
+    "currency": "IDR",
+    "status": "success",
+    "instructions": {
+      "accountNumber": "2621587533385266",
+      "qrString": null,
+      "paymentCode": null,
+      "checkoutUrl": null,
+      "cardLast4": null
+    },
+    "expiresAt": "2026-09-09T01:00:00.000Z",
+    "paidAt": "2026-09-08T02:00:00.000Z",
+    "createdAt": "2026-09-08T01:00:00.000Z",
+    "events": [
+      {
+        "at": "2026-09-08T01:00:00.000Z",
+        "type": "created",
+        "note": "BRI Virtual Account · xnd_theta-crm87651102"
+      },
+      {
+        "at": "2026-09-08T01:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 24 hours"
+      },
+      {
+        "at": "2026-09-08T02:00:00.000Z",
+        "type": "callback",
+        "note": "status PAID"
+      },
+      {
+        "at": "2026-09-08T02:00:00.000Z",
+        "type": "paid",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-beta-iot",
+    "tenantId": "ten-beta",
+    "subscriptionId": "sub-beta-iot",
+    "invoiceId": "inv-beta-iot",
+    "provider": "xendit",
+    "providerReference": "xnd_beta-iot98876269",
+    "externalId": "INV-2026-1092",
+    "method": "ewallet",
+    "channel": "OVO",
+    "amount": 16650000,
+    "fee": 249750,
+    "currency": "IDR",
+    "status": "pending",
+    "instructions": {
+      "accountNumber": null,
+      "qrString": null,
+      "paymentCode": null,
+      "checkoutUrl": "https://checkout.xendit.co/ovo/xnd_beta-iot98876269",
+      "cardLast4": null
+    },
+    "expiresAt": "2026-09-02T02:15:00.000Z",
+    "paidAt": null,
+    "createdAt": "2026-09-02T02:00:00.000Z",
+    "events": [
+      {
+        "at": "2026-09-02T02:00:00.000Z",
+        "type": "created",
+        "note": "OVO · xnd_beta-iot98876269"
+      },
+      {
+        "at": "2026-09-02T02:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 15 minutes"
+      }
+    ]
+  },
+  {
+    "id": "pay-eta-iot",
+    "tenantId": "ten-eta",
+    "subscriptionId": "sub-eta-iot",
+    "invoiceId": "inv-eta-iot",
+    "provider": "xendit",
+    "providerReference": "xnd_eta-iot35472260",
+    "externalId": "INV-2026-1089",
+    "method": "card",
+    "channel": "CARD",
+    "amount": 1665000,
+    "fee": 50285,
+    "currency": "IDR",
+    "status": "success",
+    "instructions": {
+      "accountNumber": null,
+      "qrString": null,
+      "paymentCode": null,
+      "checkoutUrl": null,
+      "cardLast4": "3328"
+    },
+    "expiresAt": null,
+    "paidAt": "2026-08-26T02:00:00.000Z",
+    "createdAt": "2026-08-26T01:00:00.000Z",
+    "events": [
+      {
+        "at": "2026-08-26T01:00:00.000Z",
+        "type": "created",
+        "note": "Visa, Mastercard, JCB · xnd_eta-iot35472260"
+      },
+      {
+        "at": "2026-08-26T01:00:00.000Z",
+        "type": "pending",
+        "note": null
+      },
+      {
+        "at": "2026-08-26T02:00:00.000Z",
+        "type": "callback",
+        "note": "status PAID"
+      },
+      {
+        "at": "2026-08-26T02:00:00.000Z",
+        "type": "paid",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-gamma-iot",
+    "tenantId": "ten-gamma",
+    "subscriptionId": "sub-gamma-iot",
+    "invoiceId": "inv-gamma-iot",
+    "provider": "xendit",
+    "providerReference": "xnd_gamma-iot42752156",
+    "externalId": "INV-2026-1044",
+    "method": "qris",
+    "channel": "QRIS",
+    "amount": 16650000,
+    "fee": 116550,
+    "currency": "IDR",
+    "status": "failed",
+    "instructions": {
+      "accountNumber": null,
+      "qrString": "0002010102122616040564283248116250735227801346583931415802ID",
+      "paymentCode": null,
+      "checkoutUrl": null,
+      "cardLast4": null
+    },
+    "expiresAt": "2026-08-12T02:30:00.000Z",
+    "paidAt": null,
+    "createdAt": "2026-08-12T02:00:00.000Z",
+    "events": [
+      {
+        "at": "2026-08-12T02:00:00.000Z",
+        "type": "created",
+        "note": "QRIS · xnd_gamma-iot42752156"
+      },
+      {
+        "at": "2026-08-12T02:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 30 minutes"
+      },
+      {
+        "at": "2026-08-12T04:00:00.000Z",
+        "type": "callback",
+        "note": "status FAILED"
+      },
+      {
+        "at": "2026-08-12T04:00:00.000Z",
+        "type": "failed",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-lambda-iot-api",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-iot-api",
+    "invoiceId": "inv-lambda-iot-api",
+    "provider": "xendit",
+    "providerReference": "xnd_lambda-iot-api16008971",
+    "externalId": "INV-2026-1094",
+    "method": "qris",
+    "channel": "QRIS",
+    "amount": 5550000,
+    "fee": 38850,
+    "currency": "IDR",
+    "status": "success",
+    "instructions": {
+      "accountNumber": null,
+      "qrString": "0002010102122656077509604478598977165276724532473653275802ID",
+      "paymentCode": null,
+      "checkoutUrl": null,
+      "cardLast4": null
+    },
+    "expiresAt": "2026-08-11T01:30:00.000Z",
+    "paidAt": "2026-08-11T02:00:00.000Z",
+    "createdAt": "2026-08-11T01:00:00.000Z",
+    "events": [
+      {
+        "at": "2026-08-11T01:00:00.000Z",
+        "type": "created",
+        "note": "QRIS · xnd_lambda-iot-api16008971"
+      },
+      {
+        "at": "2026-08-11T01:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 30 minutes"
+      },
+      {
+        "at": "2026-08-11T02:00:00.000Z",
+        "type": "callback",
+        "note": "status PAID"
+      },
+      {
+        "at": "2026-08-11T02:00:00.000Z",
+        "type": "paid",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-hist-3",
+    "tenantId": "ten-eta",
+    "subscriptionId": "sub-eta-iot",
+    "invoiceId": "inv-hist-3",
+    "provider": "xendit",
+    "providerReference": "xnd_hist-317866348",
+    "externalId": "INV-2025-903",
+    "method": "ewallet",
+    "channel": "DANA",
+    "amount": 1665000,
+    "fee": 24975,
+    "currency": "IDR",
+    "status": "success",
+    "instructions": {
+      "accountNumber": null,
+      "qrString": null,
+      "paymentCode": null,
+      "checkoutUrl": "https://checkout.xendit.co/dana/xnd_hist-317866348",
+      "cardLast4": null
+    },
+    "expiresAt": "2026-08-03T02:15:00.000Z",
+    "paidAt": "2026-08-04T02:00:00.000Z",
+    "createdAt": "2026-08-03T02:00:00.000Z",
+    "events": [
+      {
+        "at": "2026-08-03T02:00:00.000Z",
+        "type": "created",
+        "note": "DANA · xnd_hist-317866348"
+      },
+      {
+        "at": "2026-08-03T02:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 15 minutes"
+      },
+      {
+        "at": "2026-08-04T02:00:00.000Z",
+        "type": "callback",
+        "note": "status PAID"
+      },
+      {
+        "at": "2026-08-04T02:00:00.000Z",
+        "type": "paid",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-delta-iot",
+    "tenantId": "ten-delta",
+    "subscriptionId": "sub-delta-iot",
+    "invoiceId": "inv-delta-iot",
+    "provider": "xendit",
+    "providerReference": "xnd_delta-iot05207814",
+    "externalId": "INV-2026-1085",
+    "method": "ewallet",
+    "channel": "DANA",
+    "amount": 16650000,
+    "fee": 249750,
+    "currency": "IDR",
+    "status": "success",
+    "instructions": {
+      "accountNumber": null,
+      "qrString": null,
+      "paymentCode": null,
+      "checkoutUrl": "https://checkout.xendit.co/dana/xnd_delta-iot05207814",
+      "cardLast4": null
+    },
+    "expiresAt": "2026-06-11T01:15:00.000Z",
+    "paidAt": "2026-06-11T02:00:00.000Z",
+    "createdAt": "2026-06-11T01:00:00.000Z",
+    "events": [
+      {
+        "at": "2026-06-11T01:00:00.000Z",
+        "type": "created",
+        "note": "DANA · xnd_delta-iot05207814"
+      },
+      {
+        "at": "2026-06-11T01:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 15 minutes"
+      },
+      {
+        "at": "2026-06-11T02:00:00.000Z",
+        "type": "callback",
+        "note": "status PAID"
+      },
+      {
+        "at": "2026-06-11T02:00:00.000Z",
+        "type": "paid",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-lambda-erp",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-erp",
+    "invoiceId": "inv-lambda-erp",
+    "provider": "xendit",
+    "providerReference": "xnd_lambda-erp30380724",
+    "externalId": "INV-2026-1095",
+    "method": "ewallet",
+    "channel": "DANA",
+    "amount": 22200000,
+    "fee": 333000,
+    "currency": "IDR",
+    "status": "success",
+    "instructions": {
+      "accountNumber": null,
+      "qrString": null,
+      "paymentCode": null,
+      "checkoutUrl": "https://checkout.xendit.co/dana/xnd_lambda-erp30380724",
+      "cardLast4": null
+    },
+    "expiresAt": "2026-06-05T01:15:00.000Z",
+    "paidAt": "2026-06-05T02:00:00.000Z",
+    "createdAt": "2026-06-05T01:00:00.000Z",
+    "events": [
+      {
+        "at": "2026-06-05T01:00:00.000Z",
+        "type": "created",
+        "note": "DANA · xnd_lambda-erp30380724"
+      },
+      {
+        "at": "2026-06-05T01:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 15 minutes"
+      },
+      {
+        "at": "2026-06-05T02:00:00.000Z",
+        "type": "callback",
+        "note": "status PAID"
+      },
+      {
+        "at": "2026-06-05T02:00:00.000Z",
+        "type": "paid",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-lambda-iot",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-iot",
+    "invoiceId": "inv-lambda-iot",
+    "provider": "xendit",
+    "providerReference": "xnd_lambda-iot08086986",
+    "externalId": "INV-2026-1093",
+    "method": "virtual_account",
+    "channel": "BNI",
+    "amount": 16650000,
+    "fee": 4000,
+    "currency": "IDR",
+    "status": "success",
+    "instructions": {
+      "accountNumber": "880856163548825",
+      "qrString": null,
+      "paymentCode": null,
+      "checkoutUrl": null,
+      "cardLast4": null
+    },
+    "expiresAt": "2026-05-26T01:00:00.000Z",
+    "paidAt": "2026-05-25T02:00:00.000Z",
+    "createdAt": "2026-05-25T01:00:00.000Z",
+    "events": [
+      {
+        "at": "2026-05-25T01:00:00.000Z",
+        "type": "created",
+        "note": "BNI Virtual Account · xnd_lambda-iot08086986"
+      },
+      {
+        "at": "2026-05-25T01:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 24 hours"
+      },
+      {
+        "at": "2026-05-25T02:00:00.000Z",
+        "type": "callback",
+        "note": "status PAID"
+      },
+      {
+        "at": "2026-05-25T02:00:00.000Z",
+        "type": "paid",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-hist-4",
+    "tenantId": "ten-alpha",
+    "subscriptionId": "sub-alpha-iot",
+    "invoiceId": "inv-hist-4",
+    "provider": "xendit",
+    "providerReference": "xnd_hist-471894374",
+    "externalId": "INV-2025-904",
+    "method": "ewallet",
+    "channel": "DANA",
+    "amount": 16650000,
+    "fee": 249750,
+    "currency": "IDR",
+    "status": "refunded",
+    "instructions": {
+      "accountNumber": null,
+      "qrString": null,
+      "paymentCode": null,
+      "checkoutUrl": "https://checkout.xendit.co/dana/xnd_hist-471894374",
+      "cardLast4": null
+    },
+    "expiresAt": "2026-04-06T02:15:00.000Z",
+    "paidAt": "2026-04-07T02:00:00.000Z",
+    "createdAt": "2026-04-06T02:00:00.000Z",
+    "events": [
+      {
+        "at": "2026-04-06T02:00:00.000Z",
+        "type": "created",
+        "note": "DANA · xnd_hist-471894374"
+      },
+      {
+        "at": "2026-04-06T02:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 15 minutes"
+      },
+      {
+        "at": "2026-04-07T02:00:00.000Z",
+        "type": "callback",
+        "note": "status REFUNDED"
+      },
+      {
+        "at": "2026-04-07T02:00:00.000Z",
+        "type": "refunded",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-kappa-erp",
+    "tenantId": "ten-kappa",
+    "subscriptionId": "sub-kappa-erp",
+    "invoiceId": "inv-kappa-erp",
+    "provider": "xendit",
+    "providerReference": "xnd_kappa-erp79122681",
+    "externalId": "INV-2026-1091",
+    "method": "ewallet",
+    "channel": "DANA",
+    "amount": 22200000,
+    "fee": 333000,
+    "currency": "IDR",
+    "status": "success",
+    "instructions": {
+      "accountNumber": null,
+      "qrString": null,
+      "paymentCode": null,
+      "checkoutUrl": "https://checkout.xendit.co/dana/xnd_kappa-erp79122681",
+      "cardLast4": null
+    },
+    "expiresAt": "2026-03-29T01:15:00.000Z",
+    "paidAt": "2026-03-29T02:00:00.000Z",
+    "createdAt": "2026-03-29T01:00:00.000Z",
+    "events": [
+      {
+        "at": "2026-03-29T01:00:00.000Z",
+        "type": "created",
+        "note": "DANA · xnd_kappa-erp79122681"
+      },
+      {
+        "at": "2026-03-29T01:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 15 minutes"
+      },
+      {
+        "at": "2026-03-29T02:00:00.000Z",
+        "type": "callback",
+        "note": "status PAID"
+      },
+      {
+        "at": "2026-03-29T02:00:00.000Z",
+        "type": "paid",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-alpha-erp",
+    "tenantId": "ten-alpha",
+    "subscriptionId": "sub-alpha-erp",
+    "invoiceId": "inv-alpha-erp",
+    "provider": "xendit",
+    "providerReference": "xnd_alpha-erp32417725",
+    "externalId": "INV-2026-1082",
+    "method": "qris",
+    "channel": "QRIS",
+    "amount": 22200000,
+    "fee": 155400,
+    "currency": "IDR",
+    "status": "success",
+    "instructions": {
+      "accountNumber": null,
+      "qrString": "0002010102122613269761630872862522475724142062612397875802ID",
+      "paymentCode": null,
+      "checkoutUrl": null,
+      "cardLast4": null
+    },
+    "expiresAt": "2026-03-05T01:30:00.000Z",
+    "paidAt": "2026-03-05T02:00:00.000Z",
+    "createdAt": "2026-03-05T01:00:00.000Z",
+    "events": [
+      {
+        "at": "2026-03-05T01:00:00.000Z",
+        "type": "created",
+        "note": "QRIS · xnd_alpha-erp32417725"
+      },
+      {
+        "at": "2026-03-05T01:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 30 minutes"
+      },
+      {
+        "at": "2026-03-05T02:00:00.000Z",
+        "type": "callback",
+        "note": "status PAID"
+      },
+      {
+        "at": "2026-03-05T02:00:00.000Z",
+        "type": "paid",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-lambda-crm",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-crm",
+    "invoiceId": "inv-lambda-crm",
+    "provider": "xendit",
+    "providerReference": "xnd_lambda-crm29521546",
+    "externalId": "INV-2026-1096",
+    "method": "virtual_account",
+    "channel": "BNI",
+    "amount": 9990000,
+    "fee": 4000,
+    "currency": "IDR",
+    "status": "success",
+    "instructions": {
+      "accountNumber": "880841890357154",
+      "qrString": null,
+      "paymentCode": null,
+      "checkoutUrl": null,
+      "cardLast4": null
+    },
+    "expiresAt": "2026-03-06T01:00:00.000Z",
+    "paidAt": "2026-03-05T02:00:00.000Z",
+    "createdAt": "2026-03-05T01:00:00.000Z",
+    "events": [
+      {
+        "at": "2026-03-05T01:00:00.000Z",
+        "type": "created",
+        "note": "BNI Virtual Account · xnd_lambda-crm29521546"
+      },
+      {
+        "at": "2026-03-05T01:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 24 hours"
+      },
+      {
+        "at": "2026-03-05T02:00:00.000Z",
+        "type": "callback",
+        "note": "status PAID"
+      },
+      {
+        "at": "2026-03-05T02:00:00.000Z",
+        "type": "paid",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-hist-5",
+    "tenantId": "ten-delta",
+    "subscriptionId": "sub-delta-iot",
+    "invoiceId": "inv-hist-5",
+    "provider": "xendit",
+    "providerReference": "xnd_hist-515752058",
+    "externalId": "INV-2025-905",
+    "method": "retail",
+    "channel": "ALFAMART",
+    "amount": 16650000,
+    "fee": 5000,
+    "currency": "IDR",
+    "status": "success",
+    "instructions": {
+      "accountNumber": null,
+      "qrString": null,
+      "paymentCode": "5906 8871 4857",
+      "checkoutUrl": null,
+      "cardLast4": null
+    },
+    "expiresAt": "2026-01-07T02:00:00.000Z",
+    "paidAt": "2026-01-06T02:00:00.000Z",
+    "createdAt": "2026-01-05T02:00:00.000Z",
+    "events": [
+      {
+        "at": "2026-01-05T02:00:00.000Z",
+        "type": "created",
+        "note": "Alfamart · xnd_hist-515752058"
+      },
+      {
+        "at": "2026-01-05T02:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 48 hours"
+      },
+      {
+        "at": "2026-01-06T02:00:00.000Z",
+        "type": "callback",
+        "note": "status PAID"
+      },
+      {
+        "at": "2026-01-06T02:00:00.000Z",
+        "type": "paid",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-alpha-iot",
+    "tenantId": "ten-alpha",
+    "subscriptionId": "sub-alpha-iot",
+    "invoiceId": "inv-alpha-iot",
+    "provider": "xendit",
+    "providerReference": "xnd_alpha-iot34028488",
+    "externalId": "INV-2026-1080",
+    "method": "qris",
+    "channel": "QRIS",
+    "amount": 16650000,
+    "fee": 116550,
+    "currency": "IDR",
+    "status": "success",
+    "instructions": {
+      "accountNumber": null,
+      "qrString": "0002010102122693201185223095866684026619989771676164465802ID",
+      "paymentCode": null,
+      "checkoutUrl": null,
+      "cardLast4": null
+    },
+    "expiresAt": "2026-01-05T01:30:00.000Z",
+    "paidAt": "2026-01-05T02:00:00.000Z",
+    "createdAt": "2026-01-05T01:00:00.000Z",
+    "events": [
+      {
+        "at": "2026-01-05T01:00:00.000Z",
+        "type": "created",
+        "note": "QRIS · xnd_alpha-iot34028488"
+      },
+      {
+        "at": "2026-01-05T01:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 30 minutes"
+      },
+      {
+        "at": "2026-01-05T02:00:00.000Z",
+        "type": "callback",
+        "note": "status PAID"
+      },
+      {
+        "at": "2026-01-05T02:00:00.000Z",
+        "type": "paid",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-hist-0",
+    "tenantId": "ten-beta",
+    "subscriptionId": "sub-beta-crm",
+    "invoiceId": "inv-hist-0",
+    "provider": "xendit",
+    "providerReference": "xnd_hist-027236391",
+    "externalId": "INV-2025-900",
+    "method": "retail",
+    "channel": "ALFAMART",
+    "amount": 999000,
+    "fee": 5000,
+    "currency": "IDR",
+    "status": "success",
+    "instructions": {
+      "accountNumber": null,
+      "qrString": null,
+      "paymentCode": "0115 3139 1679",
+      "checkoutUrl": null,
+      "cardLast4": null
+    },
+    "expiresAt": "2026-01-05T02:00:00.000Z",
+    "paidAt": "2026-01-04T02:00:00.000Z",
+    "createdAt": "2026-01-03T02:00:00.000Z",
+    "events": [
+      {
+        "at": "2026-01-03T02:00:00.000Z",
+        "type": "created",
+        "note": "Alfamart · xnd_hist-027236391"
+      },
+      {
+        "at": "2026-01-03T02:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 48 hours"
+      },
+      {
+        "at": "2026-01-04T02:00:00.000Z",
+        "type": "callback",
+        "note": "status PAID"
+      },
+      {
+        "at": "2026-01-04T02:00:00.000Z",
+        "type": "paid",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-hist-2",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-crm",
+    "invoiceId": "inv-hist-2",
+    "provider": "xendit",
+    "providerReference": "xnd_hist-274127012",
+    "externalId": "INV-2025-902",
+    "method": "virtual_account",
+    "channel": "BCA",
+    "amount": 9990000,
+    "fee": 4000,
+    "currency": "IDR",
+    "status": "success",
+    "instructions": {
+      "accountNumber": "1076603113879453",
+      "qrString": null,
+      "paymentCode": null,
+      "checkoutUrl": null,
+      "cardLast4": null
+    },
+    "expiresAt": "2025-12-06T02:00:00.000Z",
+    "paidAt": "2025-12-06T02:00:00.000Z",
+    "createdAt": "2025-12-05T02:00:00.000Z",
+    "events": [
+      {
+        "at": "2025-12-05T02:00:00.000Z",
+        "type": "created",
+        "note": "BCA Virtual Account · xnd_hist-274127012"
+      },
+      {
+        "at": "2025-12-05T02:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 24 hours"
+      },
+      {
+        "at": "2025-12-06T02:00:00.000Z",
+        "type": "callback",
+        "note": "status PAID"
+      },
+      {
+        "at": "2025-12-06T02:00:00.000Z",
+        "type": "paid",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-hist-1",
+    "tenantId": "ten-alpha",
+    "subscriptionId": "sub-alpha-iot-mobile",
+    "invoiceId": "inv-hist-1",
+    "provider": "xendit",
+    "providerReference": "xnd_hist-177536047",
+    "externalId": "INV-2025-901",
+    "method": "virtual_account",
+    "channel": "BRI",
+    "amount": 333000,
+    "fee": 4000,
+    "currency": "IDR",
+    "status": "success",
+    "instructions": {
+      "accountNumber": "2621527775246986",
+      "qrString": null,
+      "paymentCode": null,
+      "checkoutUrl": null,
+      "cardLast4": null
+    },
+    "expiresAt": "2025-11-27T02:00:00.000Z",
+    "paidAt": "2025-11-27T02:00:00.000Z",
+    "createdAt": "2025-11-26T02:00:00.000Z",
+    "events": [
+      {
+        "at": "2025-11-26T02:00:00.000Z",
+        "type": "created",
+        "note": "BRI Virtual Account · xnd_hist-177536047"
+      },
+      {
+        "at": "2025-11-26T02:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 24 hours"
+      },
+      {
+        "at": "2025-11-27T02:00:00.000Z",
+        "type": "callback",
+        "note": "status PAID"
+      },
+      {
+        "at": "2025-11-27T02:00:00.000Z",
+        "type": "paid",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-gamma-erp",
+    "tenantId": "ten-gamma",
+    "subscriptionId": "sub-gamma-erp",
+    "invoiceId": "inv-gamma-erp",
+    "provider": "xendit",
+    "providerReference": "xnd_gamma-erp39156653",
+    "externalId": "INV-2026-1084",
+    "method": "ewallet",
+    "channel": "DANA",
+    "amount": 22200000,
+    "fee": 333000,
+    "currency": "IDR",
+    "status": "success",
+    "instructions": {
+      "accountNumber": null,
+      "qrString": null,
+      "paymentCode": null,
+      "checkoutUrl": "https://checkout.xendit.co/dana/xnd_gamma-erp39156653",
+      "cardLast4": null
+    },
+    "expiresAt": "2025-11-19T01:15:00.000Z",
+    "paidAt": "2025-11-19T02:00:00.000Z",
+    "createdAt": "2025-11-19T01:00:00.000Z",
+    "events": [
+      {
+        "at": "2025-11-19T01:00:00.000Z",
+        "type": "created",
+        "note": "DANA · xnd_gamma-erp39156653"
+      },
+      {
+        "at": "2025-11-19T01:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 15 minutes"
+      },
+      {
+        "at": "2025-11-19T02:00:00.000Z",
+        "type": "callback",
+        "note": "status PAID"
+      },
+      {
+        "at": "2025-11-19T02:00:00.000Z",
+        "type": "paid",
+        "note": null
+      }
+    ]
+  }
+]

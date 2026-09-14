@@ -1,0 +1,101 @@
+[
+  {
+    "id": "ses-alpha-admin",
+    "userId": "usr-alpha-admin",
+    "tenantId": "ten-alpha",
+    "createdAt": "2026-09-13T19:00:00.000Z",
+    "expiresAt": "2026-09-14T19:00:00.000Z",
+    "lastSeenAt": "2026-09-14T00:09:00.000Z",
+    "ip": "103.79.67.202",
+    "userAgent": "Edge 129 · Windows",
+    "revoked": false
+  },
+  {
+    "id": "ses-alpha-operator",
+    "userId": "usr-alpha-operator",
+    "tenantId": "ten-alpha",
+    "createdAt": "2026-09-13T18:00:00.000Z",
+    "expiresAt": "2026-09-14T18:00:00.000Z",
+    "lastSeenAt": "2026-09-14T01:09:00.000Z",
+    "ip": "103.201.93.197",
+    "userAgent": "Chrome 129 · Android",
+    "revoked": false
+  },
+  {
+    "id": "ses-beta-admin",
+    "userId": "usr-beta-admin",
+    "tenantId": "ten-beta",
+    "createdAt": "2026-09-13T09:00:00.000Z",
+    "expiresAt": "2026-09-14T09:00:00.000Z",
+    "lastSeenAt": "2026-09-14T01:45:00.000Z",
+    "ip": "103.74.30.61",
+    "userAgent": "Chrome 129 · macOS",
+    "revoked": false
+  },
+  {
+    "id": "ses-beta-operator",
+    "userId": "usr-beta-operator",
+    "tenantId": "ten-beta",
+    "createdAt": "2026-09-13T20:00:00.000Z",
+    "expiresAt": "2026-09-14T20:00:00.000Z",
+    "lastSeenAt": "2026-09-14T00:51:00.000Z",
+    "ip": "103.220.70.222",
+    "userAgent": "Chrome 129 · Android",
+    "revoked": false
+  },
+  {
+    "id": "ses-gamma-admin",
+    "userId": "usr-gamma-admin",
+    "tenantId": "ten-gamma",
+    "createdAt": "2026-09-13T16:00:00.000Z",
+    "expiresAt": "2026-09-14T16:00:00.000Z",
+    "lastSeenAt": "2026-09-14T01:47:00.000Z",
+    "ip": "103.119.244.191",
+    "userAgent": "Safari 18 · iOS",
+    "revoked": false
+  },
+  {
+    "id": "ses-gamma-operator",
+    "userId": "usr-gamma-operator",
+    "tenantId": "ten-gamma",
+    "createdAt": "2026-09-13T19:00:00.000Z",
+    "expiresAt": "2026-09-14T19:00:00.000Z",
+    "lastSeenAt": "2026-09-14T00:05:00.000Z",
+    "ip": "103.21.97.78",
+    "userAgent": "Safari 18 · iOS",
+    "revoked": false
+  },
+  {
+    "id": "ses-delta-admin",
+    "userId": "usr-delta-admin",
+    "tenantId": "ten-delta",
+    "createdAt": "2026-09-14T01:00:00.000Z",
+    "expiresAt": "2026-09-15T01:00:00.000Z",
+    "lastSeenAt": "2026-09-14T00:53:00.000Z",
+    "ip": "103.144.177.16",
+    "userAgent": "Chrome 129 · macOS",
+    "revoked": false
+  },
+  {
+    "id": "ses-epsilon-admin",
+    "userId": "usr-epsilon-admin",
+    "tenantId": "ten-epsilon",
+    "createdAt": "2026-09-14T01:00:00.000Z",
+    "expiresAt": "2026-09-15T01:00:00.000Z",
+    "lastSeenAt": "2026-09-14T01:38:00.000Z",
+    "ip": "103.14.55.121",
+    "userAgent": "Edge 129 · Windows",
+    "revoked": false
+  },
+  {
+    "id": "ses-zeta-admin",
+    "userId": "usr-zeta-admin",
+    "tenantId": "ten-zeta",
+    "createdAt": "2026-09-13T06:00:00.000Z",
+    "expiresAt": "2026-09-14T06:00:00.000Z",
+    "lastSeenAt": "2026-09-14T01:54:00.000Z",
+    "ip": "103.167.212.84",
+    "userAgent": "Chrome 129 · macOS",
+    "revoked": true
+  }
+]

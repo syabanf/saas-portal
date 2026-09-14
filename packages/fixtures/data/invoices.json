@@ -1,0 +1,548 @@
+[
+  {
+    "id": "inv-mu-crm",
+    "tenantId": "ten-mu",
+    "subscriptionId": "sub-mu-crm",
+    "number": "INV-2026-1097",
+    "status": "draft",
+    "issuedAt": "2026-09-25T02:00:00.000Z",
+    "dueDate": "2026-10-09T02:00:00.000Z",
+    "paidAt": null,
+    "periodStart": "2026-09-25T02:00:00.000Z",
+    "periodEnd": "2026-10-25T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 999000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "CRM Platform · Monthly subscription",
+        "amount": 900000
+      }
+    ]
+  },
+  {
+    "id": "inv-epsilon-erp",
+    "tenantId": "ten-epsilon",
+    "subscriptionId": "sub-epsilon-erp",
+    "number": "INV-2026-1087",
+    "status": "draft",
+    "issuedAt": "2026-09-22T02:00:00.000Z",
+    "dueDate": "2026-10-06T02:00:00.000Z",
+    "paidAt": null,
+    "periodStart": "2026-09-22T02:00:00.000Z",
+    "periodEnd": "2026-10-22T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 2220000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "ERP System · Monthly subscription",
+        "amount": 2000000
+      }
+    ]
+  },
+  {
+    "id": "inv-alpha-iot-mobile",
+    "tenantId": "ten-alpha",
+    "subscriptionId": "sub-alpha-iot-mobile",
+    "number": "INV-2026-1081",
+    "status": "paid",
+    "issuedAt": "2026-09-14T02:00:00.000Z",
+    "dueDate": "2026-09-28T02:00:00.000Z",
+    "paidAt": "2026-09-20T02:00:00.000Z",
+    "periodStart": "2026-09-14T02:00:00.000Z",
+    "periodEnd": "2026-10-14T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 333000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "IoT Mobile · Monthly subscription",
+        "amount": 300000
+      }
+    ]
+  },
+  {
+    "id": "inv-beta-crm",
+    "tenantId": "ten-beta",
+    "subscriptionId": "sub-beta-crm",
+    "number": "INV-2026-1083",
+    "status": "paid",
+    "issuedAt": "2026-09-04T02:00:00.000Z",
+    "dueDate": "2026-09-18T02:00:00.000Z",
+    "paidAt": "2026-09-11T02:00:00.000Z",
+    "periodStart": "2026-09-04T02:00:00.000Z",
+    "periodEnd": "2026-10-04T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 999000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "CRM Platform · Monthly subscription",
+        "amount": 900000
+      }
+    ]
+  },
+  {
+    "id": "inv-theta-crm",
+    "tenantId": "ten-theta",
+    "subscriptionId": "sub-theta-crm",
+    "number": "INV-2026-1090",
+    "status": "paid",
+    "issuedAt": "2026-08-31T02:00:00.000Z",
+    "dueDate": "2026-09-14T02:00:00.000Z",
+    "paidAt": "2026-09-08T02:00:00.000Z",
+    "periodStart": "2026-08-31T02:00:00.000Z",
+    "periodEnd": "2026-09-30T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 999000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "CRM Platform · Monthly subscription",
+        "amount": 900000
+      }
+    ]
+  },
+  {
+    "id": "inv-delta-crm",
+    "tenantId": "ten-delta",
+    "subscriptionId": "sub-delta-crm",
+    "number": "INV-2026-1086",
+    "status": "open",
+    "issuedAt": "2026-08-27T02:00:00.000Z",
+    "dueDate": "2026-09-10T02:00:00.000Z",
+    "paidAt": null,
+    "periodStart": "2026-09-09T02:00:00.000Z",
+    "periodEnd": "2027-09-09T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 9990000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "CRM Platform · Annual subscription",
+        "amount": 9000000
+      }
+    ]
+  },
+  {
+    "id": "inv-zeta-iot",
+    "tenantId": "ten-zeta",
+    "subscriptionId": "sub-zeta-iot",
+    "number": "INV-2026-1088",
+    "status": "overdue",
+    "issuedAt": "2026-08-27T02:00:00.000Z",
+    "dueDate": "2026-09-10T02:00:00.000Z",
+    "paidAt": null,
+    "periodStart": "2026-09-14T02:00:00.000Z",
+    "periodEnd": "2026-10-14T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 1665000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "WIT IoT Platform · Monthly subscription",
+        "amount": 1500000
+      }
+    ]
+  },
+  {
+    "id": "inv-kappa-iot",
+    "tenantId": "ten-kappa",
+    "subscriptionId": "sub-kappa-iot",
+    "number": "INV-2026-1092",
+    "status": "open",
+    "issuedAt": "2026-08-27T02:00:00.000Z",
+    "dueDate": "2026-09-10T02:00:00.000Z",
+    "paidAt": null,
+    "periodStart": "2026-09-14T02:00:00.000Z",
+    "periodEnd": "2027-09-14T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 16650000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "WIT IoT Platform · Annual subscription",
+        "amount": 15000000
+      }
+    ]
+  },
+  {
+    "id": "inv-beta-iot",
+    "tenantId": "ten-beta",
+    "subscriptionId": "sub-beta-iot",
+    "number": "INV-2026-1092",
+    "status": "overdue",
+    "issuedAt": "2026-08-21T02:00:00.000Z",
+    "dueDate": "2026-09-04T02:00:00.000Z",
+    "paidAt": null,
+    "periodStart": "2026-08-30T02:00:00.000Z",
+    "periodEnd": "2027-08-30T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 16650000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "WIT IoT Platform · Annual subscription",
+        "amount": 15000000
+      }
+    ]
+  },
+  {
+    "id": "inv-eta-iot",
+    "tenantId": "ten-eta",
+    "subscriptionId": "sub-eta-iot",
+    "number": "INV-2026-1089",
+    "status": "paid",
+    "issuedAt": "2026-08-20T02:00:00.000Z",
+    "dueDate": "2026-09-03T02:00:00.000Z",
+    "paidAt": "2026-08-26T02:00:00.000Z",
+    "periodStart": "2026-08-20T02:00:00.000Z",
+    "periodEnd": "2026-09-19T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 1665000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "WIT IoT Platform · Monthly subscription",
+        "amount": 1500000
+      }
+    ]
+  },
+  {
+    "id": "inv-lambda-iot-api",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-iot-api",
+    "number": "INV-2026-1094",
+    "status": "paid",
+    "issuedAt": "2026-08-10T02:00:00.000Z",
+    "dueDate": "2026-08-24T02:00:00.000Z",
+    "paidAt": "2026-08-11T02:00:00.000Z",
+    "periodStart": "2026-08-10T02:00:00.000Z",
+    "periodEnd": "2027-08-10T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 5550000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "IoT API · Annual subscription",
+        "amount": 5000000
+      }
+    ]
+  },
+  {
+    "id": "inv-hist-3",
+    "tenantId": "ten-eta",
+    "subscriptionId": "sub-eta-iot",
+    "number": "INV-2025-903",
+    "status": "paid",
+    "issuedAt": "2026-08-01T02:00:00.000Z",
+    "dueDate": "2026-08-15T02:00:00.000Z",
+    "paidAt": "2026-08-04T02:00:00.000Z",
+    "periodStart": "2026-08-01T02:00:00.000Z",
+    "periodEnd": "2026-08-31T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 1665000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "WIT IoT Platform · Monthly subscription",
+        "amount": 1500000
+      }
+    ]
+  },
+  {
+    "id": "inv-gamma-iot",
+    "tenantId": "ten-gamma",
+    "subscriptionId": "sub-gamma-iot",
+    "number": "INV-2026-1044",
+    "status": "overdue",
+    "issuedAt": "2026-07-31T02:00:00.000Z",
+    "dueDate": "2026-08-14T02:00:00.000Z",
+    "paidAt": null,
+    "periodStart": "2026-07-31T02:00:00.000Z",
+    "periodEnd": "2027-07-31T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 16650000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "WIT IoT Platform · Annual subscription",
+        "amount": 15000000
+      }
+    ]
+  },
+  {
+    "id": "inv-delta-iot",
+    "tenantId": "ten-delta",
+    "subscriptionId": "sub-delta-iot",
+    "number": "INV-2026-1085",
+    "status": "paid",
+    "issuedAt": "2026-06-06T02:00:00.000Z",
+    "dueDate": "2026-06-20T02:00:00.000Z",
+    "paidAt": "2026-06-11T02:00:00.000Z",
+    "periodStart": "2026-06-06T02:00:00.000Z",
+    "periodEnd": "2027-06-06T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 16650000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "WIT IoT Platform · Annual subscription",
+        "amount": 15000000
+      }
+    ]
+  },
+  {
+    "id": "inv-lambda-erp",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-erp",
+    "number": "INV-2026-1095",
+    "status": "paid",
+    "issuedAt": "2026-06-01T02:00:00.000Z",
+    "dueDate": "2026-06-15T02:00:00.000Z",
+    "paidAt": "2026-06-05T02:00:00.000Z",
+    "periodStart": "2026-06-01T02:00:00.000Z",
+    "periodEnd": "2027-06-01T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 22200000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "ERP System · Annual subscription",
+        "amount": 20000000
+      }
+    ]
+  },
+  {
+    "id": "inv-lambda-iot",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-iot",
+    "number": "INV-2026-1093",
+    "status": "paid",
+    "issuedAt": "2026-05-22T02:00:00.000Z",
+    "dueDate": "2026-06-05T02:00:00.000Z",
+    "paidAt": "2026-05-25T02:00:00.000Z",
+    "periodStart": "2026-05-22T02:00:00.000Z",
+    "periodEnd": "2027-05-22T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 16650000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "WIT IoT Platform · Annual subscription",
+        "amount": 15000000
+      }
+    ]
+  },
+  {
+    "id": "inv-hist-4",
+    "tenantId": "ten-alpha",
+    "subscriptionId": "sub-alpha-iot",
+    "number": "INV-2025-904",
+    "status": "paid",
+    "issuedAt": "2026-04-04T02:00:00.000Z",
+    "dueDate": "2026-04-18T02:00:00.000Z",
+    "paidAt": "2026-04-07T02:00:00.000Z",
+    "periodStart": "2026-04-04T02:00:00.000Z",
+    "periodEnd": "2027-04-04T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 16650000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "WIT IoT Platform · Annual subscription",
+        "amount": 15000000
+      }
+    ]
+  },
+  {
+    "id": "inv-kappa-erp",
+    "tenantId": "ten-kappa",
+    "subscriptionId": "sub-kappa-erp",
+    "number": "INV-2026-1091",
+    "status": "paid",
+    "issuedAt": "2026-03-28T02:00:00.000Z",
+    "dueDate": "2026-04-11T02:00:00.000Z",
+    "paidAt": "2026-03-29T02:00:00.000Z",
+    "periodStart": "2026-03-28T02:00:00.000Z",
+    "periodEnd": "2027-03-28T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 22200000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "ERP System · Annual subscription",
+        "amount": 20000000
+      }
+    ]
+  },
+  {
+    "id": "inv-alpha-erp",
+    "tenantId": "ten-alpha",
+    "subscriptionId": "sub-alpha-erp",
+    "number": "INV-2026-1082",
+    "status": "paid",
+    "issuedAt": "2026-02-26T02:00:00.000Z",
+    "dueDate": "2026-03-12T02:00:00.000Z",
+    "paidAt": "2026-03-05T02:00:00.000Z",
+    "periodStart": "2026-02-26T02:00:00.000Z",
+    "periodEnd": "2027-02-26T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 22200000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "ERP System · Annual subscription",
+        "amount": 20000000
+      }
+    ]
+  },
+  {
+    "id": "inv-lambda-crm",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-crm",
+    "number": "INV-2026-1096",
+    "status": "paid",
+    "issuedAt": "2026-02-26T02:00:00.000Z",
+    "dueDate": "2026-03-12T02:00:00.000Z",
+    "paidAt": "2026-03-05T02:00:00.000Z",
+    "periodStart": "2026-02-26T02:00:00.000Z",
+    "periodEnd": "2027-02-26T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 9990000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "CRM Platform · Annual subscription",
+        "amount": 9000000
+      }
+    ]
+  },
+  {
+    "id": "inv-hist-5",
+    "tenantId": "ten-delta",
+    "subscriptionId": "sub-delta-iot",
+    "number": "INV-2025-905",
+    "status": "paid",
+    "issuedAt": "2026-01-03T02:00:00.000Z",
+    "dueDate": "2026-01-17T02:00:00.000Z",
+    "paidAt": "2026-01-06T02:00:00.000Z",
+    "periodStart": "2026-01-03T02:00:00.000Z",
+    "periodEnd": "2027-01-03T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 16650000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "WIT IoT Platform · Annual subscription",
+        "amount": 15000000
+      }
+    ]
+  },
+  {
+    "id": "inv-alpha-iot",
+    "tenantId": "ten-alpha",
+    "subscriptionId": "sub-alpha-iot",
+    "number": "INV-2026-1080",
+    "status": "paid",
+    "issuedAt": "2026-01-01T02:00:00.000Z",
+    "dueDate": "2026-01-15T02:00:00.000Z",
+    "paidAt": "2026-01-05T02:00:00.000Z",
+    "periodStart": "2026-01-01T02:00:00.000Z",
+    "periodEnd": "2027-01-01T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 16650000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "WIT IoT Platform · Annual subscription",
+        "amount": 15000000
+      }
+    ]
+  },
+  {
+    "id": "inv-hist-0",
+    "tenantId": "ten-beta",
+    "subscriptionId": "sub-beta-crm",
+    "number": "INV-2025-900",
+    "status": "paid",
+    "issuedAt": "2026-01-01T02:00:00.000Z",
+    "dueDate": "2026-01-15T02:00:00.000Z",
+    "paidAt": "2026-01-04T02:00:00.000Z",
+    "periodStart": "2026-01-01T02:00:00.000Z",
+    "periodEnd": "2026-01-31T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 999000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "CRM Platform · Monthly subscription",
+        "amount": 900000
+      }
+    ]
+  },
+  {
+    "id": "inv-hist-2",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-crm",
+    "number": "INV-2025-902",
+    "status": "paid",
+    "issuedAt": "2025-12-03T02:00:00.000Z",
+    "dueDate": "2025-12-17T02:00:00.000Z",
+    "paidAt": "2025-12-06T02:00:00.000Z",
+    "periodStart": "2025-12-03T02:00:00.000Z",
+    "periodEnd": "2026-12-03T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 9990000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "CRM Platform · Annual subscription",
+        "amount": 9000000
+      }
+    ]
+  },
+  {
+    "id": "inv-hist-1",
+    "tenantId": "ten-alpha",
+    "subscriptionId": "sub-alpha-iot-mobile",
+    "number": "INV-2025-901",
+    "status": "paid",
+    "issuedAt": "2025-11-24T02:00:00.000Z",
+    "dueDate": "2025-12-08T02:00:00.000Z",
+    "paidAt": "2025-11-27T02:00:00.000Z",
+    "periodStart": "2025-11-24T02:00:00.000Z",
+    "periodEnd": "2025-12-24T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 333000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "IoT Mobile · Monthly subscription",
+        "amount": 300000
+      }
+    ]
+  },
+  {
+    "id": "inv-gamma-erp",
+    "tenantId": "ten-gamma",
+    "subscriptionId": "sub-gamma-erp",
+    "number": "INV-2026-1084",
+    "status": "paid",
+    "issuedAt": "2025-11-18T02:00:00.000Z",
+    "dueDate": "2025-12-02T02:00:00.000Z",
+    "paidAt": "2025-11-19T02:00:00.000Z",
+    "periodStart": "2025-11-18T02:00:00.000Z",
+    "periodEnd": "2026-11-18T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 22200000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "ERP System · Annual subscription",
+        "amount": 20000000
+      }
+    ]
+  }
+]

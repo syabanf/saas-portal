@@ -1,0 +1,45 @@
+[
+  {
+    "id": "whk-iot",
+    "applicationId": "app-iot",
+    "url": "http://localhost:4300/webhooks/saas",
+    "events": [
+      "subscription.activated",
+      "subscription.updated",
+      "subscription.suspended",
+      "subscription.expired",
+      "payment.success"
+    ],
+    "status": "active",
+    "secretHint": "a91f",
+    "createdAt": "2026-05-19T02:00:00.000Z"
+  },
+  {
+    "id": "whk-erp",
+    "applicationId": "app-erp",
+    "url": "http://localhost:4102/webhooks/saas",
+    "events": [
+      "subscription.activated",
+      "subscription.updated",
+      "subscription.suspended",
+      "subscription.renewed"
+    ],
+    "status": "active",
+    "secretHint": "7c2e",
+    "createdAt": "2026-02-26T02:00:00.000Z"
+  },
+  {
+    "id": "whk-crm",
+    "applicationId": "app-crm",
+    "url": "https://crm.example.com/webhook",
+    "events": [
+      "subscription.activated",
+      "subscription.updated",
+      "subscription.suspended",
+      "subscription.expired"
+    ],
+    "status": "active",
+    "secretHint": "e04b",
+    "createdAt": "2026-04-27T02:00:00.000Z"
+  }
+]

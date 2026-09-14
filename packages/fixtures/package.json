@@ -1,0 +1,19 @@
+{
+  "name": "@scp/fixtures",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@scp/types": "workspace:*"
+  },
+  "devDependencies": {
+    "@scp/tsconfig": "workspace:*",
+    "typescript": "^5.9.3"
+  }
+}

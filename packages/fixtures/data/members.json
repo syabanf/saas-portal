@@ -1,0 +1,122 @@
+[
+  {
+    "id": "mem-alpha-alpha-admin",
+    "tenantId": "ten-alpha",
+    "userId": "usr-alpha-admin",
+    "workspaceRole": "workspace_admin",
+    "status": "active",
+    "applicationIds": ["app-iot", "app-iot-mobile", "app-erp", "app-helpdesk"]
+  },
+  {
+    "id": "mem-alpha-alpha-operator",
+    "tenantId": "ten-alpha",
+    "userId": "usr-alpha-operator",
+    "workspaceRole": "member",
+    "status": "active",
+    "applicationIds": ["app-iot", "app-helpdesk"]
+  },
+  {
+    "id": "mem-beta-beta-admin",
+    "tenantId": "ten-beta",
+    "userId": "usr-beta-admin",
+    "workspaceRole": "workspace_admin",
+    "status": "active",
+    "applicationIds": ["app-iot", "app-crm", "app-helpdesk"]
+  },
+  {
+    "id": "mem-beta-beta-operator",
+    "tenantId": "ten-beta",
+    "userId": "usr-beta-operator",
+    "workspaceRole": "member",
+    "status": "active",
+    "applicationIds": ["app-iot"]
+  },
+  {
+    "id": "mem-gamma-gamma-admin",
+    "tenantId": "ten-gamma",
+    "userId": "usr-gamma-admin",
+    "workspaceRole": "workspace_admin",
+    "status": "active",
+    "applicationIds": ["app-iot", "app-erp", "app-helpdesk"]
+  },
+  {
+    "id": "mem-gamma-gamma-operator",
+    "tenantId": "ten-gamma",
+    "userId": "usr-gamma-operator",
+    "workspaceRole": "member",
+    "status": "active",
+    "applicationIds": ["app-erp"]
+  },
+  {
+    "id": "mem-delta-delta-admin",
+    "tenantId": "ten-delta",
+    "userId": "usr-delta-admin",
+    "workspaceRole": "workspace_admin",
+    "status": "active",
+    "applicationIds": ["app-iot", "app-crm"]
+  },
+  {
+    "id": "mem-epsilon-epsilon-admin",
+    "tenantId": "ten-epsilon",
+    "userId": "usr-epsilon-admin",
+    "workspaceRole": "workspace_admin",
+    "status": "active",
+    "applicationIds": ["app-erp"]
+  },
+  {
+    "id": "mem-zeta-zeta-admin",
+    "tenantId": "ten-zeta",
+    "userId": "usr-zeta-admin",
+    "workspaceRole": "workspace_admin",
+    "status": "active",
+    "applicationIds": ["app-iot"]
+  },
+  {
+    "id": "mem-eta-eta-admin",
+    "tenantId": "ten-eta",
+    "userId": "usr-eta-admin",
+    "workspaceRole": "workspace_admin",
+    "status": "active",
+    "applicationIds": ["app-iot"]
+  },
+  {
+    "id": "mem-theta-theta-admin",
+    "tenantId": "ten-theta",
+    "userId": "usr-theta-admin",
+    "workspaceRole": "workspace_admin",
+    "status": "active",
+    "applicationIds": ["app-crm"]
+  },
+  {
+    "id": "mem-kappa-kappa-admin",
+    "tenantId": "ten-kappa",
+    "userId": "usr-kappa-admin",
+    "workspaceRole": "workspace_admin",
+    "status": "active",
+    "applicationIds": ["app-erp", "app-iot"]
+  },
+  {
+    "id": "mem-lambda-lambda-admin",
+    "tenantId": "ten-lambda",
+    "userId": "usr-lambda-admin",
+    "workspaceRole": "workspace_admin",
+    "status": "active",
+    "applicationIds": ["app-iot", "app-erp", "app-crm"]
+  },
+  {
+    "id": "mem-lambda-lambda-operator",
+    "tenantId": "ten-lambda",
+    "userId": "usr-lambda-operator",
+    "workspaceRole": "member",
+    "status": "active",
+    "applicationIds": ["app-iot", "app-crm"]
+  },
+  {
+    "id": "mem-mu-mu-admin",
+    "tenantId": "ten-mu",
+    "userId": "usr-mu-admin",
+    "workspaceRole": "workspace_admin",
+    "status": "invited",
+    "applicationIds": ["app-crm"]
+  }
+]

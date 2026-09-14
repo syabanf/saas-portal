@@ -1,0 +1,20 @@
+{
+  "name": "@scp/integration",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@scp/fixtures": "workspace:*",
+    "@scp/types": "workspace:*"
+  },
+  "devDependencies": {
+    "@scp/tsconfig": "workspace:*",
+    "typescript": "^5.9.3"
+  }
+}
