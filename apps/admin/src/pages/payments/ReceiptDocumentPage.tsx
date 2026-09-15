@@ -84,7 +84,7 @@ export function ReceiptDocumentPage() {
       <ReceiptDocument
         number={receiptNumber(payment)}
         paidAt={fmtDateTime(payment.paidAt)}
-        total={money(payment.amount + payment.fee)}
+        total={money(payment.amount)}
         payee={PAYEE}
         payer={{
           name: tenant?.name ?? payment.tenantId,
@@ -110,9 +110,9 @@ export function ReceiptDocumentPage() {
             : []),
         ]}
         amounts={[
-          { label: 'Invoice amount', value: money(payment.amount) },
-          { label: 'Provider fee', value: money(payment.fee) },
-          { label: 'Total charged', value: money(payment.amount + payment.fee) },
+          { label: 'Amount paid', value: money(payment.amount) },
+          { label: 'Xendit fee, deducted from settlement', value: money(payment.fee) },
+          { label: 'Settled to SaaS Gate', value: money(payment.amount - payment.fee) },
         ]}
         paymentRows={[
           { label: 'Xendit id', value: payment.providerReference },

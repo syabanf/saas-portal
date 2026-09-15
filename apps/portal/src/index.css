@@ -2,3 +2,8 @@
 @import 'tailwindcss';
 @import '@scp/tailwind-config/theme.css';
 @source '../../../packages/ui/src';
+
+/* Profile preference: tighter rows on list pages. */
+:root[data-compact-tables='true'] table :is(th, td) {
+  padding-block: calc(var(--spacing) * 1.5);
+}

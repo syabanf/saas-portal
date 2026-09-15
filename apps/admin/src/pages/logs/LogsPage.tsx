@@ -13,6 +13,7 @@ import {
 } from '@scp/ui'
 import { Activity, Gauge, Search, ShieldCheck, ShieldX } from 'lucide-react'
 import * as React from 'react'
+import { Link } from 'react-router'
 import { DecisionBadge, Mono } from '../../components/badges'
 import { useScoped } from '../../state/app-state'
 import {
@@ -266,13 +267,17 @@ export function LogsPage() {
             title: state.accessLogs.length === 0 ? 'No decisions yet' : 'No matches',
             description:
               state.accessLogs.length === 0
-                ? 'Run an exchange from the access simulator to log a decision.'
-                : 'Loosen the filters or run an exchange from the access simulator.',
+                ? 'An entry lands here every time an application asks the access broker to admit a user.'
+                : 'Loosen the filters to see decisions from other applications or time windows.',
             action: filters.active ? (
               <Button variant="outline" size="sm" onClick={filters.clear}>
                 Clear filters
               </Button>
-            ) : undefined,
+            ) : (
+              <Button variant="outline" size="sm" asChild>
+                <Link to="/access-policies">Open access policies</Link>
+              </Button>
+            ),
           }}
         />
       </Card>

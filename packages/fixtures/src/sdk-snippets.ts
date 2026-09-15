@@ -7,7 +7,12 @@ export interface SdkSnippet {
 }
 
 /** Integration snippets shown in the wizard and the SDK page (blueprint §33 step 5, §50). */
-export function sdkSnippet(stack: SdkStack, audience: string): SdkSnippet {
+export function sdkSnippet(
+  stack: SdkStack,
+  audience: string,
+  mode: IntegrationMode = 'verify',
+): SdkSnippet {
+  if (mode === 'gateway') return gatewaySnippet(stack, audience)
   switch (stack) {
     case 'node':
       return {
@@ -102,6 +107,54 @@ SAAS_CLIENT_ID=${clientId}
 SAAS_CLIENT_SECRET=<shown once at creation>
 SAAS_AUDIENCE=${audience}
 SAAS_CALLBACK_URL=${callbackUrl}`
+}
+
+/** A gateway product never verifies a token itself; it reads the headers we forward. */
+function gatewaySnippet(stack: SdkStack, audience: string): SdkSnippet {
+  const base = { install: 'No SDK required', language: 'http' as const }
+  switch (stack) {
+    case 'node':
+    case 'next':
+      return {
+        install: 'No SDK required',
+        language: 'javascript',
+        code: `// SaaS Gate already checked the subscription before forwarding.
+app.use((req, res, next) => {
+  const tenantId = req.header("x-tenant-id");
+  if (!tenantId) return res.status(401).end();
+  req.tenant = tenantId;
+  next();
+});`,
+      }
+    case 'go':
+      return {
+        install: 'No SDK required',
+        language: 'go',
+        code: `tenantID := r.Header.Get("X-Tenant-Id")
+if tenantID == "" {
+    http.Error(w, "forwarded requests only", http.StatusUnauthorized)
+    return
+}`,
+      }
+    case 'php':
+      return {
+        install: 'No SDK required',
+        language: 'php',
+        code: `$tenantId = $request->header('X-Tenant-Id');
+abort_if(! $tenantId, 401, 'Forwarded requests only');`,
+      }
+    case 'flutter':
+    case 'rest':
+      return {
+        ...base,
+        code: `GET https://gateway.saasgate.example/${audience}/devices
+Authorization: Bearer <client_token>
+
+# Forwarded to your API with:
+#   X-Tenant-Id: org_abc
+#   X-Subscription-Status: active`,
+      }
+  }
 }
 
 export interface IntegrationGuide {

@@ -130,6 +130,7 @@ export function WebhooksPage() {
         <StatCard
           label="Failed or retrying"
           value={fmtNumber(stats.failing)}
+          hint="All deliveries"
           icon={<AlertTriangle />}
           tone="danger"
         />

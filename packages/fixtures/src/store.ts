@@ -20,7 +20,7 @@ import type {
   WebhookDelivery,
   WebhookEndpoint,
 } from '@scp/types'
-import { BILLING_PERIOD_LABEL, SUBSCRIPTION_STATUS_LABEL } from '@scp/types'
+import { BILLING_PERIOD_LABEL, PAYMENT_CHANNEL_BY_ID, SUBSCRIPTION_STATUS_LABEL } from '@scp/types'
 import type { BillingPeriod } from '@scp/types'
 import { newId, requestId } from './ids'
 import { buildPaymentRequest } from './payments'
@@ -272,7 +272,11 @@ function settlePayment(state: AppState, payment: Payment, meta: Meta, at: string
     events: [
       ...payment.events,
       { at, type: 'callback', note: 'status PAID' },
-      { at, type: 'paid', note: `${payment.channel} · ${payment.providerReference}` },
+      {
+        at,
+        type: 'paid',
+        note: `${PAYMENT_CHANNEL_BY_ID[payment.channel].label} · ${payment.providerReference}`,
+      },
     ],
   }
   const invoice = payment.invoiceId
@@ -327,7 +331,7 @@ function settlePayment(state: AppState, payment: Payment, meta: Meta, at: string
     sub.id,
     'payment.success',
     'Payment received',
-    `${invoice?.number ?? payment.externalId} paid via ${payment.channel}`,
+    `${invoice?.number ?? payment.externalId} paid via ${PAYMENT_CHANNEL_BY_ID[payment.channel].label}`,
     at,
   )
   if (sub.status !== 'active')

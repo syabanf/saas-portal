@@ -103,7 +103,7 @@ export function AccessLogSheet({ log, onOpenChange }: AccessLogSheetProps) {
                 {related.length === 0 ? (
                   <EmptyState
                     title="No audit entries"
-                    description="Seeded decisions carry no audit trail. Run a real exchange from Access policies to see one."
+                    description="Seeded decisions carry no audit trail. Decisions recorded by this console link to their audit entries here."
                     className="py-6"
                   />
                 ) : (

@@ -105,8 +105,9 @@ export function TenantDialog({ tenant, onOpenChange }: TenantDialogProps) {
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 sm:grid-cols-2">
-            <FormField label="Name" className="sm:col-span-2">
+            <FormField label="Name" htmlFor="name" className="sm:col-span-2">
               <Input
+                id="name"
                 value={draft.name}
                 onChange={(e) => {
                   set('name', e.target.value)
@@ -116,8 +117,13 @@ export function TenantDialog({ tenant, onOpenChange }: TenantDialogProps) {
                 required
               />
             </FormField>
-            <FormField label="Code" hint="Short identifier used in URLs and reports.">
+            <FormField
+              label="Code"
+              htmlFor="code"
+              hint="Short identifier used in URLs and reports."
+            >
               <Input
+                id="code"
                 value={draft.code}
                 onChange={(e) => {
                   setCodeTouched(true)
@@ -137,8 +143,9 @@ export function TenantDialog({ tenant, onOpenChange }: TenantDialogProps) {
                 searchPlaceholder="Search statuses…"
               />
             </FormField>
-            <FormField label="Billing email">
+            <FormField label="Billing email" htmlFor="billing-email">
               <Input
+                id="billing-email"
                 type="email"
                 value={draft.billingEmail}
                 onChange={(e) => set('billingEmail', e.target.value)}

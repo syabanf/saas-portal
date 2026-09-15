@@ -204,7 +204,7 @@ export function InvoiceDetailPage() {
                   >
                     <span className="font-semibold">{PAYMENT_CHANNEL_BY_ID[p.channel].label}</span>
                     <Mono>{p.providerReference}</Mono>
-                    <span className="tabular-nums">{fmtIdr(p.amount + p.fee, p.currency)}</span>
+                    <span className="tabular-nums">{fmtIdr(p.amount, p.currency)}</span>
                     <PaymentBadge status={p.status} />
                     <span className="text-muted ml-auto text-xs">
                       {fmtDateTime(p.paidAt ?? p.createdAt)}

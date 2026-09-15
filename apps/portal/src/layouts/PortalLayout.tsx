@@ -40,6 +40,7 @@ import { SupportSheet } from '../components/SupportSheet'
 import { PortalActionCenter } from '../components/PortalActionCenter'
 import { PortalCommandPalette } from '../components/PortalCommandPalette'
 import { useAppState, useScoped } from '../state/app-state'
+import { applyPrefs, readPrefs } from '../state/prefs'
 import {
   BOTTOM_BAR_LEFT,
   BOTTOM_BAR_RIGHT,
@@ -190,6 +191,8 @@ export function PortalLayout() {
       return !e
     })
   }
+
+  React.useEffect(() => applyPrefs(readPrefs()), [])
 
   React.useEffect(() => {
     function openCommand(event: KeyboardEvent) {

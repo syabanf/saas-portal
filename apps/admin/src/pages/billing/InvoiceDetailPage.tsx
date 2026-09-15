@@ -11,8 +11,9 @@ import {
   CardTitle,
   EmptyState,
   KeyValue,
+  pushToast,
 } from '@scp/ui'
-import { Ban, CheckCircle2, Clock, CreditCard, Download, FileText, Zap } from 'lucide-react'
+import { Ban, CheckCircle2, Clock, CreditCard, FileText, Zap } from 'lucide-react'
 import * as React from 'react'
 import { Link, useNavigate, useParams } from 'react-router'
 import { InvoiceBadge, Mono, PaymentBadge, SubscriptionBadge } from '../../components/badges'
@@ -93,9 +94,10 @@ export function InvoiceDetailPage() {
           {voidable ? (
             <Button
               variant="outline"
-              onClick={() =>
+              onClick={() => {
                 dispatch({ type: 'invoices/upsert', invoice: { ...invoice, status: 'void' } })
-              }
+                pushToast({ title: `${invoice.number} voided` })
+              }}
             >
               <Ban /> Void
             </Button>
@@ -103,11 +105,6 @@ export function InvoiceDetailPage() {
           <Button variant="outline" asChild>
             <Link to={`/billing/${invoice.id}/document`}>
               <FileText /> View document
-            </Link>
-          </Button>
-          <Button variant="ghost" asChild>
-            <Link to={`/billing/${invoice.id}/document`}>
-              <Download /> Download
             </Link>
           </Button>
         </div>

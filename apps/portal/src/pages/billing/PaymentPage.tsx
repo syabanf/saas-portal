@@ -1,4 +1,4 @@
-import { fmtDate, fmtIdr, paymentFee } from '@scp/fixtures'
+import { fmtDate, fmtIdr } from '@scp/fixtures'
 import type { PaymentChannel, PaymentChannelOption, PaymentMethod } from '@scp/types'
 import { BILLING_PERIOD_LABEL, PAYMENT_CHANNELS, PAYMENT_METHOD_LABEL } from '@scp/types'
 import {
@@ -74,8 +74,6 @@ export function PaymentPage() {
 
   const sub = subscriptionsById.get(invoice.subscriptionId)
   const app = sub ? applicationsById.get(sub.applicationId) : undefined
-  const fee = channel ? paymentFee(channel, invoice.total) : 0
-  const total = invoice.total + fee
 
   const pay = () => {
     if (!channel) return
@@ -121,8 +119,7 @@ export function PaymentPage() {
                       <span className="min-w-0 flex-1">
                         <span className="block text-sm font-semibold">{option.label}</span>
                         <span className="text-muted block text-xs">
-                          Fee {fmtIdr(paymentFee(option.channel, invoice.total), invoice.currency)}{' '}
-                          · {validFor(option.expiresInMinutes)}
+                          {validFor(option.expiresInMinutes)}
                         </span>
                       </span>
                       <span
@@ -153,19 +150,9 @@ export function PaymentPage() {
           <CardContent className="space-y-4">
             <dl className="divide-border divide-y text-sm">
               <div className="flex items-center justify-between gap-3 py-2.5">
-                <dt className="text-muted">Amount</dt>
-                <dd className="tabular-nums">{fmtIdr(invoice.total, invoice.currency)}</dd>
-              </div>
-              <div className="flex items-center justify-between gap-3 py-2.5">
-                <dt className="text-muted">Fee</dt>
-                <dd className="tabular-nums">
-                  {channel ? fmtIdr(fee, invoice.currency) : 'Select a channel'}
-                </dd>
-              </div>
-              <div className="flex items-center justify-between gap-3 py-2.5">
                 <dt className="text-muted">Total</dt>
                 <dd className="text-2xl font-bold tabular-nums">
-                  {fmtIdr(total, invoice.currency)}
+                  {fmtIdr(invoice.total, invoice.currency)}
                 </dd>
               </div>
               <div className="flex items-center justify-between gap-3 py-2.5">
@@ -174,7 +161,7 @@ export function PaymentPage() {
               </div>
             </dl>
             <Button className="w-full" size="lg" disabled={!channel} onClick={pay}>
-              Pay {fmtIdr(total, invoice.currency)}
+              Pay {fmtIdr(invoice.total, invoice.currency)}
             </Button>
             <p className="text-muted text-xs">
               Payments are processed by Xendit. You will get instructions on the next screen.

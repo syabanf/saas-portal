@@ -80,16 +80,18 @@ export function UserDialog({ user, onOpenChange }: UserDialogProps) {
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 sm:grid-cols-2">
-            <FormField label="Name">
+            <FormField label="Name" htmlFor="name">
               <Input
+                id="name"
                 value={draft.name}
                 onChange={(e) => set('name', e.target.value)}
                 placeholder="Fahmi Syaban"
                 required
               />
             </FormField>
-            <FormField label="Email">
+            <FormField label="Email" htmlFor="email">
               <Input
+                id="email"
                 type="email"
                 value={draft.email}
                 onChange={(e) => set('email', e.target.value)}

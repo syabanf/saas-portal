@@ -135,8 +135,9 @@ export function SubscriptionDialog({
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 sm:grid-cols-2">
-            <FormField label="Organization">
+            <FormField label="Organization" htmlFor="subscription-tenant">
               <Combobox
+                id="subscription-tenant"
                 value={draft.tenantId}
                 onChange={(v) => set('tenantId', v)}
                 options={tenantOptions(tenants)}
@@ -147,6 +148,7 @@ export function SubscriptionDialog({
             </FormField>
             <FormField
               label="Application"
+              htmlFor="subscription-application"
               hint={
                 isCreate && draft.tenantId && subscribedAppIds.size > 0
                   ? 'Applications already subscribed are hidden.'
@@ -154,6 +156,7 @@ export function SubscriptionDialog({
               }
             >
               <Combobox
+                id="subscription-application"
                 value={draft.applicationId}
                 onChange={(v) => set('applicationId', v)}
                 options={applicationOptions(subscribable)}
@@ -164,6 +167,7 @@ export function SubscriptionDialog({
             </FormField>
             <FormField
               label="Billing period"
+              htmlFor="subscription-period"
               hint={
                 app
                   ? `${fmtIdr(price, app.currency)} per ${draft.billingPeriod === 'annual' ? 'year' : 'month'}${app.trialDays ? ` · trial ${app.trialDays} days` : ''}`
@@ -171,13 +175,15 @@ export function SubscriptionDialog({
               }
             >
               <Combobox
+                id="subscription-period"
                 value={draft.billingPeriod}
                 onChange={(v) => set('billingPeriod', v as BillingPeriod)}
                 options={labelOptions(BILLING_PERIODS, BILLING_PERIOD_LABEL)}
               />
             </FormField>
-            <FormField label="Status">
+            <FormField label="Status" htmlFor="subscription-status">
               <Combobox
+                id="subscription-status"
                 value={draft.status}
                 onChange={(v) => set('status', v as SubscriptionStatus)}
                 options={labelOptions(SUBSCRIPTION_STATUSES, SUBSCRIPTION_STATUS_LABEL)}

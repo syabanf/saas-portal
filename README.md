@@ -62,9 +62,18 @@ Dependencies point down only: `apps → ui / fixtures / integration → types`.
 
 ## Domain model
 
-- `Application`: type, sign-in mode, access policy (subscription required, free, manual), allowed subscription statuses, monthly and annual price, trial days, integration health.
+- `Application` (called a Product in the console): type, integration mode, the product API URL, the callback URL, access policy (subscription required, free, manual), allowed subscription statuses, monthly and annual price, trial days, integration health.
 - `Subscription`: organization × application × billing period (`monthly` | `annual`) with the state machine draft → trial → active → past_due → grace_period → suspended → expired (or cancelled).
 - `Invoice` and `Payment` follow the subscription. A payment is a Xendit-style request (virtual account, e-wallet, QRIS, card or retail code) with a provider id, expiry, instructions and an event timeline. The portal checkout at `/billing/:id/pay` creates the request, `/payments/:id` shows the instructions and status, and a simulated PAID callback settles the invoice and reactivates the subscription.
 - `TenantMember.applicationIds` records which applications a user may enter. The backend combines it with the subscription state when the user opens an application.
+
+A product declares one of two integration modes:
+
+| Mode      | Request chain                                                                                |
+| --------- | -------------------------------------------------------------------------------------------- |
+| `verify`  | Application → SaaS Gate check → subscription state → allow or deny → the application answers |
+| `gateway` | Caller → SaaS Gate gateway → subscription state → product API → response                     |
+
+Creating or editing a product asks for the mode plus two URLs (the product API and the sign-in callback); pricing and the token settings keep safe defaults. The product page shows the chain, both URLs and a copy-paste guide for the chosen mode.
 
 `packages/fixtures/src/access.ts` holds the display helpers (`appAccessFor`, `subscriptionAccessOutcome`) that turn those records into launcher card states. Swap `mode` to `http` in Settings to point the identity adapter at a real backend.

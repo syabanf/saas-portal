@@ -45,18 +45,23 @@ export function ApiClientDialog({ mode, onOpenChange }: ApiClientDialogProps) {
   const [scopes, setScopes] = React.useState<string[]>(SCOPES.slice(0, 3))
   const [revealed, setRevealed] = React.useState<{ clientId: string; secret: string } | null>(null)
 
+  /** Read through a ref: the lookup map is rebuilt on every store change, and depending on it
+   * would reset the form (and wipe the shown-once secret) on any unrelated update. */
+  const appsRef = React.useRef(applicationsById)
+  appsRef.current = applicationsById
+
   React.useEffect(() => {
     if (!mode) return
     setRevealed(null)
     if (mode.kind === 'create') {
-      const app = mode.applicationId ? applicationsById.get(mode.applicationId) : undefined
+      const app = mode.applicationId ? appsRef.current.get(mode.applicationId) : undefined
       setApplicationId(mode.applicationId ?? '')
       setEnvironment('production')
       setName(app ? `${app.name} Production` : '')
       setRedirects(app?.callbackUrl ?? '')
       setScopes(SCOPES.slice(0, 3))
     }
-  }, [mode, applicationsById])
+  }, [mode])
 
   const app = applicationsById.get(applicationId)
 
@@ -142,8 +147,9 @@ export function ApiClientDialog({ mode, onOpenChange }: ApiClientDialogProps) {
         ) : (
           <form onSubmit={submitCreate}>
             <div className="grid gap-4 sm:grid-cols-2">
-              <FormField label="Application">
+              <FormField label="Application" htmlFor="client-application">
                 <Combobox
+                  id="client-application"
                   value={applicationId}
                   onChange={setApplicationId}
                   options={applicationOptions(applications)}
@@ -152,15 +158,17 @@ export function ApiClientDialog({ mode, onOpenChange }: ApiClientDialogProps) {
                   disabled={Boolean(mode?.kind === 'create' && mode.applicationId)}
                 />
               </FormField>
-              <FormField label="Environment">
+              <FormField label="Environment" htmlFor="client-environment">
                 <Combobox
+                  id="client-environment"
                   value={environment}
                   onChange={(v) => setEnvironment(v as Environment)}
                   options={labelOptions(ENVIRONMENTS, ENVIRONMENT_LABEL)}
                 />
               </FormField>
-              <FormField label="Client name" className="sm:col-span-2">
+              <FormField label="Client name" htmlFor="client-name" className="sm:col-span-2">
                 <Input
+                  id="client-name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="IoT Demo Production"
@@ -168,10 +176,12 @@ export function ApiClientDialog({ mode, onOpenChange }: ApiClientDialogProps) {
               </FormField>
               <FormField
                 label="Allowed redirect URIs"
+                htmlFor="client-redirects"
                 hint="One per line. Only these callbacks may receive an authorization code."
                 className="sm:col-span-2"
               >
                 <Textarea
+                  id="client-redirects"
                   value={redirects}
                   onChange={(e) => setRedirects(e.target.value)}
                   className="min-h-20 font-mono text-xs"

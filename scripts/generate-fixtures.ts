@@ -50,6 +50,20 @@ const between = (min: number, max: number) => Math.floor(min + rnd() * (max - mi
 let seq = 0
 const sid = (prefix: string) => `${prefix}-${(++seq).toString(36).padStart(5, '0')}`
 
+/** Numbers quoted in the seeded timelines, kept out of the running sequence. */
+const RESERVED_NUMBERS: Record<string, string> = {
+  'sub-beta-iot': 'INV-2026-1092',
+  'sub-gamma-iot': 'INV-2026-1044',
+}
+const taken = new Set(Object.values(RESERVED_NUMBERS))
+let invoiceNo = 1080
+function nextInvoiceNo(issuedAt: string): string {
+  const year = new Date(issuedAt).getFullYear()
+  let number = `INV-${year}-${++invoiceNo}`
+  while (taken.has(number)) number = `INV-${year}-${++invoiceNo}`
+  return number
+}
+
 /* ---------- tenants & users ---------- */
 const tenants: Tenant[] = [
   ['ten-alpha', 'PT Alpha Manufaktur', 'alpha', 'active', 400],
@@ -454,7 +468,7 @@ for (const s of subSeeds) {
       daysAgo(12),
       'subscription.past_due',
       'Payment due',
-      'Rp 12.000.000 outstanding',
+      `${RESERVED_NUMBERS['sub-beta-iot']} outstanding`,
     )
     pushEvent(
       s.id,
@@ -730,16 +744,21 @@ function makePayment(
     ],
   }
 }
-let invoiceNo = 1080
 for (const s of subscriptions) {
   if (s.status === 'draft') continue
   const app = appById.get(s.applicationId)!
-  const number =
-    s.id === 'sub-beta-iot'
-      ? 'INV-2026-1092'
-      : s.id === 'sub-gamma-iot'
-        ? 'INV-2026-1044'
-        : `INV-2026-${invoiceNo++}`
+  const overdue = s.status !== 'past_due'
+  const issuedAt =
+    s.status === 'active' || s.status === 'cancelled'
+      ? s.currentPeriodStart
+      : s.status === 'trial'
+        ? s.currentPeriodEnd
+        : s.id === 'sub-beta-iot'
+          ? daysAgo(24)
+          : s.id === 'sub-gamma-iot'
+            ? daysAgo(45)
+            : daysAgo(18)
+  const number = RESERVED_NUMBERS[s.id] ?? nextInvoiceNo(issuedAt)
   const id = `inv-${s.id.slice(4)}`
   if (s.status === 'active' || s.status === 'cancelled') {
     const paidAt = iso(new Date(s.currentPeriodStart).getTime() + between(1, 10) * DAY)
@@ -762,6 +781,7 @@ for (const s of subscriptions) {
         paidAt,
       ),
     )
+    pushEvent(s.id, paidAt, 'payment.success', 'Payment received', `${number} paid`)
   } else if (s.status === 'trial') {
     invoices.push(
       buildInvoice(s, app, {
@@ -773,15 +793,12 @@ for (const s of subscriptions) {
       }),
     )
   } else {
-    const overdue = s.status !== 'past_due'
-    const issued =
-      s.id === 'sub-beta-iot' ? daysAgo(24) : s.id === 'sub-gamma-iot' ? daysAgo(45) : daysAgo(18)
     invoices.push(
       buildInvoice(s, app, {
         id,
         number,
         periodStart: s.currentPeriodStart,
-        issuedAt: issued,
+        issuedAt,
         status: overdue ? 'overdue' : 'open',
       }),
     )
@@ -804,7 +821,7 @@ for (let i = 0; i < 6; i += 1) {
   invoices.push(
     buildInvoice(s, app, {
       id: `inv-hist-${i}`,
-      number: `INV-2025-${900 + i}`,
+      number: nextInvoiceNo(at),
       periodStart: at,
       issuedAt: at,
       status: 'paid',

@@ -418,7 +418,7 @@ export function UsersPage() {
       {selected.size > 0 ? (
         <Card className="flex flex-wrap items-center gap-2 p-3">
           <p role="status" aria-live="polite" className="mr-auto text-sm font-semibold">
-            {selected.size} users selected
+            {selected.size} {selected.size === 1 ? 'user' : 'users'} selected
           </p>
           <Combobox
             tone="nested"

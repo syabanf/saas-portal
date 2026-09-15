@@ -26,7 +26,7 @@ import { Link, useNavigate, useParams } from 'react-router'
 import { useCurrentUser } from '../../auth/auth'
 import { InvoiceBadge, Mono, PaymentBadge, SubscriptionBadge } from '../../components/badges'
 import { actorOf, useScoped } from '../../state/app-state'
-import { PENDING_TRANSITIONS, RefundPaymentDialog } from './PaymentActions'
+import { PENDING_TRANSITIONS, RefundPaymentDialog, expiredAt } from './PaymentActions'
 
 const EVENT_TONE: Partial<Record<PaymentEventType, TimelineItem['tone']>> = {
   paid: 'success',
@@ -265,11 +265,20 @@ export function PaymentDetailPage() {
                   { label: 'Method', value: PAYMENT_METHOD_LABEL[payment.method] },
                   { label: 'Channel', value: channel.label },
                   { label: 'Amount', value: fmtIdr(payment.amount, payment.currency) },
-                  { label: 'Fee', value: fmtIdr(payment.fee, payment.currency) },
-                  { label: 'Total', value: fmtIdr(payment.amount + payment.fee, payment.currency) },
+                  ...(payment.paidAt
+                    ? [
+                        { label: 'Xendit fee', value: fmtIdr(payment.fee, payment.currency) },
+                        {
+                          label: 'Settled',
+                          value: fmtIdr(payment.amount - payment.fee, payment.currency),
+                        },
+                      ]
+                    : []),
                   { label: 'Currency', value: payment.currency },
                   { label: 'Created', value: fmtDateTime(payment.createdAt) },
-                  { label: 'Expires', value: fmtDateTime(payment.expiresAt) },
+                  payment.status === 'expired'
+                    ? { label: 'Expired', value: fmtDateTime(expiredAt(payment)) }
+                    : { label: 'Expires', value: fmtDateTime(payment.expiresAt) },
                   { label: 'Paid at', value: fmtDateTime(payment.paidAt) },
                   { label: 'Status', value: <PaymentBadge status={payment.status} /> },
                 ]}

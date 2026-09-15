@@ -16,6 +16,7 @@ import {
   TabsList,
   TabsTrigger,
   cn,
+  pushToast,
   type Column,
 } from '@scp/ui'
 import {
@@ -150,6 +151,7 @@ export function BillingPage() {
 
   function voidInvoice(inv: Invoice) {
     dispatch({ type: 'invoices/upsert', invoice: { ...inv, status: 'void' } })
+    pushToast({ title: `${inv.number} voided` })
   }
 
   const columns: Column<Invoice>[] = [

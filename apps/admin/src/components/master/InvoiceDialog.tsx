@@ -111,19 +111,25 @@ export function InvoiceDialog({ open, onOpenChange }: InvoiceDialogProps) {
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 sm:grid-cols-2">
-            <FormField label="Number">
-              <Input value={number} readOnly disabled className="font-mono" />
+            <FormField label="Number" htmlFor="invoice-number">
+              <Input id="invoice-number" value={number} readOnly disabled className="font-mono" />
             </FormField>
-            <FormField label="Issue date" hint="Due 14 days after this date.">
+            <FormField
+              label="Issue date"
+              htmlFor="invoice-issued"
+              hint="Due 14 days after this date."
+            >
               <Input
+                id="invoice-issued"
                 type="date"
                 value={draft.issuedAt}
                 onChange={(e) => set('issuedAt', e.target.value)}
                 required
               />
             </FormField>
-            <FormField label="Organization">
+            <FormField label="Organization" htmlFor="invoice-tenant">
               <Combobox
+                id="invoice-tenant"
                 value={draft.tenantId}
                 onChange={(tenantId) =>
                   setDraft((d) => ({ ...d, tenantId, subscriptionId: '', periodStart: '' }))
@@ -135,6 +141,7 @@ export function InvoiceDialog({ open, onOpenChange }: InvoiceDialogProps) {
             </FormField>
             <FormField
               label="Subscription"
+              htmlFor="invoice-subscription"
               hint={
                 draft.tenantId && tenantSubs.length === 0
                   ? 'This organization has no subscriptions.'
@@ -142,6 +149,7 @@ export function InvoiceDialog({ open, onOpenChange }: InvoiceDialogProps) {
               }
             >
               <Combobox
+                id="invoice-subscription"
                 value={draft.subscriptionId}
                 onChange={selectSubscription}
                 options={subscriptionOptions(tenantSubs, applicationsById)}
@@ -152,6 +160,7 @@ export function InvoiceDialog({ open, onOpenChange }: InvoiceDialogProps) {
             </FormField>
             <FormField
               label="Period start"
+              htmlFor="invoice-period-start"
               hint={
                 preview
                   ? `Covers ${fmtDate(preview.periodStart)} to ${fmtDate(preview.periodEnd)}.`
@@ -159,6 +168,7 @@ export function InvoiceDialog({ open, onOpenChange }: InvoiceDialogProps) {
               }
             >
               <Input
+                id="invoice-period-start"
                 type="date"
                 value={draft.periodStart}
                 onChange={(e) => set('periodStart', e.target.value)}
@@ -166,8 +176,13 @@ export function InvoiceDialog({ open, onOpenChange }: InvoiceDialogProps) {
                 required
               />
             </FormField>
-            <FormField label="Tax rate (%)" hint="PPN, applied to the subtotal.">
+            <FormField
+              label="Tax rate (%)"
+              htmlFor="invoice-tax"
+              hint="PPN, applied to the subtotal."
+            >
               <Input
+                id="invoice-tax"
                 type="number"
                 min={0}
                 max={100}

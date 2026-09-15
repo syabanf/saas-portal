@@ -314,7 +314,6 @@ export function PaymentStatusPage() {
   const sub = subscriptionsById.get(payment.subscriptionId)
   const app = sub ? applicationsById.get(sub.applicationId) : undefined
   const option = PAYMENT_CHANNEL_BY_ID[payment.channel]
-  const total = payment.amount + payment.fee
   const pending = payment.status === 'pending'
   const setStatus = (status: PaymentStatus) =>
     dispatch({ type: 'payments/setStatus', id: payment.id, status, actor: actorOf(user) })
@@ -348,7 +347,7 @@ export function PaymentStatusPage() {
           <div className="min-w-0 flex-1">
             <Kicker>{HERO_TITLE[payment.status]}</Kicker>
             <p className="text-[34px] leading-tight font-bold tracking-tight tabular-nums sm:text-[44px]">
-              {fmtIdr(total, payment.currency)}
+              {fmtIdr(payment.amount, payment.currency)}
             </p>
             {pending ? (
               <div className="mt-2 flex flex-wrap items-center gap-3">
@@ -446,11 +445,13 @@ export function PaymentStatusPage() {
                   label: 'Method',
                   value: `${PAYMENT_METHOD_LABEL[payment.method]} · ${option.label}`,
                 },
-                { label: 'Amount', value: fmtIdr(payment.amount, payment.currency) },
-                { label: 'Fee', value: fmtIdr(payment.fee, payment.currency) },
                 {
-                  label: 'Total',
-                  value: <span className="font-semibold">{fmtIdr(total, payment.currency)}</span>,
+                  label: 'Amount',
+                  value: (
+                    <span className="font-semibold">
+                      {fmtIdr(payment.amount, payment.currency)}
+                    </span>
+                  ),
                 },
                 { label: 'Created', value: fmtDateTime(payment.createdAt) },
                 {

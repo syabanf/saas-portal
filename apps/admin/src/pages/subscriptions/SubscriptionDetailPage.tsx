@@ -49,6 +49,7 @@ import { InvoiceBadge, Mono, PaymentBadge, SubscriptionBadge } from '../../compo
 import { actorOf, useScoped } from '../../state/app-state'
 import { labelOptions } from '../../lib/options'
 import { SimulatePaymentConfirm } from '../billing/SimulatePaymentConfirm'
+import { settledLabel } from '../payments/PaymentActions'
 import { AccessPolicyCard } from './AccessPolicyCard'
 import { ChangePeriodDialog } from './ChangePeriodDialog'
 
@@ -161,12 +162,7 @@ export function SubscriptionDetailPage() {
     {
       key: 'settled',
       header: 'Paid / expires',
-      cell: (p) => {
-        if (p.status === 'success') return fmtDateTime(p.paidAt)
-        if (p.status === 'expired') return `Expired ${fmtDateTime(p.expiresAt)}`
-        if (p.status === 'pending' && p.expiresAt) return `Expires ${fmtDateTime(p.expiresAt)}`
-        return <span className="text-muted">—</span>
-      },
+      cell: settledLabel,
     },
   ]
 

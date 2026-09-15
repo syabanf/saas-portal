@@ -17,7 +17,7 @@ export interface ReceiptDocumentProps {
   payer: InvoiceParty
   /** What the payment covered: invoice, subscription, period. */
   items: ReceiptRow[]
-  /** Amount breakdown: invoice amount, provider fee, total. */
+  /** Amount breakdown, for example subtotal, tax and the amount paid. */
   amounts: ReceiptRow[]
   /** Provider details: Xendit id, channel, method, external id. */
   paymentRows: ReceiptRow[]

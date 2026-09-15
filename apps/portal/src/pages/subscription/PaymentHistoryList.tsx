@@ -73,7 +73,7 @@ export function PaymentHistoryList({ subscription }: { subscription: Subscriptio
               >
                 <PaymentChannelLabel payment={payment} className="min-w-0 flex-1 basis-40" />
                 <span className="font-semibold tabular-nums">
-                  {fmtIdr(payment.amount + payment.fee, payment.currency)}
+                  {fmtIdr(payment.amount, payment.currency)}
                 </span>
                 <ChevronRight className="text-muted size-4 sm:order-last" />
                 <span className="flex w-full items-center gap-2 sm:w-auto">

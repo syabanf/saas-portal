@@ -165,8 +165,8 @@ export function BillingPage() {
       key: 'amount',
       header: 'Amount',
       align: 'right',
-      sortValue: (p) => p.amount + p.fee,
-      cell: (p) => <span className="tabular-nums">{fmtIdr(p.amount + p.fee, p.currency)}</span>,
+      sortValue: (p) => p.amount,
+      cell: (p) => <span className="tabular-nums">{fmtIdr(p.amount, p.currency)}</span>,
     },
     { key: 'status', header: 'Status', cell: (p) => <PaymentBadge status={p.status} /> },
     {
@@ -208,7 +208,7 @@ export function BillingPage() {
         <StatCard
           label="Outstanding"
           value={fmtIdr(outstanding)}
-          hint={`${fmtNumber(open.length)} open invoices`}
+          hint={`${fmtNumber(open.length)} open ${open.length === 1 ? 'invoice' : 'invoices'}`}
           icon={<Wallet />}
           tone={outstanding > 0 ? 'warning' : 'default'}
         />

@@ -91,8 +91,9 @@ export function WebhookDialog({ endpoint, applicationId, onOpenChange }: Webhook
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 sm:grid-cols-2">
-            <FormField label="Application">
+            <FormField label="Application" htmlFor="webhook-application">
               <Combobox
+                id="webhook-application"
                 value={draft.applicationId}
                 onChange={(v) => setDraft((d) => ({ ...d, applicationId: v }))}
                 options={applicationOptions(applications)}
@@ -101,8 +102,9 @@ export function WebhookDialog({ endpoint, applicationId, onOpenChange }: Webhook
                 disabled={Boolean(applicationId) || !isCreate}
               />
             </FormField>
-            <FormField label="Endpoint URL">
+            <FormField label="Endpoint URL" htmlFor="webhook-url">
               <Input
+                id="webhook-url"
                 type="url"
                 value={draft.url}
                 onChange={(e) => setDraft((d) => ({ ...d, url: e.target.value }))}

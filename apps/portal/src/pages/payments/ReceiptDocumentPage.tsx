@@ -1,4 +1,11 @@
-import { fmtDate, fmtDateTime, fmtIdr, receiptNumber } from '@scp/fixtures'
+import {
+  fmtDate,
+  fmtDateTime,
+  fmtIdr,
+  invoiceSubtotal,
+  invoiceTax,
+  receiptNumber,
+} from '@scp/fixtures'
 import { BILLING_PERIOD_LABEL, PAYMENT_CHANNEL_BY_ID, PAYMENT_METHOD_LABEL } from '@scp/types'
 import { Button, Card, EmptyState, ReceiptDocument, type InvoiceParty } from '@scp/ui'
 import { ArrowLeft, FileText, Printer } from 'lucide-react'
@@ -84,7 +91,7 @@ export function ReceiptDocumentPage() {
       <ReceiptDocument
         number={receiptNumber(payment)}
         paidAt={fmtDateTime(payment.paidAt)}
-        total={money(payment.amount + payment.fee)}
+        total={money(payment.amount)}
         payee={PAYEE}
         payer={{
           name: tenant?.name ?? 'Your organization',
@@ -109,11 +116,18 @@ export function ReceiptDocumentPage() {
               ]
             : []),
         ]}
-        amounts={[
-          { label: 'Invoice amount', value: money(payment.amount) },
-          { label: 'Provider fee', value: money(payment.fee) },
-          { label: 'Total charged', value: money(payment.amount + payment.fee) },
-        ]}
+        amounts={
+          invoice
+            ? [
+                { label: 'Subtotal', value: money(invoiceSubtotal(invoice)) },
+                {
+                  label: `PPN ${Math.round(invoice.taxRate * 100)}%`,
+                  value: money(invoiceTax(invoice)),
+                },
+                { label: 'Amount paid', value: money(payment.amount) },
+              ]
+            : [{ label: 'Amount paid', value: money(payment.amount) }]
+        }
         paymentRows={[
           { label: 'Xendit id', value: payment.providerReference },
           { label: 'External id', value: payment.externalId },

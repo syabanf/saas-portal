@@ -80,6 +80,12 @@ export function ChangePeriodDialog({ subscription, onOpenChange }: ChangePeriodD
               The next period is already invoiced. Resolve that invoice before scheduling a change.
             </p>
           )}
+          {subscription?.cancelAtPeriodEnd && (
+            <p className="text-muted text-sm">
+              This subscription ends at the current period. Reactivate it before changing the
+              billing period.
+            </p>
+          )}
           <div className="grid grid-cols-1 gap-3">
             {BILLING_PERIODS.map((p) => {
               const price = app ? priceFor(app, p) : 0

@@ -48,7 +48,7 @@ import {
   type WindowOption,
 } from '../../lib/filters'
 import { CHANNEL_OPTIONS, allOption, labelOptions, tenantOptions } from '../../lib/options'
-import { PENDING_TRANSITIONS, RefundPaymentDialog } from './PaymentActions'
+import { PENDING_TRANSITIONS, RefundPaymentDialog, settledLabel } from './PaymentActions'
 import { SimulatePaymentDialog } from './SimulatePaymentDialog'
 
 const METHODS = Object.keys(PAYMENT_METHOD_LABEL) as PaymentMethod[]
@@ -164,11 +164,7 @@ export function PaymentsPage() {
     {
       key: 'settled',
       header: 'Paid / expires',
-      cell: (p) => {
-        if (p.status === 'success') return fmtDateTime(p.paidAt)
-        if (p.status === 'pending' && p.expiresAt) return `Expires ${fmtDateTime(p.expiresAt)}`
-        return <span className="text-muted">—</span>
-      },
+      cell: settledLabel,
       sortValue: (p) => p.paidAt ?? p.expiresAt ?? '',
     },
   ]

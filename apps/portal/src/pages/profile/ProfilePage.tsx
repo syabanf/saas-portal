@@ -37,32 +37,7 @@ import * as React from 'react'
 import { useAuth, useCurrentUser } from '../../auth/auth'
 import { Mono, UserBadge } from '../../components/badges'
 import { actorOf, useScoped } from '../../state/app-state'
-
-const PREFS_KEY = 'scp.portal.prefs'
-
-interface Prefs {
-  compactTables: boolean
-  emailFailedPayments: boolean
-  demoHints: boolean
-}
-const DEFAULT_PREFS: Prefs = { compactTables: false, emailFailedPayments: true, demoHints: true }
-
-function readPrefs(): Prefs {
-  try {
-    const raw = localStorage.getItem(PREFS_KEY)
-    return raw ? { ...DEFAULT_PREFS, ...(JSON.parse(raw) as Partial<Prefs>) } : DEFAULT_PREFS
-  } catch {
-    return DEFAULT_PREFS
-  }
-}
-
-function writePrefs(prefs: Prefs) {
-  try {
-    localStorage.setItem(PREFS_KEY, JSON.stringify(prefs))
-  } catch {
-    /* storage unavailable; the toggles still work for this visit */
-  }
-}
+import { applyPrefs, readPrefs, writePrefs, type Prefs } from '../../state/prefs'
 
 type SessionState = 'active' | 'expired' | 'revoked'
 const SESSION_STATE_LABEL: Record<SessionState, string> = {
@@ -208,6 +183,7 @@ export function ProfilePage() {
     setPrefs((p) => {
       const next = { ...p, [key]: value }
       writePrefs(next)
+      applyPrefs(next)
       return next
     })
   }

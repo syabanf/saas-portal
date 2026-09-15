@@ -1,10 +1,12 @@
-import { mkdir, readFile, rename, rm, writeFile } from 'node:fs/promises'
+import { mkdir, readFile, rename, rm, stat, writeFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 import type { AppAction, AppState } from '../packages/fixtures/src/index'
 
 // Both Vite processes use one atomic, locked store. This endpoint is for local demos only.
 const file = fileURLToPath(new URL('../.demo-state.json', import.meta.url))
 const lock = `${file}.lock`
+/** Longer than any single read-modify-write, short enough that a crash self-heals. */
+const STALE_LOCK_MS = 5_000
 type Snapshot = { revision: number; state: AppState; requests: string[] }
 async function withStore(
   engine: {
@@ -22,6 +24,12 @@ async function withStore(
       break
     } catch (error) {
       if ((error as NodeJS.ErrnoException).code !== 'EEXIST') throw error
+      // A request killed mid-write leaves the lock behind, which would wedge the store for good.
+      const held = await stat(lock).catch(() => null)
+      if (held && Date.now() - held.mtimeMs > STALE_LOCK_MS) {
+        await rm(lock, { recursive: true, force: true })
+        continue
+      }
       await new Promise((resolve) => setTimeout(resolve, 30))
     }
   }

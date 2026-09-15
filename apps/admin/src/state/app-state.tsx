@@ -62,6 +62,7 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
         'apiClients/rotate': 'API secret rotated',
         'apiClients/revoke': 'API client revoked',
         'invoices/generate': 'Invoice generated',
+        'payments/create': 'Payment request created',
         'payments/simulate': 'Payment simulation completed',
         'payments/setStatus': 'Payment status updated',
         'webhooks/upsert': 'Webhook saved',

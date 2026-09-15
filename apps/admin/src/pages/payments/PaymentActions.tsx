@@ -1,5 +1,6 @@
-import { fmtIdr } from '@scp/fixtures'
+import { fmtDateTime, fmtIdr } from '@scp/fixtures'
 import type { Payment, PaymentStatus } from '@scp/types'
+import type { ReactNode } from 'react'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,6 +19,20 @@ export interface PaymentTransition {
   status: PaymentStatus
   label: string
   icon: LucideIcon
+}
+
+/** When the request actually expired: the recorded event, or the scheduled expiry if it lapsed on its own. */
+export function expiredAt(payment: Payment): string | null {
+  return payment.events.find((e) => e.type === 'expired')?.at ?? payment.expiresAt
+}
+
+/** The "Paid / expires" cell: when the money arrived, when the request lapsed, or when it will. */
+export function settledLabel(payment: Payment): ReactNode {
+  if (payment.paidAt) return fmtDateTime(payment.paidAt)
+  if (payment.status === 'expired') return `Expired ${fmtDateTime(expiredAt(payment))}`
+  if (payment.status === 'pending' && payment.expiresAt)
+    return `Expires ${fmtDateTime(payment.expiresAt)}`
+  return <span className="text-muted">—</span>
 }
 
 /** What the console can do to a pending request. "Mark paid" stands in for Xendit's PAID callback. */

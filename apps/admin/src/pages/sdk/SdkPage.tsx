@@ -1,6 +1,12 @@
-import { envSnippet, sdkSnippet } from '@scp/fixtures'
+import {
+  apiUrlOf,
+  envSnippet,
+  integrationGuide,
+  integrationModeOf,
+  sdkSnippet,
+} from '@scp/fixtures'
 import type { SdkStack } from '@scp/types'
-import { SDK_STACK_LABEL } from '@scp/types'
+import { INTEGRATION_MODE_LABEL, SDK_STACK_LABEL } from '@scp/types'
 import {
   Badge,
   Button,
@@ -22,6 +28,7 @@ import {
 import {
   Activity,
   AppWindow,
+  Check,
   ChevronRight,
   HeartPulse,
   KeyRound,
@@ -34,6 +41,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router'
 import { Mono } from '../../components/badges'
 import { useScoped } from '../../state/app-state'
 import { applicationOptions } from '../../lib/options'
+import { FlowChain } from '../applications/ProductForm'
 
 const STACKS = Object.keys(SDK_STACK_LABEL) as SdkStack[]
 
@@ -129,12 +137,19 @@ export function SdkPage() {
   const productionClient = (clientsByApplication.get(app.id) ?? []).find(
     (c) => c.environment === 'production' && c.status === 'active',
   )
-  const snippet = sdkSnippet(stack, app.audience)
+  const mode = integrationModeOf(app)
+  const apiUrl = apiUrlOf(app)
+  const guide = integrationGuide(mode, app.code, apiUrl)
+  const snippet = sdkSnippet(stack, app.audience, mode)
+  /** A product without a browser callback gets no callback line to fill in. */
   const env = envSnippet(
     productionClient?.clientId ?? '<create a production client>',
     app.audience,
     app.callbackUrl,
   )
+    .split('\n')
+    .filter((line) => !line.endsWith('='))
+    .join('\n')
 
   const checklist = [
     {
@@ -151,8 +166,9 @@ export function SdkPage() {
     },
     {
       icon: <Link2 />,
-      title: 'Configure callback',
-      subtitle: app.callbackUrl,
+      title: mode === 'gateway' ? 'Point clients at the gateway' : 'Configure callback',
+      subtitle:
+        mode === 'gateway' ? `Forwarded to ${apiUrl}` : app.callbackUrl || 'No callback URL yet',
       to: `/applications/${app.id}`,
     },
     {
@@ -178,8 +194,9 @@ export function SdkPage() {
 
       <Card>
         <CardContent className="grid grid-cols-1 gap-4 p-5 md:grid-cols-[minmax(0,16rem)_1fr] md:items-end">
-          <FormField label="Application">
+          <FormField label="Application" htmlFor="sdk-application">
             <Combobox
+              id="sdk-application"
               value={app.id}
               onChange={(v) => setParams({ app: v }, { replace: true })}
               options={applicationOptions(applications)}
@@ -204,6 +221,32 @@ export function SdkPage() {
         <div className="min-w-0 space-y-4">
           <Card>
             <CardHeader>
+              <CardTitle className="flex flex-wrap items-center gap-2">
+                How {app.name} is protected{' '}
+                <Badge variant="info">{INTEGRATION_MODE_LABEL[mode]}</Badge>
+              </CardTitle>
+              <CardDescription>{guide.summary}</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <FlowChain mode={mode} />
+              <ul className="space-y-1.5 text-sm">
+                {guide.todo.map((step) => (
+                  <li key={step} className="flex gap-2">
+                    <Check className="text-success mt-0.5 size-4 shrink-0" />
+                    {step}
+                  </li>
+                ))}
+              </ul>
+              <CodeBlock
+                title={`${app.code} · ${mode}`}
+                code={guide.code}
+                language={guide.language}
+              />
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
               <CardTitle>Install</CardTitle>
               <CardDescription>
                 <Mono>{snippet.install}</Mono>
@@ -222,8 +265,7 @@ export function SdkPage() {
             <CardHeader>
               <CardTitle>Environment</CardTitle>
               <CardDescription>
-                Generated from the audience, callback URL and the active production client of{' '}
-                {app.name}.
+                Generated from the audience and the active production client of {app.name}.
               </CardDescription>
             </CardHeader>
             <CardContent>
