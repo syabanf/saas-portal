@@ -80,20 +80,22 @@ export function DashboardPage() {
   return (
     <div className="space-y-4">
       <Card>
-        <CardContent className="flex flex-wrap items-center justify-between gap-3 p-4">
-          <div>
+        <CardContent className="flex flex-wrap items-center gap-3 p-4">
+          <div className="min-w-[14rem] flex-1">
             <p className="font-semibold">Manage a customer workspace</p>
             <p className="text-muted text-sm">
               Start with an organization to review its people, access, subscriptions, and invoices
               together.
             </p>
           </div>
-          <Button asChild>
-            <Link to="/organizations">Find organization</Link>
-          </Button>
-          <Button variant="outline" asChild>
-            <Link to="/organizations/new">Create organization</Link>
-          </Button>
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" asChild>
+              <Link to="/organizations/new">Create organization</Link>
+            </Button>
+            <Button asChild>
+              <Link to="/organizations">Find organization</Link>
+            </Button>
+          </div>
         </CardContent>
       </Card>
       <div className="flex flex-wrap items-center justify-between gap-2">
