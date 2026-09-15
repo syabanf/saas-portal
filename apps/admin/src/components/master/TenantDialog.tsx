@@ -3,6 +3,7 @@ import type { Tenant, TenantStatus } from '@scp/types'
 import { TENANT_STATUS_LABEL } from '@scp/types'
 import {
   Button,
+  Combobox,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -11,14 +12,14 @@ import {
   DialogTitle,
   FormField,
   Input,
-  Select,
 } from '@scp/ui'
 import * as React from 'react'
 import { useCurrentUser } from '../../auth/auth'
+import { labelOptions } from '../../lib/options'
 import { actorOf, useScoped } from '../../state/app-state'
 import { slugify } from './slug'
 
-export const COUNTRIES: { code: string; label: string }[] = [
+const COUNTRIES: { code: string; label: string }[] = [
   { code: 'ID', label: 'Indonesia' },
   { code: 'SG', label: 'Singapore' },
   { code: 'MY', label: 'Malaysia' },
@@ -34,7 +35,12 @@ export function countryLabel(code: string): string {
   return COUNTRIES.find((c) => c.code === code)?.label ?? code
 }
 
-const TENANT_STATUSES: TenantStatus[] = ['active', 'pending', 'suspended']
+export const COUNTRY_OPTIONS = COUNTRIES.map((c) => ({ value: c.code, label: c.label }))
+
+const STATUS_OPTIONS = labelOptions(
+  ['active', 'pending', 'suspended'] satisfies TenantStatus[],
+  TENANT_STATUS_LABEL,
+)
 
 export function emptyTenant(): Tenant {
   const now = new Date().toISOString()
@@ -122,17 +128,14 @@ export function TenantDialog({ tenant, onOpenChange }: TenantDialogProps) {
                 required
               />
             </FormField>
-            <FormField label="Status">
-              <Select
+            <FormField label="Status" htmlFor="tenant-status">
+              <Combobox
+                id="tenant-status"
                 value={draft.status}
-                onChange={(e) => set('status', e.target.value as TenantStatus)}
-              >
-                {TENANT_STATUSES.map((s) => (
-                  <option key={s} value={s}>
-                    {TENANT_STATUS_LABEL[s]}
-                  </option>
-                ))}
-              </Select>
+                onChange={(v) => set('status', v as TenantStatus)}
+                options={STATUS_OPTIONS}
+                searchPlaceholder="Search statuses…"
+              />
             </FormField>
             <FormField label="Billing email">
               <Input
@@ -143,14 +146,14 @@ export function TenantDialog({ tenant, onOpenChange }: TenantDialogProps) {
                 required
               />
             </FormField>
-            <FormField label="Country">
-              <Select value={draft.country} onChange={(e) => set('country', e.target.value)}>
-                {COUNTRIES.map((c) => (
-                  <option key={c.code} value={c.code}>
-                    {c.label}
-                  </option>
-                ))}
-              </Select>
+            <FormField label="Country" htmlFor="tenant-country">
+              <Combobox
+                id="tenant-country"
+                value={draft.country}
+                onChange={(v) => set('country', v)}
+                options={COUNTRY_OPTIONS}
+                searchPlaceholder="Search countries…"
+              />
             </FormField>
           </div>
           <DialogFooter>

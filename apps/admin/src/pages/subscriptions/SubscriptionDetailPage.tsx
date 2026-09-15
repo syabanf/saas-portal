@@ -22,12 +22,12 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  Combobox,
   ConfirmDelete,
   DataTable,
   EmptyState,
   KeyValue,
   Label,
-  Select,
   Timeline,
   type Column,
   type TimelineItem,
@@ -47,6 +47,7 @@ import { Link, useNavigate, useParams } from 'react-router'
 import { useCurrentUser } from '../../auth/auth'
 import { InvoiceBadge, Mono, PaymentBadge, SubscriptionBadge } from '../../components/badges'
 import { actorOf, useScoped } from '../../state/app-state'
+import { labelOptions } from '../../lib/options'
 import { SimulatePaymentConfirm } from '../billing/SimulatePaymentConfirm'
 import { AccessPolicyCard } from './AccessPolicyCard'
 import { ChangePeriodDialog } from './ChangePeriodDialog'
@@ -231,25 +232,20 @@ export function SubscriptionDetailPage() {
             <Label htmlFor="subscription-status" className="text-muted text-xs">
               Status
             </Label>
-            <Select
+            <Combobox
               id="subscription-status"
               value={subscription.status}
-              onChange={(e) =>
+              onChange={(v) =>
                 dispatch({
                   type: 'subscriptions/setStatus',
                   id: subscription.id,
-                  status: e.target.value as SubscriptionStatus,
+                  status: v as SubscriptionStatus,
                   actor,
                 })
               }
+              options={labelOptions(SUBSCRIPTION_STATUSES, SUBSCRIPTION_STATUS_LABEL)}
               className="w-44"
-            >
-              {SUBSCRIPTION_STATUSES.map((st) => (
-                <option key={st} value={st}>
-                  {SUBSCRIPTION_STATUS_LABEL[st]}
-                </option>
-              ))}
-            </Select>
+            />
           </div>
           <Button variant="outline" onClick={() => setChangingPeriod(true)}>
             <ArrowLeftRight /> Change billing period

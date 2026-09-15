@@ -1,24 +1,38 @@
-import { fmtDate } from '@scp/fixtures'
+import { fmtDate, fmtNumber } from '@scp/fixtures'
 import type { Tenant, TenantStatus } from '@scp/types'
 import { BILLING_PERIOD_LABEL, TENANT_STATUS_LABEL } from '@scp/types'
 import {
   Button,
   Card,
+  Combobox,
   ConfirmDelete,
   DataTable,
   Input,
   PageHeader,
-  Select,
+  StatCard,
   cn,
   type BadgeTone,
   type Column,
 } from '@scp/ui'
-import { Building2, CheckCircle2, Pencil, Plus, Search, ShieldBan, Trash2, X } from 'lucide-react'
+import {
+  Building2,
+  CheckCircle2,
+  Pencil,
+  Plus,
+  Receipt,
+  Search,
+  ShieldBan,
+  Trash2,
+  X,
+} from 'lucide-react'
 import * as React from 'react'
-import { useNavigate, useSearchParams } from 'react-router'
+import { useNavigate } from 'react-router'
 import { useCurrentUser } from '../../auth/auth'
+import { ClearFiltersButton } from '../../components/ClearFiltersButton'
 import { Mono, SUBSCRIPTION_TONE, TenantBadge } from '../../components/badges'
-import { TenantDialog } from '../../components/master/TenantDialog'
+import { TenantDialog, countryLabel } from '../../components/master/TenantDialog'
+import { PILL_COMBOBOX, PILL_INPUT, useFilterParams } from '../../lib/filters'
+import { applicationOptions, labelOptions, withAll } from '../../lib/options'
 import { actorOf, useScoped } from '../../state/app-state'
 
 const DOT: Partial<Record<BadgeTone, string>> = {
@@ -31,15 +45,22 @@ const DOT: Partial<Record<BadgeTone, string>> = {
 }
 
 const STATUS_FILTERS: TenantStatus[] = ['active', 'pending', 'suspended']
+const FILTER_KEYS = ['q', 'status', 'app', 'country'] as const
 
 export function OrganizationsPage() {
-  const { tenants, subscriptionsByTenant, membersByTenant, applicationsById, dispatch } =
-    useScoped()
+  const {
+    tenants,
+    applications,
+    subscriptions,
+    subscriptionsByTenant,
+    membersByTenant,
+    applicationsById,
+    dispatch,
+  } = useScoped()
   const user = useCurrentUser()
   const navigate = useNavigate()
-  const [params, setParams] = useSearchParams()
-  const query = params.get('q') ?? ''
-  const status = (params.get('status') ?? '') as TenantStatus | ''
+  const filters = useFilterParams(FILTER_KEYS)
+  const { q: query, status, app, country } = filters.values
   const [editing, setEditing] = React.useState<Tenant | null>(null)
   const [removing, setRemoving] = React.useState<Tenant | null>(null)
   const [selected, setSelected] = React.useState<Set<string>>(new Set())
@@ -56,24 +77,39 @@ export function OrganizationsPage() {
     setSelected(new Set())
   }
 
-  function setParam(key: 'q' | 'status', value: string) {
-    const next = new URLSearchParams(params)
-    if (value) next.set(key, value)
-    else next.delete(key)
-    setParams(next, { replace: true })
-  }
+  const stats = React.useMemo(() => {
+    const byStatus: Record<TenantStatus, number> = { active: 0, suspended: 0, pending: 0 }
+    for (const t of tenants) byStatus[t.status] += 1
+    let activeSubs = 0
+    let trialSubs = 0
+    for (const s of subscriptions) {
+      if (s.status === 'active') activeSubs += 1
+      if (s.status === 'trial') trialSubs += 1
+    }
+    return { ...byStatus, activeSubs, trialSubs }
+  }, [tenants, subscriptions])
+
+  const countryFilters = React.useMemo(
+    () =>
+      [...new Set(tenants.map((t) => t.country))]
+        .sort()
+        .map((code) => ({ value: code, label: countryLabel(code) })),
+    [tenants],
+  )
 
   const rows = React.useMemo(() => {
-    const q = query.trim().toLowerCase()
+    const needle = query.trim().toLowerCase()
     return tenants.filter(
       (t) =>
         (!status || t.status === status) &&
-        (!q ||
-          t.name.toLowerCase().includes(q) ||
-          t.code.toLowerCase().includes(q) ||
-          t.billingEmail.toLowerCase().includes(q)),
+        (!country || t.country === country) &&
+        (!app || (subscriptionsByTenant.get(t.id) ?? []).some((s) => s.applicationId === app)) &&
+        (!needle ||
+          t.name.toLowerCase().includes(needle) ||
+          t.code.toLowerCase().includes(needle) ||
+          t.billingEmail.toLowerCase().includes(needle)),
     )
-  }, [tenants, query, status])
+  }, [tenants, subscriptionsByTenant, query, status, app, country])
 
   const columns: Column<Tenant>[] = [
     {
@@ -141,32 +177,75 @@ export function OrganizationsPage() {
         title="Organizations"
         description="Every subscription, user and invoice belongs to an organization."
         actions={
-          <>
-            <Input
-              value={query}
-              onChange={(e) => setParam('q', e.target.value)}
-              placeholder="Search organizations…"
-              leftIcon={<Search />}
-              className="[&_input]:bg-card [&_input]:shadow-card w-full sm:w-72 [&_input]:rounded-full [&_input]:border-0"
-            />
-            <Select
-              value={status}
-              onChange={(e) => setParam('status', e.target.value)}
-              className="[&_select]:bg-card [&_select]:shadow-card w-full sm:w-44 [&_select]:rounded-full [&_select]:border-0"
-            >
-              <option value="">All statuses</option>
-              {STATUS_FILTERS.map((s) => (
-                <option key={s} value={s}>
-                  {TENANT_STATUS_LABEL[s]}
-                </option>
-              ))}
-            </Select>
-            <Button onClick={() => navigate('/organizations/new')}>
-              <Plus /> Add organization
-            </Button>
-          </>
+          <Button onClick={() => navigate('/organizations/new')}>
+            <Plus /> Add organization
+          </Button>
         }
       />
+
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
+        <StatCard
+          label="Organizations"
+          value={fmtNumber(tenants.length)}
+          hint="All workspaces"
+          icon={<Building2 />}
+          tone="ink"
+        />
+        <StatCard
+          label="Active"
+          value={fmtNumber(stats.active)}
+          hint="Members can sign in"
+          icon={<CheckCircle2 />}
+          tone="success"
+        />
+        <StatCard
+          label="Suspended or pending"
+          value={fmtNumber(stats.suspended + stats.pending)}
+          hint={`${stats.suspended} suspended · ${stats.pending} pending`}
+          icon={<ShieldBan />}
+          tone={stats.suspended > 0 ? 'danger' : 'warning'}
+        />
+        <StatCard
+          label="Subscriptions"
+          value={fmtNumber(stats.activeSubs)}
+          hint={`${stats.trialSubs} on trial`}
+          icon={<Receipt />}
+          tone="info"
+        />
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2">
+        <Input
+          value={query}
+          onChange={(e) => filters.set('q', e.target.value)}
+          placeholder="Search name, code or billing email"
+          leftIcon={<Search />}
+          className={cn('w-full sm:w-72', PILL_INPUT)}
+        />
+        <Combobox
+          value={status || 'all'}
+          onChange={(v) => filters.set('status', v)}
+          options={withAll('All statuses', labelOptions(STATUS_FILTERS, TENANT_STATUS_LABEL))}
+          searchPlaceholder="Search statuses…"
+          className={cn('w-full sm:w-44', PILL_COMBOBOX)}
+        />
+        <Combobox
+          value={app || 'all'}
+          onChange={(v) => filters.set('app', v)}
+          options={withAll('All applications', applicationOptions(applications))}
+          searchPlaceholder="Search applications…"
+          className={cn('w-full sm:w-52', PILL_COMBOBOX)}
+        />
+        <Combobox
+          value={country || 'all'}
+          onChange={(v) => filters.set('country', v)}
+          options={withAll('All countries', countryFilters)}
+          searchPlaceholder="Search countries…"
+          className={cn('w-full sm:w-44', PILL_COMBOBOX)}
+        />
+        {filters.active ? <ClearFiltersButton onClick={filters.clear} /> : null}
+      </div>
+
       {selected.size > 0 ? (
         <Card className="flex flex-wrap items-center gap-2 p-3">
           <p role="status" aria-live="polite" className="mr-auto text-sm font-semibold">
@@ -218,19 +297,26 @@ export function OrganizationsPage() {
               </Button>
             </>
           )}
-          empty={{
-            icon: <Building2 />,
-            title: query || status ? 'No organizations match' : 'No organizations yet',
-            description:
-              query || status
-                ? 'Try a different name, code or status.'
-                : 'Onboard the first customer to create its workspace, subscription and admin.',
-            action: (
-              <Button onClick={() => navigate('/organizations/new')}>
-                <Plus /> Add organization
-              </Button>
-            ),
-          }}
+          empty={
+            filters.active
+              ? {
+                  icon: <Building2 />,
+                  title: 'No matches',
+                  description: 'Try a different name, code, status, application or country.',
+                  action: <ClearFiltersButton onClick={filters.clear} />,
+                }
+              : {
+                  icon: <Building2 />,
+                  title: 'No organizations yet',
+                  description:
+                    'Onboard the first customer to create its workspace, subscription and admin.',
+                  action: (
+                    <Button onClick={() => navigate('/organizations/new')}>
+                      <Plus /> Add organization
+                    </Button>
+                  ),
+                }
+          }
         />
       </Card>
 

@@ -8,7 +8,7 @@ import {
   priceFor,
 } from '@scp/fixtures'
 import type { BillingPeriod, Subscription, Tenant, TenantMember } from '@scp/types'
-import { BILLING_PERIOD_LABEL } from '@scp/types'
+import { BILLING_PERIODS, BILLING_PERIOD_LABEL } from '@scp/types'
 import {
   Button,
   Banner,
@@ -16,11 +16,11 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
+  Combobox,
   FormField,
   Input,
   InvitationLink,
   KeyValue,
-  Select,
   Stepper,
   ToggleRow,
 } from '@scp/ui'
@@ -28,7 +28,7 @@ import { FileClock } from 'lucide-react'
 import * as React from 'react'
 import { Link } from 'react-router'
 import { useCurrentUser } from '../../auth/auth'
-import { COUNTRIES, countryLabel } from '../../components/master/TenantDialog'
+import { COUNTRY_OPTIONS, countryLabel } from '../../components/master/TenantDialog'
 import { slugify } from '../../components/master/slug'
 import { actorOf, useScoped } from '../../state/app-state'
 import { UnsavedChangesGuard } from '../../components/UnsavedChangesGuard'
@@ -328,17 +328,13 @@ export function OrganizationNewPage() {
                 />
               </FormField>
               <FormField label="Country" htmlFor="company-country">
-                <Select
+                <Combobox
                   id="company-country"
                   value={draft.country}
-                  onChange={(e) => set('country', e.target.value)}
-                >
-                  {COUNTRIES.map((c) => (
-                    <option key={c.code} value={c.code}>
-                      {c.label}
-                    </option>
-                  ))}
-                </Select>
+                  onChange={(v) => set('country', v)}
+                  options={COUNTRY_OPTIONS}
+                  searchPlaceholder="Search countries…"
+                />
               </FormField>
             </>
           )}
@@ -382,41 +378,43 @@ export function OrganizationNewPage() {
           )}
           {step === 2 && (
             <>
-              <FormField label="Paid application" htmlFor="paid-app">
-                <Select
+              <FormField
+                label="Paid application"
+                htmlFor="paid-app"
+                hint="Leave empty to set up subscriptions later or for free applications only."
+              >
+                <Combobox
                   id="paid-app"
                   value={draft.applicationId}
-                  onChange={(e) => {
-                    const selected = choices.find((a) => a.id === e.target.value)
+                  onChange={(applicationId) => {
+                    const selected = choices.find((a) => a.id === applicationId)
                     setDraft((d) => ({
                       ...d,
-                      applicationId: e.target.value,
+                      applicationId,
                       billingPeriod: selected?.priceMonthly ? 'monthly' : 'annual',
                       sendInvoice: false,
                     }))
                   }}
-                >
-                  <option value="">Set up subscriptions later / free applications only</option>
-                  {choices.map((a) => (
-                    <option key={a.id} value={a.id}>
-                      {a.name}
-                    </option>
-                  ))}
-                </Select>
+                  options={choices.map((a) => ({ value: a.id, label: a.name, hint: a.code }))}
+                  placeholder="No paid application"
+                  searchPlaceholder="Search applications…"
+                  clearable
+                />
               </FormField>
               {app && (
                 <FormField label="Billing period" htmlFor="billing-period">
-                  <Select
+                  <Combobox
                     id="billing-period"
                     value={draft.billingPeriod}
-                    onChange={(e) => set('billingPeriod', e.target.value as BillingPeriod)}
-                  >
-                    {(['monthly', 'annual'] as const).map((p) => (
-                      <option key={p} value={p} disabled={priceFor(app, p) <= 0}>
-                        {BILLING_PERIOD_LABEL[p]} · {fmtIdr(priceFor(app, p), app.currency)}
-                      </option>
-                    ))}
-                  </Select>
+                    onChange={(v) => set('billingPeriod', v as BillingPeriod)}
+                    options={BILLING_PERIODS.map((p) => ({
+                      value: p,
+                      label: BILLING_PERIOD_LABEL[p],
+                      hint: fmtIdr(priceFor(app, p), app.currency),
+                      disabled: priceFor(app, p) <= 0,
+                    }))}
+                    searchPlaceholder="Search…"
+                  />
                 </FormField>
               )}
               <p>

@@ -9,6 +9,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  Combobox,
   ConfirmDelete,
   DropdownMenu,
   DropdownMenuContent,
@@ -17,7 +18,6 @@ import {
   EmptyState,
   IconTile,
   PageHeader,
-  Select,
   StatCard,
   Toggle,
 } from '@scp/ui'
@@ -38,10 +38,22 @@ import { useCurrentUser } from '../../auth/auth'
 import { AppTypeIcon, Mono } from '../../components/badges'
 import { WebhookDialog, emptyWebhook } from '../../components/master/WebhookDialog'
 import { actorOf, useScoped } from '../../state/app-state'
+import { DAY, useUrlFilters } from '../../lib/filters'
+import { allOption, labelOptions } from '../../lib/options'
 import { DeliveryTable } from './DeliveryTable'
 
-const DAY = 86_400_000
 const STATUSES = Object.keys(DELIVERY_STATUS_LABEL) as DeliveryStatus[]
+const FILTER_KEYS = ['status', 'endpoint', 'event', 'http'] as const
+const HTTP_OPTIONS = [
+  allOption('All HTTP statuses'),
+  { value: '2xx', label: '2xx delivered' },
+  { value: '4xx', label: '4xx rejected' },
+  { value: '5xx', label: '5xx failed' },
+]
+
+function httpClass(status: number | null): string {
+  return status === null ? '' : `${Math.floor(status / 100)}xx`
+}
 
 export function WebhooksPage() {
   const { state, webhooks, applicationsById, dispatch } = useScoped()
@@ -51,8 +63,11 @@ export function WebhooksPage() {
 
   const [editing, setEditing] = React.useState<WebhookEndpoint | null>(null)
   const [deleting, setDeleting] = React.useState<WebhookEndpoint | null>(null)
-  const [statusFilter, setStatusFilter] = React.useState<'all' | DeliveryStatus>('all')
-  const [endpointFilter, setEndpointFilter] = React.useState('all')
+  const filters = useUrlFilters(FILTER_KEYS)
+  const statusFilter = filters.get('status')
+  const endpointFilter = filters.get('endpoint')
+  const eventFilter = filters.get('event')
+  const httpFilter = filters.get('http')
 
   const stats = React.useMemo(() => {
     const recent = state.deliveries.filter((d) => now - new Date(d.at).getTime() <= DAY)
@@ -65,14 +80,24 @@ export function WebhooksPage() {
     return { recent: recent.length, failing, rate }
   }, [state.deliveries, now])
 
+  const eventOptions = React.useMemo(
+    () =>
+      Array.from(new Set(state.deliveries.map((d) => d.event)))
+        .sort()
+        .map((e) => ({ value: e, label: e })),
+    [state.deliveries],
+  )
+
   const deliveries = React.useMemo(
     () =>
       state.deliveries.filter(
         (d) =>
           (statusFilter === 'all' || d.status === statusFilter) &&
-          (endpointFilter === 'all' || d.endpointId === endpointFilter),
+          (endpointFilter === 'all' || d.endpointId === endpointFilter) &&
+          (eventFilter === 'all' || d.event === eventFilter) &&
+          (httpFilter === 'all' || httpClass(d.httpStatus) === httpFilter),
       ),
-    [state.deliveries, statusFilter, endpointFilter],
+    [state.deliveries, statusFilter, endpointFilter, eventFilter, httpFilter],
   )
 
   return (
@@ -222,52 +247,63 @@ export function WebhooksPage() {
             <CardTitle>Delivery history</CardTitle>
             <CardDescription>Click a row for the payload and response.</CardDescription>
           </div>
-          <div className="flex flex-wrap gap-2">
-            <Select
+          <div className="flex flex-wrap items-center gap-2">
+            <Combobox
               tone="ghost"
               value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value as 'all' | DeliveryStatus)}
-              aria-label="Filter by status"
-            >
-              <option value="all">All statuses</option>
-              {STATUSES.map((s) => (
-                <option key={s} value={s}>
-                  {DELIVERY_STATUS_LABEL[s]}
-                </option>
-              ))}
-            </Select>
-            <Select
+              onChange={(v) => filters.set('status', v)}
+              options={[
+                allOption('All statuses'),
+                ...labelOptions(STATUSES, DELIVERY_STATUS_LABEL),
+              ]}
+            />
+            <Combobox
               tone="ghost"
               value={endpointFilter}
-              onChange={(e) => setEndpointFilter(e.target.value)}
-              aria-label="Filter by endpoint"
-            >
-              <option value="all">All endpoints</option>
-              {webhooks.map((w) => (
-                <option key={w.id} value={w.id}>
-                  {w.url}
-                </option>
-              ))}
-            </Select>
+              onChange={(v) => filters.set('endpoint', v)}
+              options={[
+                allOption('All endpoints'),
+                ...webhooks.map((w) => ({
+                  value: w.id,
+                  label: w.url,
+                  hint: applicationsById.get(w.applicationId)?.name,
+                })),
+              ]}
+              searchPlaceholder="Search endpoints"
+            />
+            <Combobox
+              tone="ghost"
+              value={eventFilter}
+              onChange={(v) => filters.set('event', v)}
+              options={[allOption('All events'), ...eventOptions]}
+              searchPlaceholder="Search events"
+            />
+            <Combobox
+              tone="ghost"
+              value={httpFilter}
+              onChange={(v) => filters.set('http', v)}
+              options={HTTP_OPTIONS}
+            />
+            {filters.active ? (
+              <Button variant="ghost" size="sm" onClick={filters.clear}>
+                Clear filters
+              </Button>
+            ) : null}
           </div>
         </CardHeader>
         <DeliveryTable
           rows={deliveries}
           empty={{
-            title: 'No deliveries match',
-            description: 'Change the filters or send a test delivery from an endpoint.',
-            action: (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  setStatusFilter('all')
-                  setEndpointFilter('all')
-                }}
-              >
+            title: state.deliveries.length === 0 ? 'No deliveries yet' : 'No matches',
+            description:
+              state.deliveries.length === 0
+                ? 'Send a test delivery from an endpoint to see it here.'
+                : 'Change the filters or send a test delivery from an endpoint.',
+            action: filters.active ? (
+              <Button variant="outline" size="sm" onClick={filters.clear}>
                 Clear filters
               </Button>
-            ),
+            ) : undefined,
           }}
         />
       </Card>

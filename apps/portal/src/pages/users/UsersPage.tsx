@@ -1,6 +1,6 @@
-import { avatarColor, initials, newId, invitationFields } from '@scp/fixtures'
+import { avatarColor, fmtNumber, initials, newId, invitationFields } from '@scp/fixtures'
 import type { TenantMember, WorkspaceRole } from '@scp/types'
-import { WORKSPACE_ROLE_LABEL } from '@scp/types'
+import { USER_STATUS_LABEL, WORKSPACE_ROLE_LABEL } from '@scp/types'
 import {
   InvitationDialog,
   InvitationLink,
@@ -9,6 +9,7 @@ import {
   Button,
   Card,
   Checkbox,
+  Combobox,
   ConfirmDelete,
   DataTable,
   Dialog,
@@ -18,18 +19,45 @@ import {
   DialogHeader,
   DialogTitle,
   EmptyState,
+  Input,
   OptionCard,
   PageHeader,
-  Select,
+  StatCard,
   type Column,
 } from '@scp/ui'
-import { KeyRound, Pencil, ShieldAlert, Trash2, UserMinus, UserPlus, X } from 'lucide-react'
+import {
+  KeyRound,
+  Mail,
+  Pencil,
+  Search,
+  ShieldAlert,
+  ShieldCheck,
+  Trash2,
+  UserMinus,
+  UserPlus,
+  Users,
+  UserX,
+  X,
+} from 'lucide-react'
 import * as React from 'react'
 import { Link, useSearchParams } from 'react-router'
 import { useAuth } from '../../auth/auth'
 import { pricingLine } from '../../components/AppCard'
 import { UserBadge } from '../../components/badges'
-import { useScoped, type MemberWithUser } from '../../state/app-state'
+import {
+  ClearFiltersButton,
+  FilterCombobox,
+  applicationOptions,
+  labelOptions,
+  noMatches,
+  useFilterParams,
+} from '../../components/filters'
+import { useScoped, type MemberWithUser, type PortalApplication } from '../../state/app-state'
+
+/** Applications a member can be given: free ones, or ones the organization subscribes to. */
+function assignableApplications(applications: PortalApplication[]): PortalApplication[] {
+  return applications.filter((a) => a.app.accessPolicy === 'free' || a.subscription !== null)
+}
 
 const ROLES: { value: WorkspaceRole; description: string }[] = [
   { value: 'member', description: 'Opens the applications listed below.' },
@@ -50,9 +78,7 @@ function InviteDialog({
       onOpenChange={onOpenChange}
       people={state.users}
       memberUserIds={members.map((m) => m.userId)}
-      applications={applications
-        .filter((a) => a.app.accessPolicy === 'free' || a.subscription)
-        .map((a) => a.app)}
+      applications={assignableApplications(applications).map((a) => a.app)}
       onInvite={(draft) => {
         const existing = state.users.find((u) => u.email.toLowerCase() === draft.email)
         const userId = existing?.id ?? newId('usr')
@@ -99,9 +125,7 @@ function MemberAccessDialog({
   const { applications, dispatch } = useScoped()
   const [draft, setDraft] = React.useState<TenantMember | null>(member)
   React.useEffect(() => setDraft(member), [member])
-  const assignable = applications.filter(
-    (a) => a.app.accessPolicy === 'free' || a.subscription !== null,
-  )
+  const assignable = assignableApplications(applications)
 
   function toggle(id: string, on: boolean) {
     setDraft((d) =>
@@ -196,6 +220,7 @@ function MemberAccessDialog({
 export function UsersPage() {
   const [params] = useSearchParams()
   const requestedApp = params.get('app')
+  const { values, set, clear, active } = useFilterParams(['q', 'role', 'status', 'access'])
   const { member: me, user } = useAuth()
   const { members, applications, applicationsById, dispatch } = useScoped()
   const [inviteOpen, setInviteOpen] = React.useState(false)
@@ -209,6 +234,18 @@ export function UsersPage() {
       (current) => new Set([...current].filter((id) => members.some((member) => member.id === id))),
     )
   }, [members])
+
+  const assignable = assignableApplications(applications)
+  const q = values.q.trim().toLowerCase()
+  const visible = members.filter(
+    (m) =>
+      (!q || m.user.name.toLowerCase().includes(q) || m.user.email.toLowerCase().includes(q)) &&
+      (!values.role || m.workspaceRole === values.role) &&
+      (!values.status || m.status === values.status) &&
+      (!values.access || m.applicationIds.includes(values.access)),
+  )
+  const countWhere = (test: (m: MemberWithUser) => boolean) =>
+    fmtNumber(members.filter(test).length)
 
   function updateSelectedAccess(grant: boolean) {
     if (!bulkApplicationId) return
@@ -317,25 +354,81 @@ export function UsersPage() {
           </Button>
         }
       />
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
+        <StatCard
+          label="Members"
+          value={fmtNumber(members.length)}
+          hint="People in your organization"
+          icon={<Users />}
+          tone="ink"
+        />
+        <StatCard
+          label="Workspace admins"
+          value={countWhere((m) => m.workspaceRole === 'workspace_admin')}
+          hint="Manage users, subscriptions and billing"
+          icon={<ShieldCheck />}
+          tone="info"
+        />
+        <StatCard
+          label="Invited"
+          value={countWhere((m) => m.status === 'invited')}
+          hint="Invitation not yet accepted"
+          icon={<Mail />}
+          tone="warning"
+        />
+        <StatCard
+          label="No application access"
+          value={countWhere((m) => m.applicationIds.length === 0)}
+          hint="Members with nothing to open"
+          icon={<UserX />}
+        />
+      </div>
+      <div className="flex flex-wrap items-center gap-2">
+        <Input
+          leftIcon={<Search />}
+          value={values.q}
+          onChange={(e) => set('q', e.target.value)}
+          placeholder="Search name or email"
+          aria-label="Search users"
+          className="[&_input]:shadow-card w-full sm:w-64 [&_input]:rounded-full [&_input]:border-0"
+        />
+        <FilterCombobox
+          value={values.role}
+          onChange={(v) => set('role', v)}
+          options={labelOptions(WORKSPACE_ROLE_LABEL)}
+          allLabel="All roles"
+          searchPlaceholder="Search roles"
+        />
+        <FilterCombobox
+          value={values.status}
+          onChange={(v) => set('status', v)}
+          options={labelOptions(USER_STATUS_LABEL)}
+          allLabel="All statuses"
+          searchPlaceholder="Search statuses"
+        />
+        <FilterCombobox
+          value={values.access}
+          onChange={(v) => set('access', v)}
+          options={applicationOptions(assignable)}
+          allLabel="All applications"
+          searchPlaceholder="Search applications"
+        />
+        {active ? <ClearFiltersButton onClick={clear} /> : null}
+      </div>
       {selected.size > 0 ? (
         <Card className="flex flex-wrap items-center gap-2 p-3">
           <p role="status" aria-live="polite" className="mr-auto text-sm font-semibold">
             {selected.size} users selected
           </p>
-          <Select
+          <Combobox
+            tone="nested"
             value={bulkApplicationId}
-            onChange={(event) => setBulkApplicationId(event.target.value)}
+            onChange={setBulkApplicationId}
+            options={applicationOptions(assignable)}
+            placeholder="Choose application"
+            searchPlaceholder="Search applications"
             className="w-full sm:w-56"
-          >
-            <option value="">Choose application</option>
-            {applications
-              .filter((item) => item.app.accessPolicy === 'free' || item.subscription)
-              .map((item) => (
-                <option key={item.app.id} value={item.app.id}>
-                  {item.app.name}
-                </option>
-              ))}
-          </Select>
+          />
           <Button
             size="sm"
             disabled={!bulkApplicationId}
@@ -363,7 +456,7 @@ export function UsersPage() {
       ) : null}
       <Card>
         <DataTable
-          rows={members}
+          rows={visible}
           columns={columns}
           rowKey={(m) => m.id}
           selectedKeys={selected}
@@ -392,11 +485,15 @@ export function UsersPage() {
               </Button>
             </>
           )}
-          empty={{
-            title: 'No users yet',
-            description: 'Invite the first person to your organization.',
-            action: <Button onClick={() => setInviteOpen(true)}>Invite user</Button>,
-          }}
+          empty={
+            active
+              ? noMatches(clear)
+              : {
+                  title: 'No users yet',
+                  description: 'Invite the first person to your organization.',
+                  action: <Button onClick={() => setInviteOpen(true)}>Invite user</Button>,
+                }
+          }
         />
       </Card>
       <InviteDialog open={inviteOpen} onOpenChange={setInviteOpen} />

@@ -17,6 +17,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  Combobox,
   DataTable,
   Dialog,
   DialogContent,
@@ -28,14 +29,17 @@ import {
   Input,
   KeyValue,
   PageHeader,
-  Select,
   StatCard,
+  cn,
   type Column,
 } from '@scp/ui'
 import { Ban, MonitorSmartphone, Search, ShieldOff, TimerOff } from 'lucide-react'
 import * as React from 'react'
 import { useCurrentUser } from '../../auth/auth'
+import { ClearFiltersButton } from '../../components/ClearFiltersButton'
 import { Mono } from '../../components/badges'
+import { PILL_COMBOBOX, PILL_INPUT, useFilterParams } from '../../lib/filters'
+import { tenantOptions, userOptions, withAll } from '../../lib/options'
 import { actorOf, useScoped } from '../../state/app-state'
 
 const HOUR = 3_600_000
@@ -47,16 +51,31 @@ const REVOCATION_EVENTS = [
 ]
 
 type SessionState = 'active' | 'expired' | 'revoked'
+const SESSION_STATE_LABEL: Record<SessionState, string> = {
+  active: 'Active',
+  revoked: 'Revoked',
+  expired: 'Expired',
+}
 function sessionState(s: Session, now: number): SessionState {
   if (s.revoked) return 'revoked'
   return new Date(s.expiresAt).getTime() < now ? 'expired' : 'active'
 }
 
+const STATUS_FILTERS = withAll(
+  'All statuses',
+  (['active', 'revoked', 'expired'] as const).map((value) => ({
+    value,
+    label: SESSION_STATE_LABEL[value],
+  })),
+)
+const FILTER_KEYS = ['q', 'org', 'status'] as const
+
 export function SessionsPage() {
-  const { state, users, usersById, tenantsById, dispatch } = useScoped()
+  const { state, users, tenants, usersById, tenantsById, dispatch } = useScoped()
   const user = useCurrentUser()
   const now = Date.now()
-  const [query, setQuery] = React.useState('')
+  const filters = useFilterParams(FILTER_KEYS)
+  const { q: query, org, status } = filters.values
   const [revoking, setRevoking] = React.useState<Session | null>(null)
   const [bulkOpen, setBulkOpen] = React.useState(false)
   const [bulkUserId, setBulkUserId] = React.useState('')
@@ -77,16 +96,15 @@ export function SessionsPage() {
   }, [state.sessions, now])
 
   const rows = React.useMemo(() => {
-    const q = query.trim().toLowerCase()
-    if (!q) return state.sessions
+    const needle = query.trim().toLowerCase()
     return state.sessions.filter((s) => {
+      if (org && s.tenantId !== org) return false
+      if (status && sessionState(s, now) !== status) return false
+      if (!needle) return true
       const u = usersById.get(s.userId)
-      const t = tenantsById.get(s.tenantId)
-      return [u?.name, u?.email, t?.name, s.ip, s.userAgent].some((v) =>
-        v?.toLowerCase().includes(q),
-      )
+      return [u?.name, u?.email, s.ip, s.userAgent].some((v) => v?.toLowerCase().includes(needle))
     })
-  }, [state.sessions, usersById, tenantsById, query])
+  }, [state.sessions, usersById, query, org, status, now])
 
   const usersWithActive = React.useMemo(() => {
     const ids = new Set(
@@ -167,7 +185,7 @@ export function SessionsPage() {
         const st = sessionState(s, now)
         return (
           <Badge variant={st === 'active' ? 'success' : st === 'revoked' ? 'muted' : 'default'}>
-            {st === 'active' ? 'Active' : st === 'revoked' ? 'Revoked' : 'Expired'}
+            {SESSION_STATE_LABEL[st]}
           </Badge>
         )
       },
@@ -181,23 +199,14 @@ export function SessionsPage() {
         title="Sessions"
         description="Platform sessions issued by the identity service. Revocation propagates to every application on the next token exchange."
         actions={
-          <>
-            <Input
-              leftIcon={<Search />}
-              placeholder="Search user, org, IP"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              className="[&_input]:bg-card [&_input]:shadow-card w-full sm:w-72 [&_input]:h-11 [&_input]:rounded-full [&_input]:border-0"
-            />
-            <Button
-              variant="secondary"
-              onClick={() => setBulkOpen(true)}
-              disabled={usersWithActive.length === 0}
-            >
-              <ShieldOff />
-              Revoke all for user
-            </Button>
-          </>
+          <Button
+            variant="secondary"
+            onClick={() => setBulkOpen(true)}
+            disabled={usersWithActive.length === 0}
+          >
+            <ShieldOff />
+            Revoke all for user
+          </Button>
         }
       />
 
@@ -217,22 +226,51 @@ export function SessionsPage() {
         />
       </div>
 
+      <div className="flex flex-wrap items-center gap-2">
+        <Input
+          leftIcon={<Search />}
+          placeholder="Search user, email or IP"
+          value={query}
+          onChange={(e) => filters.set('q', e.target.value)}
+          className={cn('w-full sm:w-72', PILL_INPUT)}
+        />
+        <Combobox
+          value={org || 'all'}
+          onChange={(v) => filters.set('org', v)}
+          options={withAll('All organizations', tenantOptions(tenants))}
+          searchPlaceholder="Search organizations…"
+          className={cn('w-full sm:w-56', PILL_COMBOBOX)}
+        />
+        <Combobox
+          value={status || 'all'}
+          onChange={(v) => filters.set('status', v)}
+          options={STATUS_FILTERS}
+          searchPlaceholder="Search statuses…"
+          className={cn('w-full sm:w-40', PILL_COMBOBOX)}
+        />
+        {filters.active ? <ClearFiltersButton onClick={filters.clear} /> : null}
+      </div>
+
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_340px]">
         <Card className="min-w-0">
           <DataTable
             rows={rows}
             columns={columns}
             rowKey={(s) => s.id}
-            empty={{
-              icon: <MonitorSmartphone />,
-              title: 'No sessions match',
-              description: 'Sessions appear when users sign in to the SaaS Portal.',
-              action: (
-                <Button variant="outline" size="sm" onClick={() => setQuery('')}>
-                  Clear search
-                </Button>
-              ),
-            }}
+            empty={
+              filters.active
+                ? {
+                    icon: <MonitorSmartphone />,
+                    title: 'No matches',
+                    description: 'Try another user, IP, organization or status.',
+                    action: <ClearFiltersButton onClick={filters.clear} />,
+                  }
+                : {
+                    icon: <MonitorSmartphone />,
+                    title: 'No sessions yet',
+                    description: 'Sessions appear when users sign in to the SaaS Portal.',
+                  }
+            }
             rowActions={(s) => (
               <Button
                 variant="outline"
@@ -316,14 +354,14 @@ export function SessionsPage() {
               Only users with at least one active session are listed.
             </DialogDescription>
           </DialogHeader>
-          <FormField label="User">
-            <Select value={bulkTarget} onChange={(e) => setBulkUserId(e.target.value)}>
-              {usersWithActive.map((u) => (
-                <option key={u.id} value={u.id}>
-                  {u.name} · {u.email}
-                </option>
-              ))}
-            </Select>
+          <FormField label="User" htmlFor="bulk-user">
+            <Combobox
+              id="bulk-user"
+              value={bulkTarget}
+              onChange={setBulkUserId}
+              options={userOptions(usersWithActive)}
+              searchPlaceholder="Search users…"
+            />
           </FormField>
           <DialogFooter>
             <Button variant="outline" onClick={() => setBulkOpen(false)}>

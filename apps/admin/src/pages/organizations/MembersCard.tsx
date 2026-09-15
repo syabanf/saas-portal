@@ -1,5 +1,5 @@
 import { avatarColor, initials, invitationFields } from '@scp/fixtures'
-import type { Tenant, TenantMember } from '@scp/types'
+import type { Tenant, TenantMember, WorkspaceRole } from '@scp/types'
 import { WORKSPACE_ROLE_LABEL } from '@scp/types'
 import {
   InvitationLink,
@@ -10,22 +10,52 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
+  Combobox,
   ConfirmDelete,
   EmptyState,
+  Input,
 } from '@scp/ui'
-import { Pencil, Trash2, UserPlus, Users } from 'lucide-react'
+import { Pencil, Search, Trash2, UserPlus, Users } from 'lucide-react'
 import * as React from 'react'
+import { ClearFiltersButton } from '../../components/ClearFiltersButton'
 import { UserBadge } from '../../components/badges'
 import { MemberDialog } from '../../components/master/MemberDialog'
+import { labelOptions, withAll } from '../../lib/options'
 import { useScoped } from '../../state/app-state'
 import { InviteUserDialog } from './InviteUserDialog'
+
+const ROLE_FILTERS = withAll(
+  'All roles',
+  labelOptions(['workspace_admin', 'member'] satisfies WorkspaceRole[], WORKSPACE_ROLE_LABEL),
+)
+const FILTERABLE_FROM = 6
 
 export function MembersCard({ tenant }: { tenant: Tenant }) {
   const { membersByTenant, usersById, applicationsById, dispatch } = useScoped()
   const [editing, setEditing] = React.useState<TenantMember | null>(null)
   const [removing, setRemoving] = React.useState<TenantMember | null>(null)
   const [inviting, setInviting] = React.useState(false)
+  const [query, setQuery] = React.useState('')
+  const [role, setRole] = React.useState('')
   const members = membersByTenant.get(tenant.id) ?? []
+  const filterable = members.length >= FILTERABLE_FROM
+  const filtersActive = filterable && (query.trim() !== '' || role !== '')
+
+  const rows = React.useMemo(() => {
+    if (!filtersActive) return members
+    const needle = query.trim().toLowerCase()
+    return members.filter((m) => {
+      if (role && m.workspaceRole !== role) return false
+      if (!needle) return true
+      const person = usersById.get(m.userId)
+      return [person?.name, person?.email].some((v) => v?.toLowerCase().includes(needle))
+    })
+  }, [members, usersById, filtersActive, query, role])
+
+  function clearFilters() {
+    setQuery('')
+    setRole('')
+  }
 
   return (
     <Card>
@@ -38,6 +68,26 @@ export function MembersCard({ tenant }: { tenant: Tenant }) {
         </Button>
       </CardHeader>
       <CardContent className="space-y-2">
+        {filterable ? (
+          <div className="flex flex-wrap items-center gap-2 pb-1">
+            <Input
+              tone="nested"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search members…"
+              leftIcon={<Search />}
+              className="w-full sm:w-60 [&_input]:h-10 [&_input]:rounded-full"
+            />
+            <Combobox
+              tone="ghost"
+              value={role || 'all'}
+              onChange={(v) => setRole(v === 'all' ? '' : v)}
+              options={ROLE_FILTERS}
+              searchPlaceholder="Search roles…"
+            />
+            {filtersActive ? <ClearFiltersButton onClick={clearFilters} /> : null}
+          </div>
+        ) : null}
         {members.length === 0 ? (
           <EmptyState
             icon={<Users />}
@@ -49,8 +99,15 @@ export function MembersCard({ tenant }: { tenant: Tenant }) {
               </Button>
             }
           />
+        ) : rows.length === 0 ? (
+          <EmptyState
+            icon={<Users />}
+            title="No matches"
+            description="Try another name, email or role."
+            action={<ClearFiltersButton onClick={clearFilters} />}
+          />
         ) : (
-          members.map((m) => {
+          rows.map((m) => {
             const person = usersById.get(m.userId)
             const name = person?.name ?? m.userId
             return (

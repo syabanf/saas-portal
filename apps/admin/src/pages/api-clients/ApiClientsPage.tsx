@@ -17,6 +17,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  Combobox,
   ConfirmDelete,
   DataTable,
   DropdownMenu,
@@ -53,9 +54,15 @@ import { useCurrentUser } from '../../auth/auth'
 import { EnvBadge, Mono } from '../../components/badges'
 import { ApiClientDialog, type ApiClientDialogMode } from '../../components/master/ApiClientDialog'
 import { actorOf, useScoped } from '../../state/app-state'
+import { DAY, PILL_COMBOBOX, PILL_INPUT, useUrlFilters } from '../../lib/filters'
+import { allOption, applicationOptions } from '../../lib/options'
 
-type EnvFilter = 'all' | Environment
-const DAY = 86_400_000
+const FILTER_KEYS = ['env', 'app', 'status', 'q'] as const
+const STATUS_OPTIONS = [
+  allOption('All statuses'),
+  { value: 'active', label: 'Active' },
+  { value: 'revoked', label: 'Revoked' },
+]
 
 const ENV_NOTE: Record<Environment, string> = {
   development: 'Local builds and development branches. Secrets may be shared inside the team.',
@@ -83,12 +90,15 @@ const USAGE: { icon: React.ReactNode; title: string; subtitle: string }[] = [
 ]
 
 export function ApiClientsPage() {
-  const { apiClients, applicationsById, clientsByApplication, dispatch } = useScoped()
+  const { apiClients, applications, applicationsById, clientsByApplication, dispatch } = useScoped()
   const user = useCurrentUser()
   const now = Date.now()
 
-  const [env, setEnv] = React.useState<EnvFilter>('all')
-  const [query, setQuery] = React.useState('')
+  const filters = useUrlFilters(FILTER_KEYS)
+  const env = filters.get('env')
+  const applicationId = filters.get('app')
+  const status = filters.get('status')
+  const query = filters.get('q', '')
   const [dialog, setDialog] = React.useState<ApiClientDialogMode | null>(null)
   const [revoking, setRevoking] = React.useState<ApiClient | null>(null)
   const [deleting, setDeleting] = React.useState<ApiClient | null>(null)
@@ -109,6 +119,8 @@ export function ApiClientsPage() {
     const q = query.trim().toLowerCase()
     return apiClients.filter((c) => {
       if (env !== 'all' && c.environment !== env) return false
+      if (applicationId !== 'all' && c.applicationId !== applicationId) return false
+      if (status !== 'all' && c.status !== status) return false
       if (!q) return true
       const appName = applicationsById.get(c.applicationId)?.name ?? ''
       return (
@@ -117,7 +129,7 @@ export function ApiClientsPage() {
         appName.toLowerCase().includes(q)
       )
     })
-  }, [apiClients, applicationsById, env, query])
+  }, [apiClients, applicationsById, env, applicationId, status, query])
 
   const columns: Column<ApiClient>[] = [
     {
@@ -210,28 +222,44 @@ export function ApiClientsPage() {
         />
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <Tabs
-          value={env}
-          onValueChange={(v) => setEnv(v as EnvFilter)}
-          className="max-w-full min-w-0"
-        >
-          <TabsList>
-            <TabsTrigger value="all">All</TabsTrigger>
-            {ENVIRONMENTS.map((e) => (
-              <TabsTrigger key={e} value={e}>
-                {ENVIRONMENT_LABEL[e]}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </Tabs>
+      <Tabs value={env} onValueChange={(v) => filters.set('env', v)} className="max-w-full min-w-0">
+        <TabsList>
+          <TabsTrigger value="all">All</TabsTrigger>
+          {ENVIRONMENTS.map((e) => (
+            <TabsTrigger key={e} value={e}>
+              {ENVIRONMENT_LABEL[e]}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
+
+      <div className="flex flex-wrap items-center gap-2">
         <Input
           leftIcon={<Search />}
-          placeholder="Search clients"
+          placeholder="Search name, client id or application"
+          aria-label="Search clients"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          className="[&_input]:bg-card [&_input]:shadow-card w-full sm:w-72 [&_input]:h-11 [&_input]:rounded-full [&_input]:border-0"
+          onChange={(e) => filters.set('q', e.target.value)}
+          className={`w-full sm:w-64 ${PILL_INPUT}`}
         />
+        <Combobox
+          value={applicationId}
+          onChange={(v) => filters.set('app', v)}
+          options={[allOption('All applications'), ...applicationOptions(applications)]}
+          searchPlaceholder="Search applications"
+          className={`w-full sm:w-52 ${PILL_COMBOBOX}`}
+        />
+        <Combobox
+          value={status}
+          onChange={(v) => filters.set('status', v)}
+          options={STATUS_OPTIONS}
+          className={`w-full sm:w-40 ${PILL_COMBOBOX}`}
+        />
+        {filters.active ? (
+          <Button variant="ghost" size="sm" onClick={filters.clear}>
+            Clear filters
+          </Button>
+        ) : null}
       </div>
 
       <Card>
@@ -241,14 +269,21 @@ export function ApiClientsPage() {
           rowKey={(c) => c.id}
           empty={{
             icon: <KeySquare />,
-            title: 'No clients match',
+            title: apiClients.length === 0 ? 'No clients yet' : 'No matches',
             description:
-              'Create a client for the application and environment you want to integrate.',
-            action: (
-              <Button size="sm" onClick={() => setDialog({ kind: 'create' })}>
-                New client
-              </Button>
-            ),
+              apiClients.length === 0
+                ? 'Create a client for the application and environment you want to integrate.'
+                : 'Try another environment, application, status or search.',
+            action:
+              apiClients.length === 0 ? (
+                <Button size="sm" onClick={() => setDialog({ kind: 'create' })}>
+                  New client
+                </Button>
+              ) : (
+                <Button variant="outline" size="sm" onClick={filters.clear}>
+                  Clear filters
+                </Button>
+              ),
           }}
           rowActions={(c) => (
             <DropdownMenu>

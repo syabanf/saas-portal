@@ -29,11 +29,11 @@ import {
   Chip,
   ChipRow,
   CodeBlock,
+  Combobox,
   FormField,
   Input,
   KeyValue,
   OptionCard,
-  Select,
   Stepper,
   Textarea,
   Toggle,
@@ -558,17 +558,17 @@ export function ProductWizard({ application }: ProductWizardProps) {
         body: (
           <div className="space-y-5">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <FormField label="Token lifetime">
-                <Select
+              <FormField label="Token lifetime" htmlFor="token-lifetime">
+                <Combobox
+                  id="token-lifetime"
                   value={String(draft.tokenLifetimeMinutes)}
-                  onChange={(e) => set('tokenLifetimeMinutes', Number(e.target.value))}
-                >
-                  {TOKEN_LIFETIMES.map((m) => (
-                    <option key={m} value={m}>
-                      {m} minutes
-                    </option>
-                  ))}
-                </Select>
+                  onChange={(v) => set('tokenLifetimeMinutes', Number(v))}
+                  options={TOKEN_LIFETIMES.map((m) => ({
+                    value: String(m),
+                    label: `${m} minutes`,
+                  }))}
+                  searchPlaceholder="Search…"
+                />
               </FormField>
               <FormField label="Audience" hint="Defaults to the product code.">
                 <Input value={audience} readOnly className="[&_input]:font-mono" />
@@ -632,31 +632,31 @@ export function ProductWizard({ application }: ProductWizardProps) {
                       className="min-h-20 font-mono text-xs"
                     />
                   </FormField>
-                  <FormField label="Key rotation">
-                    <Select
+                  <FormField label="Key rotation" htmlFor="key-rotation">
+                    <Combobox
+                      id="key-rotation"
                       tone="nested"
                       value={String(draft.keyRotationDays)}
-                      onChange={(e) => set('keyRotationDays', Number(e.target.value))}
-                    >
-                      {[30, 90, 180].map((d) => (
-                        <option key={d} value={d}>
-                          Every {d} days
-                        </option>
-                      ))}
-                    </Select>
+                      onChange={(v) => set('keyRotationDays', Number(v))}
+                      options={[30, 90, 180].map((d) => ({
+                        value: String(d),
+                        label: `Every ${d} days`,
+                      }))}
+                      searchPlaceholder="Search…"
+                    />
                   </FormField>
-                  <FormField label="Clock tolerance">
-                    <Select
+                  <FormField label="Clock tolerance" htmlFor="clock-tolerance">
+                    <Combobox
+                      id="clock-tolerance"
                       tone="nested"
                       value={String(draft.clockToleranceSec)}
-                      onChange={(e) => set('clockToleranceSec', Number(e.target.value))}
-                    >
-                      {[0, 30, 60].map((s) => (
-                        <option key={s} value={s}>
-                          {s} seconds
-                        </option>
-                      ))}
-                    </Select>
+                      onChange={(v) => set('clockToleranceSec', Number(v))}
+                      options={[0, 30, 60].map((sec) => ({
+                        value: String(sec),
+                        label: `${sec} seconds`,
+                      }))}
+                      searchPlaceholder="Search…"
+                    />
                   </FormField>
                 </div>
               ) : null}

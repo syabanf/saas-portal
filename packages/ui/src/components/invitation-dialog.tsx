@@ -8,7 +8,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from './dialog'
-import { FormField, Input, Select, Checkbox } from './input'
+import { Combobox } from './combobox'
+import { FormField, Input, Checkbox } from './input'
 
 export interface InvitationDraft {
   name: string
@@ -97,19 +98,17 @@ export function InvitationDialog({
               </FormField>
             )}
             <FormField label="Workspace role" htmlFor="invitation-role">
-              <Select
+              <Combobox
                 id="invitation-role"
                 value={draft.workspaceRole}
-                onChange={(e) =>
-                  setDraft({
-                    ...draft,
-                    workspaceRole: e.target.value as InvitationDraft['workspaceRole'],
-                  })
+                onChange={(value) =>
+                  setDraft({ ...draft, workspaceRole: value as InvitationDraft['workspaceRole'] })
                 }
-              >
-                <option value="member">Member</option>
-                <option value="workspace_admin">Workspace admin</option>
-              </Select>
+                options={[
+                  { value: 'member', label: 'Member' },
+                  { value: 'workspace_admin', label: 'Workspace admin' },
+                ]}
+              />
             </FormField>
             <fieldset className="space-y-2">
               <legend className="mb-2 font-medium">Application access</legend>

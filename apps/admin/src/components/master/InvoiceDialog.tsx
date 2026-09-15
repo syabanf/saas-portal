@@ -8,10 +8,9 @@ import {
   newId,
   nextInvoiceNumber,
 } from '@scp/fixtures'
-import type { Subscription } from '@scp/types'
-import { BILLING_PERIOD_LABEL, SUBSCRIPTION_STATUS_LABEL } from '@scp/types'
 import {
   Button,
+  Combobox,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -20,9 +19,9 @@ import {
   DialogTitle,
   FormField,
   Input,
-  Select,
 } from '@scp/ui'
 import * as React from 'react'
+import { subscriptionOptions, tenantOptions } from '../../lib/options'
 import { useScoped } from '../../state/app-state'
 
 interface Draft {
@@ -80,10 +79,6 @@ export function InvoiceDialog({ open, onOpenChange }: InvoiceDialogProps) {
         })
       : null
 
-  function describe(sub: Subscription) {
-    return `${applicationsById.get(sub.applicationId)?.name ?? sub.applicationId} · ${BILLING_PERIOD_LABEL[sub.billingPeriod]}`
-  }
-
   function set<K extends keyof Draft>(key: K, value: Draft[K]) {
     setDraft((d) => ({ ...d, [key]: value }))
   }
@@ -128,25 +123,15 @@ export function InvoiceDialog({ open, onOpenChange }: InvoiceDialogProps) {
               />
             </FormField>
             <FormField label="Organization">
-              <Select
+              <Combobox
                 value={draft.tenantId}
-                onChange={(e) =>
-                  setDraft((d) => ({
-                    ...d,
-                    tenantId: e.target.value,
-                    subscriptionId: '',
-                    periodStart: '',
-                  }))
+                onChange={(tenantId) =>
+                  setDraft((d) => ({ ...d, tenantId, subscriptionId: '', periodStart: '' }))
                 }
-                required
-              >
-                <option value="">Select organization</option>
-                {tenants.map((t) => (
-                  <option key={t.id} value={t.id}>
-                    {t.name}
-                  </option>
-                ))}
-              </Select>
+                options={tenantOptions(tenants)}
+                placeholder="Select organization"
+                searchPlaceholder="Search organizations"
+              />
             </FormField>
             <FormField
               label="Subscription"
@@ -156,19 +141,14 @@ export function InvoiceDialog({ open, onOpenChange }: InvoiceDialogProps) {
                   : undefined
               }
             >
-              <Select
+              <Combobox
                 value={draft.subscriptionId}
-                onChange={(e) => selectSubscription(e.target.value)}
+                onChange={selectSubscription}
+                options={subscriptionOptions(tenantSubs, applicationsById)}
+                placeholder="Select subscription"
+                searchPlaceholder="Search applications"
                 disabled={!draft.tenantId}
-                required
-              >
-                <option value="">Select subscription</option>
-                {tenantSubs.map((s) => (
-                  <option key={s.id} value={s.id}>
-                    {describe(s)} · {SUBSCRIPTION_STATUS_LABEL[s.status]}
-                  </option>
-                ))}
-              </Select>
+              />
             </FormField>
             <FormField
               label="Period start"

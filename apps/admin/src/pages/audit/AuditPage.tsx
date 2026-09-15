@@ -1,4 +1,4 @@
-import { avatarColor, fmtDateTime, initials } from '@scp/fixtures'
+import { avatarColor, fmtDateTime, fmtNumber, initials } from '@scp/fixtures'
 import type { AuditAction, AuditLog } from '@scp/types'
 import { AUDIT_ACTION_LABEL } from '@scp/types'
 import {
@@ -7,26 +7,49 @@ import {
   Button,
   Card,
   CodeBlock,
+  Combobox,
   DataTable,
   Input,
   KeyValue,
   Kicker,
   PageHeader,
-  Select,
   Sheet,
   SheetContent,
   SheetDescription,
   SheetTitle,
+  StatCard,
+  cn,
   type BadgeTone,
   type Column,
 } from '@scp/ui'
-import { Download, ScrollText, Search } from 'lucide-react'
+import { Building2, Download, ScrollText, Search, ShieldX, Users } from 'lucide-react'
 import * as React from 'react'
+import { ClearFiltersButton } from '../../components/ClearFiltersButton'
 import { Mono } from '../../components/badges'
+import { PILL_COMBOBOX, PILL_INPUT, useFilterParams } from '../../lib/filters'
+import { labelOptions, tenantOptions, withAll } from '../../lib/options'
 import { useScoped } from '../../state/app-state'
 import { downloadJson } from './downloadJson'
 
-const ACTIONS = Object.keys(AUDIT_ACTION_LABEL) as AuditAction[]
+const HOUR = 3_600_000
+const DAY = 24 * HOUR
+const ACTION_FILTERS = withAll(
+  'All actions',
+  labelOptions(Object.keys(AUDIT_ACTION_LABEL) as AuditAction[], AUDIT_ACTION_LABEL),
+)
+const SINCE_MS: Record<string, number> = {
+  '1h': HOUR,
+  '24h': DAY,
+  '7d': 7 * DAY,
+  '30d': 30 * DAY,
+}
+const SINCE_FILTERS = withAll('All time', [
+  { value: '1h', label: 'Last hour' },
+  { value: '24h', label: 'Last 24 hours' },
+  { value: '7d', label: 'Last 7 days' },
+  { value: '30d', label: 'Last 30 days' },
+])
+const FILTER_KEYS = ['action', 'org', 'actor', 'since', 'q'] as const
 
 function actionTone(action: AuditAction): BadgeTone {
   if (/\.(denied|suspended|revoked)$/.test(action)) return 'danger'
@@ -40,20 +63,50 @@ function pretty(value: Record<string, unknown> | null): string {
 
 export function AuditPage() {
   const { state, tenants, tenantsById } = useScoped()
-  const [action, setAction] = React.useState<'all' | AuditAction>('all')
-  const [tenantFilter, setTenantFilter] = React.useState('all')
-  const [query, setQuery] = React.useState('')
+  const now = Date.now()
+  const filters = useFilterParams(FILTER_KEYS)
+  const { action, org, actor, since, q: query } = filters.values
   const [selected, setSelected] = React.useState<AuditLog | null>(null)
 
+  const stats = React.useMemo(() => {
+    const actors = new Set<string>()
+    const organizations = new Set<string>()
+    let today = 0
+    let denied = 0
+    for (const a of state.auditLogs) {
+      actors.add(a.actorId)
+      if (a.tenantId) organizations.add(a.tenantId)
+      if (now - new Date(a.at).getTime() <= DAY) today += 1
+      if (a.action === 'access.denied') denied += 1
+    }
+    return { today, denied, actors: actors.size, organizations: organizations.size }
+  }, [state.auditLogs, now])
+
+  const actorFilters = React.useMemo(() => {
+    const names = new Map<string, string>()
+    for (const a of state.auditLogs) names.set(a.actorId, a.actorName)
+    return withAll(
+      'All actors',
+      [...names.entries()]
+        .sort((a, b) => a[1].localeCompare(b[1]))
+        .map(([value, label]) => ({ value, label, hint: value })),
+    )
+  }, [state.auditLogs])
+
   const rows = React.useMemo(() => {
-    const q = query.trim().toLowerCase()
+    const needle = query.trim().toLowerCase()
+    const sinceAt = SINCE_MS[since] ? now - SINCE_MS[since] : 0
     return state.auditLogs.filter((a) => {
-      if (action !== 'all' && a.action !== action) return false
-      if (tenantFilter !== 'all' && a.tenantId !== tenantFilter) return false
-      if (!q) return true
-      return [a.actorName, a.resourceId, a.requestId ?? ''].some((v) => v.toLowerCase().includes(q))
+      if (action && a.action !== action) return false
+      if (org && a.tenantId !== org) return false
+      if (actor && a.actorId !== actor) return false
+      if (sinceAt && new Date(a.at).getTime() < sinceAt) return false
+      if (!needle) return true
+      return [a.actorName, a.resourceId, a.requestId ?? ''].some((v) =>
+        v.toLowerCase().includes(needle),
+      )
     })
-  }, [state.auditLogs, action, tenantFilter, query])
+  }, [state.auditLogs, action, org, actor, since, query, now])
 
   const columns: Column<AuditLog>[] = [
     {
@@ -131,40 +184,74 @@ export function AuditPage() {
         }
       />
 
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
+        <StatCard
+          label="Entries today"
+          value={fmtNumber(stats.today)}
+          hint="Last 24 hours"
+          icon={<ScrollText />}
+          tone="ink"
+        />
+        <StatCard
+          label="Denied access"
+          value={fmtNumber(stats.denied)}
+          hint="Access denied entries"
+          icon={<ShieldX />}
+          tone="danger"
+        />
+        <StatCard
+          label="Distinct actors"
+          value={fmtNumber(stats.actors)}
+          hint="People and services"
+          icon={<Users />}
+          tone="info"
+        />
+        <StatCard
+          label="Organizations touched"
+          value={fmtNumber(stats.organizations)}
+          hint="Platform entries excluded"
+          icon={<Building2 />}
+          tone="default"
+        />
+      </div>
+
       <div className="flex flex-wrap items-center gap-2">
-        <Select
-          value={action}
-          onChange={(e) => setAction(e.target.value as 'all' | AuditAction)}
-          aria-label="Action"
-          className="w-full sm:w-56"
-        >
-          <option value="all">All actions</option>
-          {ACTIONS.map((a) => (
-            <option key={a} value={a}>
-              {AUDIT_ACTION_LABEL[a]}
-            </option>
-          ))}
-        </Select>
-        <Select
-          value={tenantFilter}
-          onChange={(e) => setTenantFilter(e.target.value)}
-          aria-label="Organization"
-          className="w-full sm:w-52"
-        >
-          <option value="all">All organizations</option>
-          {tenants.map((t) => (
-            <option key={t.id} value={t.id}>
-              {t.name}
-            </option>
-          ))}
-        </Select>
         <Input
           leftIcon={<Search />}
           placeholder="Actor, resource id, request id"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          className="w-full sm:w-72"
+          onChange={(e) => filters.set('q', e.target.value)}
+          className={cn('w-full sm:w-72', PILL_INPUT)}
         />
+        <Combobox
+          value={action || 'all'}
+          onChange={(v) => filters.set('action', v)}
+          options={ACTION_FILTERS}
+          searchPlaceholder="Search actions…"
+          className={cn('w-full sm:w-56', PILL_COMBOBOX)}
+        />
+        <Combobox
+          value={org || 'all'}
+          onChange={(v) => filters.set('org', v)}
+          options={withAll('All organizations', tenantOptions(tenants))}
+          searchPlaceholder="Search organizations…"
+          className={cn('w-full sm:w-52', PILL_COMBOBOX)}
+        />
+        <Combobox
+          value={actor || 'all'}
+          onChange={(v) => filters.set('actor', v)}
+          options={actorFilters}
+          searchPlaceholder="Search actors…"
+          className={cn('w-full sm:w-48', PILL_COMBOBOX)}
+        />
+        <Combobox
+          value={since || 'all'}
+          onChange={(v) => filters.set('since', v)}
+          options={SINCE_FILTERS}
+          searchPlaceholder="Search…"
+          className={cn('w-full sm:w-44', PILL_COMBOBOX)}
+        />
+        {filters.active ? <ClearFiltersButton onClick={filters.clear} /> : null}
       </div>
 
       <Card>
@@ -174,24 +261,21 @@ export function AuditPage() {
           rowKey={(a) => a.id}
           pageSize={20}
           onRowClick={setSelected}
-          empty={{
-            icon: <ScrollText />,
-            title: 'No audit entries match',
-            description: 'Every change in the console lands here. Loosen the filters to see more.',
-            action: (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  setAction('all')
-                  setTenantFilter('all')
-                  setQuery('')
-                }}
-              >
-                Clear filters
-              </Button>
-            ),
-          }}
+          empty={
+            filters.active
+              ? {
+                  icon: <ScrollText />,
+                  title: 'No matches',
+                  description:
+                    'Every change in the console lands here. Loosen the filters to see more.',
+                  action: <ClearFiltersButton onClick={filters.clear} />,
+                }
+              : {
+                  icon: <ScrollText />,
+                  title: 'No audit entries yet',
+                  description: 'Every change in the console lands here.',
+                }
+          }
         />
       </Card>
 

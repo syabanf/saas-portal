@@ -10,6 +10,7 @@ import {
   Banner,
   Button,
   Card,
+  Combobox,
   DataTable,
   DropdownMenu,
   DropdownMenuContent,
@@ -17,7 +18,6 @@ import {
   DropdownMenuTrigger,
   Input,
   PageHeader,
-  Select,
   StatCard,
   type Column,
 } from '@scp/ui'
@@ -38,19 +38,39 @@ import { useCurrentUser } from '../../auth/auth'
 import { Mono, PaymentBadge } from '../../components/badges'
 import { actorOf, useScoped } from '../../state/app-state'
 import { isThisMonth } from '../billing/dates'
+import {
+  PILL_COMBOBOX,
+  PILL_INPUT,
+  useUrlFilters,
+  windowDays,
+  withinLastDays,
+  type WindowOption,
+} from '../../lib/filters'
+import { CHANNEL_OPTIONS, allOption, labelOptions, tenantOptions } from '../../lib/options'
 import { PENDING_TRANSITIONS, RefundPaymentDialog } from './PaymentActions'
 import { SimulatePaymentDialog } from './SimulatePaymentDialog'
 
 const METHODS = Object.keys(PAYMENT_METHOD_LABEL) as PaymentMethod[]
+const CREATED_WINDOWS: WindowOption[] = [
+  { value: 'all', label: 'Created any time', days: null },
+  { value: '1', label: 'Created in the last 24 hours', days: 1 },
+  { value: '7', label: 'Created in the last 7 days', days: 7 },
+  { value: '30', label: 'Created in the last 30 days', days: 30 },
+]
+const FILTER_KEYS = ['status', 'method', 'channel', 'tenant', 'created', 'q'] as const
 
 /** Blueprint §26: Xendit payment records. Status here never grants access by itself. */
 export function PaymentsPage() {
   const navigate = useNavigate()
   const user = useCurrentUser()
-  const { payments, tenantsById, dispatch } = useScoped()
-  const [status, setStatus] = React.useState<'' | PaymentStatus>('')
-  const [method, setMethod] = React.useState<'' | PaymentMethod>('')
-  const [query, setQuery] = React.useState('')
+  const { payments, tenants, tenantsById, dispatch } = useScoped()
+  const filters = useUrlFilters(FILTER_KEYS)
+  const status = filters.get('status')
+  const method = filters.get('method')
+  const channel = filters.get('channel')
+  const tenantId = filters.get('tenant')
+  const createdDays = windowDays(CREATED_WINDOWS, filters.get('created'))
+  const query = filters.get('q', '')
   const [creating, setCreating] = React.useState(false)
   const [refunding, setRefunding] = React.useState<Payment | null>(null)
   const now = Date.now()
@@ -74,8 +94,11 @@ export function PaymentsPage() {
   const visible = React.useMemo(() => {
     const q = query.trim().toLowerCase()
     return payments.filter((p) => {
-      if (status && p.status !== status) return false
-      if (method && p.method !== method) return false
+      if (status !== 'all' && p.status !== status) return false
+      if (method !== 'all' && p.method !== method) return false
+      if (channel !== 'all' && p.channel !== channel) return false
+      if (tenantId !== 'all' && p.tenantId !== tenantId) return false
+      if (!withinLastDays(p.createdAt, createdDays, now)) return false
       if (!q) return true
       return (
         p.providerReference.toLowerCase().includes(q) ||
@@ -83,7 +106,7 @@ export function PaymentsPage() {
         (tenantsById.get(p.tenantId)?.name.toLowerCase().includes(q) ?? false)
       )
     })
-  }, [payments, status, method, query, tenantsById])
+  }, [payments, status, method, channel, tenantId, createdDays, now, query, tenantsById])
 
   const actor = actorOf(user)
 
@@ -200,39 +223,54 @@ export function PaymentsPage() {
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <Select
-            value={status}
-            onChange={(e) => setStatus(e.target.value as '' | PaymentStatus)}
-            className="w-full sm:w-48"
-            aria-label="Filter by status"
-          >
-            <option value="">All statuses</option>
-            {PAYMENT_STATUSES.map((s) => (
-              <option key={s} value={s}>
-                {PAYMENT_STATUS_LABEL[s]}
-              </option>
-            ))}
-          </Select>
-          <Select
-            value={method}
-            onChange={(e) => setMethod(e.target.value as '' | PaymentMethod)}
-            className="w-full sm:w-48"
-            aria-label="Filter by method"
-          >
-            <option value="">All methods</option>
-            {METHODS.map((m) => (
-              <option key={m} value={m}>
-                {PAYMENT_METHOD_LABEL[m]}
-              </option>
-            ))}
-          </Select>
           <Input
             leftIcon={<Search />}
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => filters.set('q', e.target.value)}
             placeholder="Search Xendit id, invoice number or organization"
-            className="[&_input]:shadow-card w-full sm:w-80 [&_input]:rounded-full [&_input]:border-0"
+            aria-label="Search payments"
+            className={`w-full sm:w-72 ${PILL_INPUT}`}
           />
+          <Combobox
+            value={status}
+            onChange={(v) => filters.set('status', v)}
+            options={[
+              allOption('All statuses'),
+              ...labelOptions(PAYMENT_STATUSES, PAYMENT_STATUS_LABEL),
+            ]}
+            className={`w-full sm:w-48 ${PILL_COMBOBOX}`}
+          />
+          <Combobox
+            value={method}
+            onChange={(v) => filters.set('method', v)}
+            options={[allOption('All methods'), ...labelOptions(METHODS, PAYMENT_METHOD_LABEL)]}
+            className={`w-full sm:w-48 ${PILL_COMBOBOX}`}
+          />
+          <Combobox
+            value={channel}
+            onChange={(v) => filters.set('channel', v)}
+            options={[allOption('All channels'), ...CHANNEL_OPTIONS]}
+            searchPlaceholder="Search channels"
+            className={`w-full sm:w-52 ${PILL_COMBOBOX}`}
+          />
+          <Combobox
+            value={tenantId}
+            onChange={(v) => filters.set('tenant', v)}
+            options={[allOption('All organizations'), ...tenantOptions(tenants)]}
+            searchPlaceholder="Search organizations"
+            className={`w-full sm:w-52 ${PILL_COMBOBOX}`}
+          />
+          <Combobox
+            value={filters.get('created')}
+            onChange={(v) => filters.set('created', v)}
+            options={CREATED_WINDOWS}
+            className={`w-full sm:w-56 ${PILL_COMBOBOX}`}
+          />
+          {filters.active ? (
+            <Button variant="ghost" size="sm" onClick={filters.clear}>
+              Clear filters
+            </Button>
+          ) : null}
         </div>
 
         <Card>
@@ -277,26 +315,18 @@ export function PaymentsPage() {
             }
             empty={{
               icon: <CreditCard />,
-              title: payments.length === 0 ? 'No payments yet' : 'No payments match',
+              title: payments.length === 0 ? 'No payments yet' : 'No matches',
               description:
                 payments.length === 0
                   ? 'Create a payment request against an open invoice to see the chain run.'
-                  : 'Try another status or method, or clear the search.',
+                  : 'Try another status, method, channel, organization or window.',
               action:
                 payments.length === 0 ? (
                   <Button size="sm" onClick={() => setCreating(true)}>
                     Create payment request
                   </Button>
                 ) : (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      setStatus('')
-                      setMethod('')
-                      setQuery('')
-                    }}
-                  >
+                  <Button variant="outline" size="sm" onClick={filters.clear}>
                     Clear filters
                   </Button>
                 ),

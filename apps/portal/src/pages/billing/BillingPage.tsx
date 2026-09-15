@@ -1,27 +1,68 @@
 import { fmtAgo, fmtDate, fmtIdr, fmtNumber } from '@scp/fixtures'
 import type { Invoice, Payment } from '@scp/types'
-import { BILLING_PERIOD_LABEL } from '@scp/types'
+import {
+  BILLING_PERIOD_LABEL,
+  INVOICE_STATUS_LABEL,
+  PAYMENT_CHANNELS,
+  PAYMENT_METHOD_LABEL,
+  PAYMENT_STATUS_LABEL,
+} from '@scp/types'
 import {
   Button,
   Card,
   CardHeader,
   CardTitle,
   DataTable,
+  Input,
   PageHeader,
   StatCard,
   type Column,
+  type ComboboxOption,
 } from '@scp/ui'
-import { AlertTriangle, CalendarClock, CheckCircle2, FileText, Wallet } from 'lucide-react'
+import { AlertTriangle, CalendarClock, CheckCircle2, FileText, Search, Wallet } from 'lucide-react'
 import { Link, useNavigate } from 'react-router'
 import { InvoiceBadge, Mono, PaymentBadge, PaymentChannelLabel } from '../../components/badges'
+import {
+  ClearFiltersButton,
+  FilterCombobox,
+  applicationOptions,
+  labelOptions,
+  noMatches,
+  useFilterParams,
+} from '../../components/filters'
 import { OutstandingBanner } from '../../components/OutstandingBanner'
 import { useScoped } from '../../state/app-state'
+
+const DAY = 86_400_000
+type IssuedWindow = 'month' | '30d' | '90d'
+const ISSUED_LABEL: Record<IssuedWindow, string> = {
+  month: 'This month',
+  '30d': 'Last 30 days',
+  '90d': 'Last 90 days',
+}
+
+function issuedSince(window: string, now: number): number {
+  if (window === 'month')
+    return new Date(new Date(now).getFullYear(), new Date(now).getMonth()).getTime()
+  if (window === '30d') return now - 30 * DAY
+  if (window === '90d') return now - 90 * DAY
+  return 0
+}
+
+const CHANNEL_OPTIONS: ComboboxOption[] = PAYMENT_CHANNELS.map((c) => ({
+  value: c.channel,
+  label: c.label,
+  group: PAYMENT_METHOD_LABEL[c.method],
+}))
 
 /** Blueprint §42, §44, §74: billing stays reachable whatever the subscription state. */
 export function BillingPage() {
   const navigate = useNavigate()
-  const { invoices, payments, subscriptionsById, applicationsById } = useScoped()
-  const year = new Date().getFullYear()
+  const { invoices, payments, applications, subscriptionsById, applicationsById } = useScoped()
+  const invoiceFilters = useFilterParams(['q', 'status', 'app', 'issued'])
+  const paymentFilters = useFilterParams(['pstatus', 'channel'])
+  const now = Date.now()
+  const year = new Date(now).getFullYear()
   const open = invoices.filter((i) => i.status === 'open' || i.status === 'overdue')
   const outstanding = open.reduce((sum, i) => sum + i.total, 0)
   const overdue = invoices.filter((i) => i.status === 'overdue').length
@@ -29,6 +70,26 @@ export function BillingPage() {
     .filter((i) => i.status === 'paid' && i.paidAt && new Date(i.paidAt).getFullYear() === year)
     .reduce((sum, i) => sum + i.total, 0)
   const nextDue = open.map((i) => i.dueDate).sort()[0] ?? null
+
+  const q = invoiceFilters.values.q.trim().toLowerCase()
+  const since = issuedSince(invoiceFilters.values.issued, now)
+  const visibleInvoices = invoices
+    .filter(
+      (i) =>
+        (!q || i.number.toLowerCase().includes(q)) &&
+        (!invoiceFilters.values.status || i.status === invoiceFilters.values.status) &&
+        (!invoiceFilters.values.app ||
+          subscriptionsById.get(i.subscriptionId)?.applicationId === invoiceFilters.values.app) &&
+        Date.parse(i.issuedAt) >= since,
+    )
+    .sort((a, b) => b.issuedAt.localeCompare(a.issuedAt))
+  const visiblePayments = payments
+    .filter(
+      (p) =>
+        (!paymentFilters.values.pstatus || p.status === paymentFilters.values.pstatus) &&
+        (!paymentFilters.values.channel || p.channel === paymentFilters.values.channel),
+    )
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
 
   const label = (inv: Invoice) => {
     const sub = subscriptionsById.get(inv.subscriptionId)
@@ -166,33 +227,97 @@ export function BillingPage() {
         />
       </div>
       <Card>
-        <CardHeader>
+        <CardHeader className="gap-3">
           <CardTitle>Invoices</CardTitle>
+          <div className="flex flex-wrap items-center gap-2">
+            <Input
+              tone="nested"
+              leftIcon={<Search />}
+              value={invoiceFilters.values.q}
+              onChange={(e) => invoiceFilters.set('q', e.target.value)}
+              placeholder="Search invoice number"
+              aria-label="Search invoices"
+              className="w-full sm:w-60 [&_input]:rounded-full"
+            />
+            <FilterCombobox
+              value={invoiceFilters.values.status}
+              onChange={(v) => invoiceFilters.set('status', v)}
+              options={labelOptions(INVOICE_STATUS_LABEL, [
+                'open',
+                'overdue',
+                'paid',
+                'draft',
+                'void',
+              ])}
+              allLabel="All statuses"
+              searchPlaceholder="Search statuses"
+            />
+            <FilterCombobox
+              value={invoiceFilters.values.app}
+              onChange={(v) => invoiceFilters.set('app', v)}
+              options={applicationOptions(applications.filter((item) => item.subscription))}
+              allLabel="All applications"
+              searchPlaceholder="Search applications"
+            />
+            <FilterCombobox
+              value={invoiceFilters.values.issued}
+              onChange={(v) => invoiceFilters.set('issued', v)}
+              options={labelOptions(ISSUED_LABEL)}
+              allLabel="All time"
+              searchPlaceholder="Search periods"
+            />
+            {invoiceFilters.active ? <ClearFiltersButton onClick={invoiceFilters.clear} /> : null}
+          </div>
         </CardHeader>
         <DataTable
-          rows={invoices.slice().sort((a, b) => b.issuedAt.localeCompare(a.issuedAt))}
+          rows={visibleInvoices}
           columns={invoiceColumns}
           rowKey={(i) => i.id}
           onRowClick={(i) => navigate(`/billing/${i.id}`)}
-          empty={{
-            title: 'No invoices yet',
-            description: 'Invoices appear here once a subscription starts.',
-          }}
+          empty={
+            invoiceFilters.active
+              ? noMatches(invoiceFilters.clear)
+              : {
+                  title: 'No invoices yet',
+                  description: 'Invoices appear here once a subscription starts.',
+                }
+          }
         />
       </Card>
       <Card>
-        <CardHeader>
+        <CardHeader className="gap-3">
           <CardTitle>Payments</CardTitle>
+          <div className="flex flex-wrap items-center gap-2">
+            <FilterCombobox
+              value={paymentFilters.values.pstatus}
+              onChange={(v) => paymentFilters.set('pstatus', v)}
+              options={labelOptions(PAYMENT_STATUS_LABEL)}
+              allLabel="All statuses"
+              searchPlaceholder="Search statuses"
+            />
+            <FilterCombobox
+              value={paymentFilters.values.channel}
+              onChange={(v) => paymentFilters.set('channel', v)}
+              options={CHANNEL_OPTIONS}
+              allLabel="All channels"
+              searchPlaceholder="Search channels"
+            />
+            {paymentFilters.active ? <ClearFiltersButton onClick={paymentFilters.clear} /> : null}
+          </div>
         </CardHeader>
         <DataTable
-          rows={payments.slice().sort((a, b) => b.createdAt.localeCompare(a.createdAt))}
+          rows={visiblePayments}
           columns={paymentColumns}
           rowKey={(p) => p.id}
           onRowClick={(p) => navigate(`/payments/${p.id}`)}
-          empty={{
-            title: 'No payments yet',
-            description: 'Payments show up here after an invoice is settled.',
-          }}
+          empty={
+            paymentFilters.active
+              ? noMatches(paymentFilters.clear)
+              : {
+                  title: 'No payments yet',
+                  description: 'Payments show up here after an invoice is settled.',
+                }
+          }
         />
       </Card>
     </div>

@@ -3,6 +3,7 @@ import type { User, UserStatus } from '@scp/types'
 import { USER_STATUS_LABEL } from '@scp/types'
 import {
   Button,
+  Combobox,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -11,13 +12,16 @@ import {
   DialogTitle,
   FormField,
   Input,
-  Select,
   ToggleRow,
 } from '@scp/ui'
 import * as React from 'react'
+import { labelOptions } from '../../lib/options'
 import { useScoped } from '../../state/app-state'
 
-const USER_STATUSES: UserStatus[] = ['active', 'invited', 'disabled']
+const STATUS_OPTIONS = labelOptions(
+  ['active', 'invited', 'disabled'] satisfies UserStatus[],
+  USER_STATUS_LABEL,
+)
 
 export function emptyUser(): User {
   const now = new Date().toISOString()
@@ -93,17 +97,14 @@ export function UserDialog({ user, onOpenChange }: UserDialogProps) {
                 required
               />
             </FormField>
-            <FormField label="Status">
-              <Select
+            <FormField label="Status" htmlFor="user-status">
+              <Combobox
+                id="user-status"
                 value={draft.status}
-                onChange={(e) => set('status', e.target.value as UserStatus)}
-              >
-                {USER_STATUSES.map((s) => (
-                  <option key={s} value={s}>
-                    {USER_STATUS_LABEL[s]}
-                  </option>
-                ))}
-              </Select>
+                onChange={(v) => set('status', v as UserStatus)}
+                options={STATUS_OPTIONS}
+                searchPlaceholder="Search statuses…"
+              />
             </FormField>
             <div className="sm:col-span-2">
               <ToggleRow

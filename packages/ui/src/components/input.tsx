@@ -1,4 +1,3 @@
-import { ChevronDown } from 'lucide-react'
 import * as React from 'react'
 import { cn } from '../lib/cn'
 
@@ -59,37 +58,6 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   ),
 )
 Textarea.displayName = 'Textarea'
-
-export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
-  tone?: 'default' | 'nested' | 'ghost'
-}
-
-/** Native select styled to match inputs; `ghost` is the inline list filter. */
-export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
-  ({ className, tone = 'default', children, ...props }, ref) => (
-    <div className={cn('relative', tone === 'ghost' ? 'inline-flex' : 'flex', className)}>
-      <select
-        ref={ref}
-        className={cn(
-          'appearance-none focus:outline-none',
-          tone === 'ghost'
-            ? 'text-body hover:bg-surface h-8 rounded-full bg-transparent py-0 pr-8 pl-3 text-xs font-semibold'
-            : cn(inputBase, 'pr-10', tone === 'nested' && 'bg-surface border-0'),
-        )}
-        {...props}
-      >
-        {children}
-      </select>
-      <ChevronDown
-        className={cn(
-          'text-muted pointer-events-none absolute top-1/2 -translate-y-1/2',
-          tone === 'ghost' ? 'right-2 size-3.5' : 'right-4 size-4',
-        )}
-      />
-    </div>
-  ),
-)
-Select.displayName = 'Select'
 
 export function Label({ className, ...props }: React.LabelHTMLAttributes<HTMLLabelElement>) {
   return <label className={cn('mb-1.5 block text-sm font-medium', className)} {...props} />

@@ -7,9 +7,9 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  Combobox,
   FormField,
   PageHeader,
-  Select,
   StatCard,
   Timeline,
   ToggleRow,
@@ -19,6 +19,16 @@ import * as React from 'react'
 import { Mono } from '../../components/badges'
 
 const STORAGE_KEY = 'scp.admin.security'
+
+function numberOptions(values: number[], unit: string) {
+  return values.map((v) => ({ value: String(v), label: `${v} ${unit}` }))
+}
+const TTL_OPTIONS = {
+  session: numberOptions([8, 12, 24], 'h'),
+  accessToken: numberOptions([15, 30], 'min'),
+  appToken: numberOptions([5, 10, 15], 'min'),
+  code: numberOptions([30, 60], 's, single-use'),
+}
 
 const BASELINE: { key: string; title: string; description: string; defaultOn: boolean }[] = [
   {
@@ -293,57 +303,45 @@ export function SecurityPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                <FormField label="SaaS session">
-                  <Select
-                    value={security.ttl.session}
-                    onChange={(e) => setTtl('session', Number(e.target.value))}
+                <FormField label="SaaS session" htmlFor="ttl-session">
+                  <Combobox
+                    id="ttl-session"
                     tone="nested"
-                  >
-                    {[8, 12, 24].map((h) => (
-                      <option key={h} value={h}>
-                        {h} h
-                      </option>
-                    ))}
-                  </Select>
+                    value={String(security.ttl.session)}
+                    onChange={(v) => setTtl('session', Number(v))}
+                    options={TTL_OPTIONS.session}
+                    searchPlaceholder="Search…"
+                  />
                 </FormField>
-                <FormField label="SaaS access token">
-                  <Select
-                    value={security.ttl.accessToken}
-                    onChange={(e) => setTtl('accessToken', Number(e.target.value))}
+                <FormField label="SaaS access token" htmlFor="ttl-accessToken">
+                  <Combobox
+                    id="ttl-accessToken"
                     tone="nested"
-                  >
-                    {[15, 30].map((m) => (
-                      <option key={m} value={m}>
-                        {m} min
-                      </option>
-                    ))}
-                  </Select>
+                    value={String(security.ttl.accessToken)}
+                    onChange={(v) => setTtl('accessToken', Number(v))}
+                    options={TTL_OPTIONS.accessToken}
+                    searchPlaceholder="Search…"
+                  />
                 </FormField>
-                <FormField label="App access token">
-                  <Select
-                    value={security.ttl.appToken}
-                    onChange={(e) => setTtl('appToken', Number(e.target.value))}
+                <FormField label="App access token" htmlFor="ttl-appToken">
+                  <Combobox
+                    id="ttl-appToken"
                     tone="nested"
-                  >
-                    {[5, 10, 15].map((m) => (
-                      <option key={m} value={m}>
-                        {m} min
-                      </option>
-                    ))}
-                  </Select>
+                    value={String(security.ttl.appToken)}
+                    onChange={(v) => setTtl('appToken', Number(v))}
+                    options={TTL_OPTIONS.appToken}
+                    searchPlaceholder="Search…"
+                  />
                 </FormField>
-                <FormField label="Authorization code">
-                  <Select
-                    value={security.ttl.code}
-                    onChange={(e) => setTtl('code', Number(e.target.value))}
+                <FormField label="Authorization code" htmlFor="ttl-code">
+                  <Combobox
+                    id="ttl-code"
                     tone="nested"
-                  >
-                    {[30, 60].map((s) => (
-                      <option key={s} value={s}>
-                        {s} s, single-use
-                      </option>
-                    ))}
-                  </Select>
+                    value={String(security.ttl.code)}
+                    onChange={(v) => setTtl('code', Number(v))}
+                    options={TTL_OPTIONS.code}
+                    searchPlaceholder="Search…"
+                  />
                 </FormField>
               </div>
               <div className="bg-surface-2 rounded-2xl p-4">

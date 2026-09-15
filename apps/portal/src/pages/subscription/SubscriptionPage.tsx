@@ -1,5 +1,14 @@
-import { buildInvoice, fmtDate, fmtIdr, newId, nextInvoiceNumber, priceFor } from '@scp/fixtures'
-import type { BillingPeriod, Subscription } from '@scp/types'
+import {
+  buildInvoice,
+  fmtDate,
+  fmtIdr,
+  fmtNumber,
+  monthlyValue,
+  newId,
+  nextInvoiceNumber,
+  priceFor,
+} from '@scp/fixtures'
+import type { BillingPeriod, Subscription, SubscriptionStatus } from '@scp/types'
 import { BILLING_PERIODS, BILLING_PERIOD_LABEL } from '@scp/types'
 import {
   AlertDialog,
@@ -17,16 +26,25 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
+  Chip,
   EmptyState,
   IconTile,
   PageHeader,
+  StatCard,
   cn,
 } from '@scp/ui'
-import { Receipt } from 'lucide-react'
+import { AlertTriangle, CalendarClock, CheckCircle2, Receipt, Wallet } from 'lucide-react'
 import * as React from 'react'
 import { Link, useSearchParams } from 'react-router'
 import { useAuth, useCurrentUser } from '../../auth/auth'
 import { AppTypeIcon, SubscriptionBadge } from '../../components/badges'
+import {
+  ClearFiltersButton,
+  FilterCombobox,
+  labelOptions,
+  noMatches,
+  useFilterParams,
+} from '../../components/filters'
 import { actorOf, useScoped, type PortalApplication } from '../../state/app-state'
 import { usePortalSheets } from '../../layouts/portal-sheets'
 import { PaymentHistoryList } from './PaymentHistoryList'
@@ -411,15 +429,60 @@ function ApplicationSection({
   )
 }
 
+type View = 'all' | 'subscribed' | 'attention' | 'not_subscribed'
+const VIEW_LABEL: Record<View, string> = {
+  all: 'All',
+  subscribed: 'Subscribed',
+  attention: 'Needs attention',
+  not_subscribed: 'Not subscribed',
+}
+const VIEW_STATUSES: Record<View, SubscriptionStatus[] | null> = {
+  all: null,
+  subscribed: ['active', 'trial', 'cancelled'],
+  attention: ['past_due', 'grace_period', 'suspended', 'expired'],
+  not_subscribed: [],
+}
+const SPENDING: SubscriptionStatus[] = ['active', 'past_due', 'grace_period']
+
+function isView(value: string): value is View {
+  return value in VIEW_LABEL
+}
+
+function inView(view: View, subscription: Subscription | null): boolean {
+  const statuses = VIEW_STATUSES[view]
+  if (!statuses) return true
+  if (!subscription || subscription.status === 'draft') return view === 'not_subscribed'
+  return statuses.includes(subscription.status)
+}
+
 /** Blueprint §37: one subscription per application, owned by the organization rather than a single user. */
 export function SubscriptionPage() {
   const [params] = useSearchParams()
   const focus = params.get('app')
-  const { applications } = useScoped()
+  const { values, set, clear, active } = useFilterParams(['view', 'period'])
+  const { applications, subscriptions, invoices, applicationsById } = useScoped()
   const refs = React.useRef(new Map<string, HTMLDivElement>())
+  const view: View = isView(values.view) ? values.view : 'all'
   const gated = applications
     .filter((item) => item.app.accessPolicy === 'subscription')
     .sort((a, b) => a.app.name.localeCompare(b.app.name))
+  const visible = gated.filter(
+    (item) =>
+      inView(view, item.subscription) &&
+      (!values.period || item.subscription?.billingPeriod === values.period),
+  )
+
+  const monthlySpend = subscriptions
+    .filter((s) => SPENDING.includes(s.status))
+    .reduce((sum, s) => sum + monthlyValue(s), 0)
+  const activeCount = subscriptions.filter((s) => s.status === 'active').length
+  const nextRenewal = subscriptions
+    .filter((s) => SPENDING.includes(s.status) || s.status === 'trial')
+    .filter((s) => !s.cancelAtPeriodEnd && Date.parse(s.currentPeriodEnd) >= Date.now())
+    .sort((a, b) => a.currentPeriodEnd.localeCompare(b.currentPeriodEnd))[0]
+  const outstanding = invoices
+    .filter((i) => i.status === 'open' || i.status === 'overdue')
+    .reduce((sum, i) => sum + i.total, 0)
 
   React.useEffect(() => {
     if (!focus) return
@@ -432,6 +495,55 @@ export function SubscriptionPage() {
         title="Subscriptions"
         description="Subscriptions belong to your organization, never to a single user."
       />
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
+        <StatCard
+          label="Monthly spend"
+          value={fmtIdr(monthlySpend)}
+          hint="Annual plans spread over 12 months"
+          icon={<Wallet />}
+          tone="ink"
+        />
+        <StatCard
+          label="Active subscriptions"
+          value={fmtNumber(activeCount)}
+          hint="Paid and in good standing"
+          icon={<CheckCircle2 />}
+          tone="success"
+        />
+        <StatCard
+          label="Next renewal"
+          value={nextRenewal ? fmtDate(nextRenewal.currentPeriodEnd) : 'None'}
+          hint={
+            nextRenewal
+              ? (applicationsById.get(nextRenewal.applicationId)?.name ?? nextRenewal.applicationId)
+              : 'No renewal scheduled'
+          }
+          icon={<CalendarClock />}
+          tone="info"
+        />
+        <StatCard
+          label="Outstanding"
+          value={fmtIdr(outstanding)}
+          hint="Open and overdue invoices"
+          icon={<AlertTriangle />}
+          tone="danger"
+        />
+      </div>
+      <div className="flex flex-wrap items-center gap-2">
+        {(Object.keys(VIEW_LABEL) as View[]).map((v) => (
+          <Chip key={v} active={view === v} activeTone="ink" onClick={() => set('view', v)}>
+            {VIEW_LABEL[v]}
+          </Chip>
+        ))}
+        <FilterCombobox
+          value={values.period}
+          onChange={(v) => set('period', v)}
+          options={labelOptions(BILLING_PERIOD_LABEL)}
+          allLabel="All billing periods"
+          searchPlaceholder="Search billing periods"
+        />
+        {active ? <ClearFiltersButton onClick={clear} /> : null}
+      </div>
       {gated.length === 0 ? (
         <Card>
           <EmptyState
@@ -440,8 +552,12 @@ export function SubscriptionPage() {
             description="Every application available to your organization is free for the workspace."
           />
         </Card>
+      ) : visible.length === 0 ? (
+        <Card>
+          <EmptyState {...noMatches(clear)} />
+        </Card>
       ) : (
-        gated.map((item) => (
+        visible.map((item) => (
           <ApplicationSection
             key={item.app.id}
             item={item}

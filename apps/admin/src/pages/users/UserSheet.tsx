@@ -5,10 +5,10 @@ import {
   Avatar,
   Badge,
   Button,
+  Combobox,
   EmptyState,
   FormField,
   KeyValue,
-  Select,
   Sheet,
   SheetContent,
   SheetDescription,
@@ -23,6 +23,7 @@ import {
   assignableApplications,
   emptyMember,
 } from '../../components/master/MemberDialog'
+import { labelOptions, tenantOptions } from '../../lib/options'
 import { useScoped } from '../../state/app-state'
 
 export interface UserSheetProps {
@@ -30,7 +31,10 @@ export interface UserSheetProps {
   onOpenChange: (open: boolean) => void
 }
 
-const ROLES: WorkspaceRole[] = ['member', 'workspace_admin']
+const ROLE_OPTIONS = labelOptions(
+  ['member', 'workspace_admin'] satisfies WorkspaceRole[],
+  WORKSPACE_ROLE_LABEL,
+)
 
 export function UserSheet({ user, onOpenChange }: UserSheetProps) {
   const views = useScoped()
@@ -147,24 +151,24 @@ export function UserSheet({ user, onOpenChange }: UserSheetProps) {
                 </p>
               ) : (
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
-                  <FormField label="Organization">
-                    <Select value={tenantId} onChange={(e) => setTenantId(e.target.value)} required>
-                      <option value="">Select organization</option>
-                      {available.map((t) => (
-                        <option key={t.id} value={t.id}>
-                          {t.name}
-                        </option>
-                      ))}
-                    </Select>
+                  <FormField label="Organization" htmlFor="membership-org">
+                    <Combobox
+                      id="membership-org"
+                      value={tenantId}
+                      onChange={setTenantId}
+                      options={tenantOptions(available)}
+                      placeholder="Select organization"
+                      searchPlaceholder="Search organizations…"
+                    />
                   </FormField>
-                  <FormField label="Workspace role">
-                    <Select value={role} onChange={(e) => setRole(e.target.value as WorkspaceRole)}>
-                      {ROLES.map((r) => (
-                        <option key={r} value={r}>
-                          {WORKSPACE_ROLE_LABEL[r]}
-                        </option>
-                      ))}
-                    </Select>
+                  <FormField label="Workspace role" htmlFor="membership-role">
+                    <Combobox
+                      id="membership-role"
+                      value={role}
+                      onChange={(v) => setRole(v as WorkspaceRole)}
+                      options={ROLE_OPTIONS}
+                      searchPlaceholder="Search roles…"
+                    />
                   </FormField>
                   <Button type="submit" variant="secondary" className="h-11" disabled={!tenantId}>
                     <Plus /> Add

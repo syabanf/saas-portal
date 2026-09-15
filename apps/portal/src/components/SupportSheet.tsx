@@ -1,8 +1,8 @@
 import {
   Button,
+  Combobox,
   EmptyState,
   FormField,
-  Select,
   Sheet,
   SheetContent,
   SheetDescription,
@@ -64,17 +64,13 @@ export function SupportSheet({
         ) : (
           <form onSubmit={submit} className="mt-6 space-y-4">
             <FormField label="Subject" htmlFor="support-subject">
-              <Select
+              <Combobox
                 id="support-subject"
                 value={subject}
-                onChange={(e) => setSubject(e.target.value)}
-              >
-                {SUBJECTS.map((s) => (
-                  <option key={s} value={s}>
-                    {s}
-                  </option>
-                ))}
-              </Select>
+                onChange={setSubject}
+                options={SUBJECTS.map((s) => ({ value: s, label: s }))}
+                searchPlaceholder="Search subjects"
+              />
             </FormField>
             <FormField label="Message" htmlFor="support-message">
               <Textarea

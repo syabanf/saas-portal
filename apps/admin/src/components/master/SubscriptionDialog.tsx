@@ -8,6 +8,7 @@ import {
 } from '@scp/types'
 import {
   Button,
+  Combobox,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -15,12 +16,12 @@ import {
   DialogHeader,
   DialogTitle,
   FormField,
-  Select,
   ToggleRow,
 } from '@scp/ui'
 import { fmtIdr } from '@scp/fixtures'
 import * as React from 'react'
 import { useCurrentUser } from '../../auth/auth'
+import { applicationOptions, labelOptions, tenantOptions } from '../../lib/options'
 import { actorOf, useScoped } from '../../state/app-state'
 
 const DAY = 86_400_000
@@ -75,6 +76,11 @@ export function SubscriptionDialog({
   )
   const price = app ? priceFor(app, draft.billingPeriod) : 0
   const canSave = Boolean(draft.tenantId && app)
+  const subscribable = applications.filter(
+    (a) =>
+      a.accessPolicy === 'subscription' &&
+      (!isCreate || !subscribedAppIds.has(a.id) || a.id === draft.applicationId),
+  )
 
   function set<K extends keyof Subscription>(key: K, value: Subscription[K]) {
     setDraft((d) => ({ ...d, [key]: value }))
@@ -130,19 +136,14 @@ export function SubscriptionDialog({
           </DialogHeader>
           <div className="grid gap-4 sm:grid-cols-2">
             <FormField label="Organization">
-              <Select
+              <Combobox
                 value={draft.tenantId}
-                onChange={(e) => set('tenantId', e.target.value)}
+                onChange={(v) => set('tenantId', v)}
+                options={tenantOptions(tenants)}
+                placeholder="Select organization"
+                searchPlaceholder="Search organizations"
                 disabled={Boolean(tenantId) || !isCreate}
-                required
-              >
-                <option value="">Select organization</option>
-                {tenants.map((t) => (
-                  <option key={t.id} value={t.id}>
-                    {t.name}
-                  </option>
-                ))}
-              </Select>
+              />
             </FormField>
             <FormField
               label="Application"
@@ -152,25 +153,14 @@ export function SubscriptionDialog({
                   : undefined
               }
             >
-              <Select
+              <Combobox
                 value={draft.applicationId}
-                onChange={(e) => set('applicationId', e.target.value)}
+                onChange={(v) => set('applicationId', v)}
+                options={applicationOptions(subscribable)}
+                placeholder="Select application"
+                searchPlaceholder="Search applications"
                 disabled={!isCreate}
-                required
-              >
-                <option value="">Select application</option>
-                {applications
-                  .filter(
-                    (a) =>
-                      a.accessPolicy === 'subscription' &&
-                      (!isCreate || !subscribedAppIds.has(a.id) || a.id === draft.applicationId),
-                  )
-                  .map((a) => (
-                    <option key={a.id} value={a.id}>
-                      {a.name}
-                    </option>
-                  ))}
-              </Select>
+              />
             </FormField>
             <FormField
               label="Billing period"
@@ -180,28 +170,18 @@ export function SubscriptionDialog({
                   : undefined
               }
             >
-              <Select
+              <Combobox
                 value={draft.billingPeriod}
-                onChange={(e) => set('billingPeriod', e.target.value as BillingPeriod)}
-              >
-                {BILLING_PERIODS.map((p) => (
-                  <option key={p} value={p}>
-                    {BILLING_PERIOD_LABEL[p]}
-                  </option>
-                ))}
-              </Select>
+                onChange={(v) => set('billingPeriod', v as BillingPeriod)}
+                options={labelOptions(BILLING_PERIODS, BILLING_PERIOD_LABEL)}
+              />
             </FormField>
             <FormField label="Status">
-              <Select
+              <Combobox
                 value={draft.status}
-                onChange={(e) => set('status', e.target.value as SubscriptionStatus)}
-              >
-                {SUBSCRIPTION_STATUSES.map((s) => (
-                  <option key={s} value={s}>
-                    {SUBSCRIPTION_STATUS_LABEL[s]}
-                  </option>
-                ))}
-              </Select>
+                onChange={(v) => set('status', v as SubscriptionStatus)}
+                options={labelOptions(SUBSCRIPTION_STATUSES, SUBSCRIPTION_STATUS_LABEL)}
+              />
             </FormField>
             <div className="sm:col-span-2">
               <ToggleRow

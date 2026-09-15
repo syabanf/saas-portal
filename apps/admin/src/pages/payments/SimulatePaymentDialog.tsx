@@ -1,7 +1,7 @@
-import { fmtIdr } from '@scp/fixtures'
 import type { PaymentChannel } from '@scp/types'
 import {
   Button,
+  Combobox,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -9,11 +9,11 @@ import {
   DialogHeader,
   DialogTitle,
   FormField,
-  Select,
 } from '@scp/ui'
 import * as React from 'react'
 import { useCurrentUser } from '../../auth/auth'
 import { actorOf, useScoped } from '../../state/app-state'
+import { invoiceOptions } from '../../lib/options'
 import { ChannelSelect } from './ChannelSelect'
 
 export interface SimulatePaymentDialogProps {
@@ -73,21 +73,15 @@ export function SimulatePaymentDialog({ open, onOpenChange }: SimulatePaymentDia
                   : undefined
               }
             >
-              <Select
+              <Combobox
                 id="payment-invoice"
                 value={invoiceId}
-                onChange={(e) => setInvoiceId(e.target.value)}
+                onChange={setInvoiceId}
+                options={invoiceOptions(unpaid, tenantsById)}
+                placeholder="Select invoice"
+                searchPlaceholder="Search organization or invoice number"
                 disabled={unpaid.length === 0}
-                required
-              >
-                <option value="">Select invoice</option>
-                {unpaid.map((i) => (
-                  <option key={i.id} value={i.id}>
-                    {tenantsById.get(i.tenantId)?.name ?? i.tenantId} · {i.number} ·{' '}
-                    {fmtIdr(i.total, i.currency)}
-                  </option>
-                ))}
-              </Select>
+              />
             </FormField>
             <FormField label="Channel" htmlFor="payment-channel">
               <ChannelSelect id="payment-channel" value={channel} onChange={setChannel} />

@@ -16,11 +16,11 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  Combobox,
   FormField,
   Input,
   KeyValue,
   PageHeader,
-  Select,
 } from '@scp/ui'
 import * as React from 'react'
 import { useAuth, useCurrentUser } from '../../auth/auth'
@@ -159,16 +159,16 @@ function IntegrationCard() {
           className="grid grid-cols-1 gap-4 sm:grid-cols-2"
         >
           <FormField label="Mode" htmlFor="int-mode">
-            <Select
+            <Combobox
               id="int-mode"
               value={draft.mode}
-              onChange={(e) =>
-                setDraft({ ...draft, mode: e.target.value as IntegrationConfig['mode'] })
-              }
-            >
-              <option value="mock">Mock (in-browser)</option>
-              <option value="http">HTTP</option>
-            </Select>
+              onChange={(mode) => setDraft({ ...draft, mode: mode as IntegrationConfig['mode'] })}
+              options={[
+                { value: 'mock', label: 'Mock (in-browser)' },
+                { value: 'http', label: 'HTTP' },
+              ]}
+              searchPlaceholder="Search modes"
+            />
           </FormField>
           <FormField label="Mock latency (ms)" htmlFor="int-latency">
             <Input

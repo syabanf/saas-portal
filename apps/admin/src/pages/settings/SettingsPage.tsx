@@ -19,12 +19,12 @@ import {
   CardHeader,
   CardTitle,
   CodeBlock,
+  Combobox,
   FormField,
   Input,
   KeyValue,
   Kicker,
   PageHeader,
-  Select,
 } from '@scp/ui'
 import { Database, Download, RotateCcw, Save, Server } from 'lucide-react'
 import * as React from 'react'
@@ -38,6 +38,10 @@ const MODE_LABEL: Record<IntegrationConfig['mode'], string> = {
   mock: 'Mock control plane',
   http: 'HTTP backend',
 }
+const MODE_OPTIONS = (['mock', 'http'] satisfies IntegrationConfig['mode'][]).map((value) => ({
+  value,
+  label: MODE_LABEL[value],
+}))
 
 const PORTS: { port: number; service: string; note?: string }[] = [
   { port: 3000, service: 'SaaS Portal', note: 'this demo: 5174' },
@@ -121,15 +125,13 @@ export function SettingsPage() {
               <Kicker className="text-on-ink-muted">Integration mode</Kicker>
               <p className="text-lg leading-tight font-bold">{MODE_LABEL[config.mode]}</p>
             </div>
-            <Select
+            <Combobox
               value={draft.mode}
-              onChange={(e) => set('mode', e.target.value as IntegrationConfig['mode'])}
-              aria-label="Integration mode"
+              onChange={(v) => set('mode', v as IntegrationConfig['mode'])}
+              options={MODE_OPTIONS}
+              searchPlaceholder="Search modes…"
               className="w-full sm:w-56"
-            >
-              <option value="mock">{MODE_LABEL.mock}</option>
-              <option value="http">{MODE_LABEL.http}</option>
-            </Select>
+            />
           </div>
           <form onSubmit={save}>
             <CardContent className="space-y-4 pt-5">

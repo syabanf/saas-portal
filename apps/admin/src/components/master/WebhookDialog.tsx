@@ -4,6 +4,7 @@ import { EVENT_TYPES } from '@scp/types'
 import {
   Button,
   Checkbox,
+  Combobox,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -12,11 +13,11 @@ import {
   DialogTitle,
   FormField,
   Input,
-  Select,
   ToggleRow,
 } from '@scp/ui'
 import * as React from 'react'
 import { useCurrentUser } from '../../auth/auth'
+import { applicationOptions } from '../../lib/options'
 import { actorOf, useScoped } from '../../state/app-state'
 
 const DEFAULT_EVENTS: EventType[] = [
@@ -91,19 +92,14 @@ export function WebhookDialog({ endpoint, applicationId, onOpenChange }: Webhook
           </DialogHeader>
           <div className="grid gap-4 sm:grid-cols-2">
             <FormField label="Application">
-              <Select
+              <Combobox
                 value={draft.applicationId}
-                onChange={(e) => setDraft((d) => ({ ...d, applicationId: e.target.value }))}
+                onChange={(v) => setDraft((d) => ({ ...d, applicationId: v }))}
+                options={applicationOptions(applications)}
+                placeholder="Select application"
+                searchPlaceholder="Search applications"
                 disabled={Boolean(applicationId) || !isCreate}
-                required
-              >
-                <option value="">Select application</option>
-                {applications.map((a) => (
-                  <option key={a.id} value={a.id}>
-                    {a.name}
-                  </option>
-                ))}
-              </Select>
+              />
             </FormField>
             <FormField label="Endpoint URL">
               <Input

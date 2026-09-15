@@ -3,6 +3,7 @@ import { BILLING_PERIOD_LABEL } from '@scp/types'
 import {
   Button,
   Checkbox,
+  Combobox,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -11,7 +12,6 @@ import {
   DialogTitle,
   EmptyState,
   FormField,
-  Select,
 } from '@scp/ui'
 import { FileCheck } from 'lucide-react'
 import * as React from 'react'
@@ -19,7 +19,7 @@ import { useCurrentUser } from '../../auth/auth'
 import { actorOf, useScoped } from '../../state/app-state'
 
 const DAY = 86_400_000
-const WINDOWS = [7, 14, 30, 60]
+const WINDOWS = [7, 14, 30, 60].map((d) => ({ value: String(d), label: `${d} days` }))
 const DEFAULT_WINDOW = 30
 
 export interface GenerateInvoicesDialogProps {
@@ -93,17 +93,12 @@ export function GenerateInvoicesDialog({
 
         <div className="flex flex-wrap items-end gap-2">
           <FormField label="Period ends within" htmlFor="generate-window" className="w-44">
-            <Select
+            <Combobox
               id="generate-window"
               value={String(days)}
-              onChange={(e) => setDays(Number(e.target.value))}
-            >
-              {WINDOWS.map((d) => (
-                <option key={d} value={d}>
-                  {d} days
-                </option>
-              ))}
-            </Select>
+              onChange={(v) => setDays(Number(v))}
+              options={WINDOWS}
+            />
           </FormField>
           {due.length > 0 ? (
             <label className="ml-auto flex h-11 items-center gap-2 text-sm font-medium">

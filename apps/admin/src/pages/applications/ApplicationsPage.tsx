@@ -1,10 +1,16 @@
-import type { AccessPolicyMode, Application, ApplicationType } from '@scp/types'
-import { ACCESS_POLICY_LABEL, APPLICATION_TYPE_LABEL, AUTH_MODE_LABEL } from '@scp/types'
+import type { Application, ApplicationStatus, ApplicationType } from '@scp/types'
+import {
+  ACCESS_POLICY_LABEL,
+  APPLICATION_STATUS_LABEL,
+  APPLICATION_TYPE_LABEL,
+  AUTH_MODE_LABEL,
+} from '@scp/types'
 import {
   Badge,
   Button,
   Card,
   CardContent,
+  Combobox,
   ConfirmDelete,
   DropdownMenu,
   DropdownMenuContent,
@@ -14,7 +20,6 @@ import {
   EmptyState,
   IconTile,
   Input,
-  Select,
   SplitStats,
   StatCard,
   Tabs,
@@ -26,6 +31,7 @@ import {
   AlertTriangle,
   AppWindow,
   Ban,
+  Building2,
   CheckCircle2,
   KeyRound,
   MoreHorizontal,
@@ -37,7 +43,10 @@ import {
 import * as React from 'react'
 import { Link, useNavigate } from 'react-router'
 import { useCurrentUser } from '../../auth/auth'
+import { ClearFiltersButton } from '../../components/ClearFiltersButton'
 import { AppTypeIcon, HealthDot, Mono } from '../../components/badges'
+import { useFilterParams } from '../../lib/filters'
+import { labelOptions, withAll } from '../../lib/options'
 import { actorOf, useScoped } from '../../state/app-state'
 import { pricingLine } from './ProductFields'
 
@@ -49,11 +58,24 @@ const TABS: { value: TypeTab; label: string }[] = [
   { value: 'backend', label: 'Backend' },
   { value: 'external', label: 'External' },
 ]
-const POLICY_FILTERS: { value: AccessPolicyMode; label: string }[] = [
+const POLICY_FILTERS = withAll('All access policies', [
   { value: 'subscription', label: 'Subscription required' },
   { value: 'free', label: 'Free' },
   { value: 'manual', label: 'Manual' },
-]
+])
+const STATUS_FILTERS = withAll(
+  'All statuses',
+  labelOptions(
+    ['active', 'disabled', 'draft'] satisfies ApplicationStatus[],
+    APPLICATION_STATUS_LABEL,
+  ),
+)
+const SUBS_FILTERS = withAll('Any subscriptions', [
+  { value: 'yes', label: 'Has subscriptions' },
+  { value: 'no', label: 'No subscriptions' },
+])
+const FILTER_KEYS = ['q', 'type', 'policy', 'status', 'subs'] as const
+const NESTED_PILL = 'w-full sm:w-52 [&_[role=combobox]]:h-10 [&_[role=combobox]]:rounded-full'
 
 export function ApplicationsPage() {
   const {
@@ -65,23 +87,36 @@ export function ApplicationsPage() {
   } = useScoped()
   const user = useCurrentUser()
   const navigate = useNavigate()
-  const [query, setQuery] = React.useState('')
-  const [tab, setTab] = React.useState<TypeTab>('all')
-  const [policy, setPolicy] = React.useState<AccessPolicyMode | ''>('')
+  const filters = useFilterParams(FILTER_KEYS)
+  const { q: query, type, policy, status, subs } = filters.values
+  const tab: TypeTab = TABS.some((t) => t.value === type) ? (type as TypeTab) : 'all'
   const [removing, setRemoving] = React.useState<Application | null>(null)
 
   const rows = React.useMemo(() => {
-    const q = query.trim().toLowerCase()
-    return applications.filter(
-      (a) =>
+    const needle = query.trim().toLowerCase()
+    return applications.filter((a) => {
+      const subscribed = (subscriptionsByApplication.get(a.id) ?? []).length > 0
+      return (
         (tab === 'all' || a.type === tab) &&
         (!policy || a.accessPolicy === policy) &&
-        (!q || a.name.toLowerCase().includes(q) || a.code.toLowerCase().includes(q)),
-    )
-  }, [applications, query, tab, policy])
+        (!status || a.status === status) &&
+        (!subs || subscribed === (subs === 'yes')) &&
+        (!needle || a.name.toLowerCase().includes(needle) || a.code.toLowerCase().includes(needle))
+      )
+    })
+  }, [applications, subscriptionsByApplication, query, tab, policy, status, subs])
 
-  const healthy = applications.filter((a) => a.health === 'healthy').length
-  const sso = applications.filter((a) => a.authMode === 'sso').length
+  const stats = React.useMemo(() => {
+    const tenantsSubscribed = new Set<string>()
+    for (const list of subscriptionsByApplication.values())
+      for (const s of list) tenantsSubscribed.add(s.tenantId)
+    return {
+      active: applications.filter((a) => a.status === 'active').length,
+      healthy: applications.filter((a) => a.health === 'healthy').length,
+      sso: applications.filter((a) => a.authMode === 'sso').length,
+      subscribedOrganizations: tenantsSubscribed.size,
+    }
+  }, [applications, subscriptionsByApplication])
 
   function setStatus(app: Application, status: Application['status']) {
     dispatch({
@@ -101,32 +136,23 @@ export function ApplicationsPage() {
             costs and how healthy the integration is.
           </p>
         </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <Input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search products…"
-            leftIcon={<Search />}
-            className="[&_input]:bg-surface w-full sm:w-64 [&_input]:rounded-full [&_input]:border-0"
-          />
-          <Button variant="secondary" onClick={() => navigate('/applications/new')}>
-            <Plus /> Add product
-          </Button>
-        </div>
+        <Button variant="secondary" onClick={() => navigate('/applications/new')}>
+          <Plus /> Add product
+        </Button>
       </div>
 
-      <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
+      <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 xl:grid-cols-5">
         <StatCard
           label="Products"
           value={applications.length}
-          hint={`${applications.filter((a) => a.status === 'active').length} active`}
+          hint={`${stats.active} active`}
           icon={<AppWindow />}
           tone="ink"
           className="bg-surface-2 shadow-none"
         />
         <StatCard
           label="Healthy"
-          value={healthy}
+          value={stats.healthy}
           hint="Integration health"
           icon={<CheckCircle2 />}
           tone="success"
@@ -134,66 +160,97 @@ export function ApplicationsPage() {
         />
         <StatCard
           label="With issues"
-          value={applications.length - healthy}
+          value={applications.length - stats.healthy}
           hint="Webhook error or offline"
           icon={<AlertTriangle />}
-          tone={applications.length - healthy > 0 ? 'danger' : 'default'}
+          tone={applications.length - stats.healthy > 0 ? 'danger' : 'default'}
           className="bg-surface-2 shadow-none"
         />
         <StatCard
           label="SSO enabled"
-          value={sso}
+          value={stats.sso}
           hint="Login through SaaS Platform"
           icon={<KeyRound />}
           tone="info"
           className="bg-surface-2 shadow-none"
         />
+        <StatCard
+          label="Subscribed organizations"
+          value={stats.subscribedOrganizations}
+          hint="Distinct organizations with a subscription"
+          icon={<Building2 />}
+          tone="default"
+          className="bg-surface-2 shadow-none"
+        />
       </div>
 
-      <div className="mt-6 flex flex-wrap items-end gap-3">
-        <Tabs
-          variant="underline"
-          value={tab}
-          onValueChange={(v) => setTab(v as TypeTab)}
-          className="min-w-0 flex-1"
-        >
-          <TabsList>
-            {TABS.map((t) => (
-              <TabsTrigger key={t.value} value={t.value}>
-                {t.label}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </Tabs>
-        <Select
-          tone="nested"
-          value={policy}
-          onChange={(e) => setPolicy(e.target.value as AccessPolicyMode | '')}
-          aria-label="Filter by access policy"
-          className="w-full sm:w-52 [&_select]:h-10 [&_select]:rounded-full"
-        >
-          <option value="">All access policies</option>
-          {POLICY_FILTERS.map((p) => (
-            <option key={p.value} value={p.value}>
-              {p.label}
-            </option>
+      <Tabs
+        variant="underline"
+        value={tab}
+        onValueChange={(v) => filters.set('type', v)}
+        className="mt-6 min-w-0"
+      >
+        <TabsList>
+          {TABS.map((t) => (
+            <TabsTrigger key={t.value} value={t.value}>
+              {t.label}
+            </TabsTrigger>
           ))}
-        </Select>
+        </TabsList>
+      </Tabs>
+
+      <div className="mt-4 flex flex-wrap items-center gap-2">
+        <Input
+          value={query}
+          onChange={(e) => filters.set('q', e.target.value)}
+          placeholder="Search products…"
+          leftIcon={<Search />}
+          className="[&_input]:bg-surface w-full sm:w-64 [&_input]:h-10 [&_input]:rounded-full [&_input]:border-0"
+        />
+        <Combobox
+          tone="nested"
+          value={policy || 'all'}
+          onChange={(v) => filters.set('policy', v)}
+          options={POLICY_FILTERS}
+          searchPlaceholder="Search access policies…"
+          className={NESTED_PILL}
+        />
+        <Combobox
+          tone="nested"
+          value={status || 'all'}
+          onChange={(v) => filters.set('status', v)}
+          options={STATUS_FILTERS}
+          searchPlaceholder="Search statuses…"
+          className={cn(NESTED_PILL, 'sm:w-40')}
+        />
+        <Combobox
+          tone="nested"
+          value={subs || 'all'}
+          onChange={(v) => filters.set('subs', v)}
+          options={SUBS_FILTERS}
+          searchPlaceholder="Search…"
+          className={cn(NESTED_PILL, 'sm:w-48')}
+        />
+        {filters.active ? <ClearFiltersButton onClick={filters.clear} /> : null}
       </div>
 
       {rows.length === 0 ? (
         <EmptyState
           icon={<AppWindow />}
-          title={applications.length === 0 ? 'No products yet' : 'No products match'}
+          title={filters.active ? 'No matches' : 'No products yet'}
           description={
-            applications.length === 0
-              ? 'Run the setup wizard to register the first product and its production client.'
-              : 'Try another search, type or access policy.'
+            filters.active
+              ? 'Try another search, type, access policy, status or subscription filter.'
+              : 'Run the setup wizard to register the first product and its production client.'
           }
           action={
-            <Button variant="secondary" onClick={() => navigate('/applications/new')}>
-              <Plus /> Add product
-            </Button>
+            filters.active ? (
+              <ClearFiltersButton onClick={filters.clear} />
+            ) : (
+              <Button variant="secondary" onClick={() => navigate('/applications/new')}>
+                <Plus /> Add product
+              </Button>
+            )
           }
         />
       ) : (

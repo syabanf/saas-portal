@@ -8,8 +8,8 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
+  Combobox,
   EmptyState,
-  Select,
 } from '@scp/ui'
 import { Plus, Receipt } from 'lucide-react'
 import * as React from 'react'
@@ -17,7 +17,10 @@ import { Link } from 'react-router'
 import { useCurrentUser } from '../../auth/auth'
 import { SubscriptionBadge } from '../../components/badges'
 import { SubscriptionDialog, emptySubscription } from '../../components/master/SubscriptionDialog'
+import { labelOptions } from '../../lib/options'
 import { actorOf, useScoped } from '../../state/app-state'
+
+const STATUS_OPTIONS = labelOptions(SUBSCRIPTION_STATUSES, SUBSCRIPTION_STATUS_LABEL)
 
 export function SubscriptionsCard({ tenant }: { tenant: Tenant }) {
   const { subscriptionsByTenant, applicationsById, dispatch } = useScoped()
@@ -75,26 +78,21 @@ export function SubscriptionsCard({ tenant }: { tenant: Tenant }) {
                 </p>
               )}
               <SubscriptionBadge status={s.status} />
-              <Select
+              <Combobox
                 tone="ghost"
                 value={s.status}
-                aria-label="Change status"
-                onChange={(e) =>
+                options={STATUS_OPTIONS}
+                searchPlaceholder="Search statuses…"
+                onChange={(status) =>
                   dispatch({
                     type: 'subscriptions/setStatus',
                     id: s.id,
-                    status: e.target.value as SubscriptionStatus,
+                    status: status as SubscriptionStatus,
                     note: 'Changed from organization page',
                     actor: actorOf(user),
                   })
                 }
-              >
-                {SUBSCRIPTION_STATUSES.map((st) => (
-                  <option key={st} value={st}>
-                    {SUBSCRIPTION_STATUS_LABEL[st]}
-                  </option>
-                ))}
-              </Select>
+              />
               <Button variant="link" size="sm" className="px-0" asChild>
                 <Link to={`/subscriptions/${s.id}`}>Detail</Link>
               </Button>

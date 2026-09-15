@@ -12,10 +12,10 @@ import {
   Chip,
   ChipRow,
   CodeBlock,
+  Combobox,
   EmptyState,
   FormField,
   PageHeader,
-  Select,
   SettingRow,
   type BadgeTone,
 } from '@scp/ui'
@@ -33,6 +33,7 @@ import * as React from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router'
 import { Mono } from '../../components/badges'
 import { useScoped } from '../../state/app-state'
+import { applicationOptions } from '../../lib/options'
 
 const STACKS = Object.keys(SDK_STACK_LABEL) as SdkStack[]
 
@@ -178,17 +179,13 @@ export function SdkPage() {
       <Card>
         <CardContent className="grid grid-cols-1 gap-4 p-5 md:grid-cols-[minmax(0,16rem)_1fr] md:items-end">
           <FormField label="Application">
-            <Select
+            <Combobox
               value={app.id}
-              onChange={(e) => setParams({ app: e.target.value }, { replace: true })}
+              onChange={(v) => setParams({ app: v }, { replace: true })}
+              options={applicationOptions(applications)}
+              searchPlaceholder="Search applications"
               tone="nested"
-            >
-              {applications.map((a) => (
-                <option key={a.id} value={a.id}>
-                  {a.name}
-                </option>
-              ))}
-            </Select>
+            />
           </FormField>
           <div>
             <p className="mb-1.5 text-sm font-medium">Stack</p>

@@ -6,6 +6,7 @@ import {
   Button,
   Checkbox,
   CodeBlock,
+  Combobox,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -14,12 +15,12 @@ import {
   DialogTitle,
   FormField,
   Input,
-  Select,
   Textarea,
 } from '@scp/ui'
 import { KeyRound } from 'lucide-react'
 import * as React from 'react'
 import { useCurrentUser } from '../../auth/auth'
+import { applicationOptions, labelOptions } from '../../lib/options'
 import { actorOf, useScoped } from '../../state/app-state'
 
 const SCOPES = ['access:exchange', 'subscriptions:read', 'usage:report', 'webhooks:manage']
@@ -142,31 +143,21 @@ export function ApiClientDialog({ mode, onOpenChange }: ApiClientDialogProps) {
           <form onSubmit={submitCreate}>
             <div className="grid gap-4 sm:grid-cols-2">
               <FormField label="Application">
-                <Select
+                <Combobox
                   value={applicationId}
-                  onChange={(e) => setApplicationId(e.target.value)}
+                  onChange={setApplicationId}
+                  options={applicationOptions(applications)}
+                  placeholder="Select application"
+                  searchPlaceholder="Search applications"
                   disabled={Boolean(mode?.kind === 'create' && mode.applicationId)}
-                  required
-                >
-                  <option value="">Select application</option>
-                  {applications.map((a) => (
-                    <option key={a.id} value={a.id}>
-                      {a.name}
-                    </option>
-                  ))}
-                </Select>
+                />
               </FormField>
               <FormField label="Environment">
-                <Select
+                <Combobox
                   value={environment}
-                  onChange={(e) => setEnvironment(e.target.value as Environment)}
-                >
-                  {ENVIRONMENTS.map((env) => (
-                    <option key={env} value={env}>
-                      {ENVIRONMENT_LABEL[env]}
-                    </option>
-                  ))}
-                </Select>
+                  onChange={(v) => setEnvironment(v as Environment)}
+                  options={labelOptions(ENVIRONMENTS, ENVIRONMENT_LABEL)}
+                />
               </FormField>
               <FormField label="Client name" className="sm:col-span-2">
                 <Input

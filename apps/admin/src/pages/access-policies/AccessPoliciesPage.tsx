@@ -1,3 +1,4 @@
+import { fmtNumber } from '@scp/fixtures'
 import type { AccessPolicyMode, AccessPolicyOutcome, Application } from '@scp/types'
 import {
   ACCESS_POLICY_LABEL,
@@ -7,15 +8,19 @@ import {
 } from '@scp/types'
 import {
   Badge,
+  Button,
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
   Chip,
+  Combobox,
+  EmptyState,
   IconTile,
+  Input,
   PageHeader,
-  Select,
+  StatCard,
   type BadgeTone,
 } from '@scp/ui'
 import {
@@ -23,15 +28,21 @@ import {
   Building2,
   Check,
   FileCheck,
+  Gift,
   KeyRound,
+  ListChecks,
   Receipt,
+  Search,
   ShieldCheck,
   UserCheck,
   Wallet,
 } from 'lucide-react'
+import * as React from 'react'
 import { useCurrentUser } from '../../auth/auth'
 import { AppTypeIcon, Mono, SUBSCRIPTION_TONE } from '../../components/badges'
 import { actorOf, useScoped } from '../../state/app-state'
+import { PILL_COMBOBOX, PILL_INPUT, useUrlFilters } from '../../lib/filters'
+import { allOption, labelOptions } from '../../lib/options'
 
 const OUTCOME: Record<AccessPolicyOutcome, { label: string; tone: BadgeTone }> = {
   allow: { label: 'ALLOW', tone: 'success' },
@@ -79,12 +90,17 @@ const CHAIN = [
   },
 ]
 
-const TOKEN_LIFETIMES = [5, 10, 15, 30]
+const TOKEN_LIFETIMES = [5, 10, 15, 30].map((m) => ({ value: String(m), label: `Token ${m} min` }))
 const POLICY_MODES = Object.keys(ACCESS_POLICY_LABEL) as AccessPolicyMode[]
+const POLICY_OPTIONS = labelOptions(POLICY_MODES, ACCESS_POLICY_LABEL)
+const FILTER_KEYS = ['policy', 'q'] as const
 
 export function AccessPoliciesPage() {
   const { applications, subscriptionsByApplication, dispatch } = useScoped()
   const user = useCurrentUser()
+  const filters = useUrlFilters(FILTER_KEYS)
+  const policy = filters.get('policy')
+  const query = filters.get('q', '')
 
   function updateApp(app: Application, patch: Partial<Application>) {
     dispatch({
@@ -95,6 +111,22 @@ export function AccessPoliciesPage() {
   }
 
   const gated = applications.filter((a) => a.accessPolicy === 'subscription')
+  const free = applications.filter((a) => a.accessPolicy === 'free').length
+  const manual = applications.filter((a) => a.accessPolicy === 'manual').length
+  const avgAllowed =
+    gated.length === 0
+      ? 0
+      : Math.round(
+          (gated.reduce((sum, a) => sum + a.allowedStatuses.length, 0) / gated.length) * 10,
+        ) / 10
+  const filtered = React.useMemo(() => {
+    const q = query.trim().toLowerCase()
+    return applications.filter(
+      (a) =>
+        (policy === 'all' || a.accessPolicy === policy) &&
+        (!q || a.name.toLowerCase().includes(q) || a.code.toLowerCase().includes(q)),
+    )
+  }, [applications, policy, query])
 
   return (
     <div className="space-y-4">
@@ -102,6 +134,36 @@ export function AccessPoliciesPage() {
         title="Access policies"
         description="How subscription state turns into an allow or deny for each application. The backend enforces every decision."
       />
+
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
+        <StatCard
+          label="Subscription-gated"
+          value={fmtNumber(gated.length)}
+          hint="Products that need a subscription"
+          icon={<Receipt />}
+          tone="ink"
+        />
+        <StatCard
+          label="Free"
+          value={fmtNumber(free)}
+          hint="Open to every workspace user"
+          icon={<Gift />}
+          tone="success"
+        />
+        <StatCard
+          label="Manual access"
+          value={fmtNumber(manual)}
+          hint="Assigned per member"
+          icon={<UserCheck />}
+          tone="info"
+        />
+        <StatCard
+          label="Statuses allowed"
+          value={fmtNumber(avgAllowed)}
+          hint="Average per gated product"
+          icon={<ListChecks />}
+        />
+      </div>
 
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
         <Card>
@@ -178,7 +240,40 @@ export function AccessPoliciesPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
-            {applications.map((a) => (
+            <div className="flex flex-wrap items-center gap-2">
+              <Input
+                leftIcon={<Search />}
+                placeholder="Search name or code"
+                aria-label="Search applications"
+                value={query}
+                onChange={(e) => filters.set('q', e.target.value)}
+                className={`w-full sm:w-64 ${PILL_INPUT}`}
+              />
+              <Combobox
+                value={policy}
+                onChange={(v) => filters.set('policy', v)}
+                options={[allOption('All access policies'), ...POLICY_OPTIONS]}
+                className={`w-full sm:w-64 ${PILL_COMBOBOX}`}
+              />
+              {filters.active ? (
+                <Button variant="ghost" size="sm" onClick={filters.clear}>
+                  Clear filters
+                </Button>
+              ) : null}
+            </div>
+            {filtered.length === 0 ? (
+              <EmptyState
+                icon={<AppWindow />}
+                title="No matches"
+                description="Try another access policy or search."
+                action={
+                  <Button variant="outline" size="sm" onClick={filters.clear}>
+                    Clear filters
+                  </Button>
+                }
+              />
+            ) : null}
+            {filtered.map((a) => (
               <div key={a.id} className="bg-surface-2 rounded-2xl p-3">
                 <div className="flex flex-wrap items-center gap-3">
                   <IconTile size="sm" tone="ink">
@@ -189,32 +284,16 @@ export function AccessPoliciesPage() {
                     <Mono className="text-muted">{a.code}</Mono>
                   </div>
                   <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2 lg:w-auto lg:min-w-[26rem]">
-                    <Select
+                    <Combobox
                       value={a.accessPolicy}
-                      onChange={(e) =>
-                        updateApp(a, { accessPolicy: e.target.value as AccessPolicyMode })
-                      }
-                      aria-label="Access policy"
-                    >
-                      {POLICY_MODES.map((m) => (
-                        <option key={m} value={m}>
-                          {ACCESS_POLICY_LABEL[m]}
-                        </option>
-                      ))}
-                    </Select>
-                    <Select
+                      onChange={(v) => updateApp(a, { accessPolicy: v as AccessPolicyMode })}
+                      options={POLICY_OPTIONS}
+                    />
+                    <Combobox
                       value={String(a.tokenLifetimeMinutes)}
-                      onChange={(e) =>
-                        updateApp(a, { tokenLifetimeMinutes: Number(e.target.value) })
-                      }
-                      aria-label="Token lifetime"
-                    >
-                      {TOKEN_LIFETIMES.map((m) => (
-                        <option key={m} value={m}>
-                          Token {m} min
-                        </option>
-                      ))}
-                    </Select>
+                      onChange={(v) => updateApp(a, { tokenLifetimeMinutes: Number(v) })}
+                      options={TOKEN_LIFETIMES}
+                    />
                   </div>
                 </div>
                 {a.accessPolicy === 'subscription' ? (

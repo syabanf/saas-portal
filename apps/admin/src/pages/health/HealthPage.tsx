@@ -1,6 +1,6 @@
 import { fmtAgo, fmtNumber } from '@scp/fixtures'
-import type { Application, WebhookDelivery } from '@scp/types'
-import { HEALTH_LABEL } from '@scp/types'
+import type { Application, ApplicationType, IntegrationHealth, WebhookDelivery } from '@scp/types'
+import { APPLICATION_TYPE_LABEL, HEALTH_LABEL } from '@scp/types'
 import {
   Banner,
   Button,
@@ -9,18 +9,34 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  Combobox,
   EmptyState,
   IconTile,
+  Input,
   KeyValue,
   PageHeader,
   StatCard,
 } from '@scp/ui'
-import { Activity, AlertTriangle, AppWindow, CheckCircle2, RotateCcw, WifiOff } from 'lucide-react'
+import {
+  Activity,
+  AlertTriangle,
+  AppWindow,
+  CheckCircle2,
+  RotateCcw,
+  Search,
+  WifiOff,
+} from 'lucide-react'
 import * as React from 'react'
 import { useNavigate } from 'react-router'
 import { useCurrentUser } from '../../auth/auth'
 import { AppTypeIcon, HealthDot, Mono } from '../../components/badges'
 import { actorOf, useScoped } from '../../state/app-state'
+import { PILL_COMBOBOX, PILL_INPUT, useUrlFilters } from '../../lib/filters'
+import { allOption, labelOptions } from '../../lib/options'
+
+const FILTER_KEYS = ['health', 'type', 'q'] as const
+const HEALTHS: IntegrationHealth[] = ['healthy', 'degraded', 'offline']
+const TYPES = Object.keys(APPLICATION_TYPE_LABEL) as ApplicationType[]
 
 interface AppHealth {
   app: Application
@@ -33,6 +49,10 @@ export function HealthPage() {
   const user = useCurrentUser()
   const navigate = useNavigate()
   const now = Date.now()
+  const filters = useUrlFilters(FILTER_KEYS)
+  const health = filters.get('health')
+  const type = filters.get('type')
+  const query = filters.get('q', '')
 
   const rows = React.useMemo<AppHealth[]>(
     () =>
@@ -50,6 +70,15 @@ export function HealthPage() {
   const healthy = rows.filter((r) => r.app.health === 'healthy').length
   const failedTotal = rows.reduce((sum, r) => sum + r.failed.length, 0)
   const incidents = rows.filter((r) => r.app.health !== 'healthy')
+  const visible = React.useMemo(() => {
+    const q = query.trim().toLowerCase()
+    return rows.filter(
+      (r) =>
+        (health === 'all' || r.app.health === health) &&
+        (type === 'all' || r.app.type === type) &&
+        (!q || r.app.name.toLowerCase().includes(q) || r.app.code.toLowerCase().includes(q)),
+    )
+  }, [rows, health, type, query])
 
   function retry(row: AppHealth) {
     const newest = row.failed[0]
@@ -110,6 +139,34 @@ export function HealthPage() {
         />
       </div>
 
+      <div className="flex flex-wrap items-center gap-2">
+        <Input
+          leftIcon={<Search />}
+          placeholder="Search name or code"
+          aria-label="Search applications"
+          value={query}
+          onChange={(e) => filters.set('q', e.target.value)}
+          className={`w-full sm:w-64 ${PILL_INPUT}`}
+        />
+        <Combobox
+          value={health}
+          onChange={(v) => filters.set('health', v)}
+          options={[allOption('All health states'), ...labelOptions(HEALTHS, HEALTH_LABEL)]}
+          className={`w-full sm:w-48 ${PILL_COMBOBOX}`}
+        />
+        <Combobox
+          value={type}
+          onChange={(v) => filters.set('type', v)}
+          options={[allOption('All types'), ...labelOptions(TYPES, APPLICATION_TYPE_LABEL)]}
+          className={`w-full sm:w-52 ${PILL_COMBOBOX}`}
+        />
+        {filters.active ? (
+          <Button variant="ghost" size="sm" onClick={filters.clear}>
+            Clear filters
+          </Button>
+        ) : null}
+      </div>
+
       {rows.length === 0 ? (
         <Card>
           <EmptyState
@@ -121,9 +178,22 @@ export function HealthPage() {
             }
           />
         </Card>
+      ) : visible.length === 0 ? (
+        <Card>
+          <EmptyState
+            icon={<AppWindow />}
+            title="No matches"
+            description="Try another health state, type or search."
+            action={
+              <Button variant="outline" size="sm" onClick={filters.clear}>
+                Clear filters
+              </Button>
+            }
+          />
+        </Card>
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {rows.map((row) => (
+          {visible.map((row) => (
             <Card key={row.app.id} className="flex flex-col">
               <CardHeader className="flex-row items-start gap-3 space-y-0">
                 <IconTile

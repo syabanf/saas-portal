@@ -1,15 +1,6 @@
-import type { PaymentChannel, PaymentChannelOption, PaymentMethod } from '@scp/types'
-import { PAYMENT_CHANNELS, PAYMENT_METHOD_LABEL } from '@scp/types'
-import { Select } from '@scp/ui'
-
-const GROUPS = Array.from(
-  PAYMENT_CHANNELS.reduce((map, option) => {
-    const bucket = map.get(option.method)
-    if (bucket) bucket.push(option)
-    else map.set(option.method, [option])
-    return map
-  }, new Map<PaymentMethod, PaymentChannelOption[]>()),
-)
+import type { PaymentChannel } from '@scp/types'
+import { Combobox } from '@scp/ui'
+import { CHANNEL_OPTIONS } from '../../lib/options'
 
 export interface ChannelSelectProps {
   id?: string
@@ -18,24 +9,16 @@ export interface ChannelSelectProps {
   className?: string
 }
 
-/** Xendit channels grouped by payment method. The single source is PAYMENT_CHANNELS. */
+/** Xendit channel picker, grouped by payment method. */
 export function ChannelSelect({ id, value, onChange, className }: ChannelSelectProps) {
   return (
-    <Select
+    <Combobox
       id={id}
       value={value}
-      onChange={(e) => onChange(e.target.value as PaymentChannel)}
+      onChange={(v) => onChange(v as PaymentChannel)}
+      options={CHANNEL_OPTIONS}
+      searchPlaceholder="Search channels"
       className={className}
-    >
-      {GROUPS.map(([method, options]) => (
-        <optgroup key={method} label={PAYMENT_METHOD_LABEL[method]}>
-          {options.map((o) => (
-            <option key={o.channel} value={o.channel}>
-              {o.label}
-            </option>
-          ))}
-        </optgroup>
-      ))}
-    </Select>
+    />
   )
 }

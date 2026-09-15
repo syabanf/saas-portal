@@ -1,9 +1,15 @@
 import { fmtDate, fmtDaysUntil, fmtIdr, fmtNumber, monthlyValue } from '@scp/fixtures'
 import type { Subscription, SubscriptionStatus } from '@scp/types'
-import { BILLING_PERIOD_LABEL, SUBSCRIPTION_STATUSES, SUBSCRIPTION_STATUS_LABEL } from '@scp/types'
+import {
+  BILLING_PERIODS,
+  BILLING_PERIOD_LABEL,
+  SUBSCRIPTION_STATUSES,
+  SUBSCRIPTION_STATUS_LABEL,
+} from '@scp/types'
 import {
   Button,
   Card,
+  Combobox,
   ConfirmDelete,
   CountBadge,
   DataTable,
@@ -15,7 +21,6 @@ import {
   DropdownMenuTrigger,
   Input,
   PageHeader,
-  Select,
   StatCard,
   Tabs,
   TabsList,
@@ -38,11 +43,20 @@ import {
   Wallet,
 } from 'lucide-react'
 import * as React from 'react'
-import { Link, useNavigate, useSearchParams } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { useCurrentUser } from '../../auth/auth'
 import { SubscriptionBadge } from '../../components/badges'
 import { SubscriptionDialog, emptySubscription } from '../../components/master/SubscriptionDialog'
 import { actorOf, useScoped } from '../../state/app-state'
+import {
+  PILL_COMBOBOX,
+  PILL_INPUT,
+  endsWithinDays,
+  useUrlFilters,
+  windowDays,
+  type WindowOption,
+} from '../../lib/filters'
+import { allOption, applicationOptions, labelOptions, tenantOptions } from '../../lib/options'
 import { ChangePeriodDialog } from './ChangePeriodDialog'
 
 const TAB_ORDER: SubscriptionStatus[] = [
@@ -56,19 +70,31 @@ const TAB_ORDER: SubscriptionStatus[] = [
   'draft',
 ]
 
-function isStatus(value: string | null): value is SubscriptionStatus {
+const ENDS_WINDOWS: WindowOption[] = [
+  { value: 'all', label: 'Ends any time', days: null },
+  { value: '7', label: 'Ends within 7 days', days: 7 },
+  { value: '30', label: 'Ends within 30 days', days: 30 },
+  { value: '90', label: 'Ends within 90 days', days: 90 },
+]
+const FILTER_KEYS = ['status', 'app', 'tenant', 'period', 'ends', 'q'] as const
+
+function isStatus(value: string): value is SubscriptionStatus {
   return SUBSCRIPTION_STATUSES.includes(value as SubscriptionStatus)
 }
 
 export function SubscriptionsPage() {
   const navigate = useNavigate()
   const user = useCurrentUser()
-  const { subscriptions, applications, tenantsById, applicationsById, dispatch } = useScoped()
-  const [params, setParams] = useSearchParams()
-  const statusParam = params.get('status')
+  const { subscriptions, applications, tenants, tenantsById, applicationsById, dispatch } =
+    useScoped()
+  const filters = useUrlFilters(FILTER_KEYS)
+  const statusParam = filters.get('status')
   const tab: 'all' | SubscriptionStatus = isStatus(statusParam) ? statusParam : 'all'
-  const [query, setQuery] = React.useState('')
-  const [applicationId, setApplicationId] = React.useState('')
+  const query = filters.get('q', '')
+  const applicationId = filters.get('app')
+  const tenantId = filters.get('tenant')
+  const period = filters.get('period')
+  const endsDays = windowDays(ENDS_WINDOWS, filters.get('ends'))
   const [editing, setEditing] = React.useState<Subscription | null>(null)
   const [changingPeriod, setChangingPeriod] = React.useState<Subscription | null>(null)
   const [removing, setRemoving] = React.useState<Subscription | null>(null)
@@ -92,7 +118,10 @@ export function SubscriptionsPage() {
     const q = query.trim().toLowerCase()
     return subscriptions.filter((s) => {
       if (tab !== 'all' && s.status !== tab) return false
-      if (applicationId && s.applicationId !== applicationId) return false
+      if (applicationId !== 'all' && s.applicationId !== applicationId) return false
+      if (tenantId !== 'all' && s.tenantId !== tenantId) return false
+      if (period !== 'all' && s.billingPeriod !== period) return false
+      if (!endsWithinDays(s.currentPeriodEnd, endsDays, now)) return false
       if (!q) return true
       const hay = [
         tenantsById.get(s.tenantId)?.name,
@@ -104,17 +133,18 @@ export function SubscriptionsPage() {
         .toLowerCase()
       return hay.includes(q)
     })
-  }, [subscriptions, tab, applicationId, query, tenantsById, applicationsById])
-
-  function selectTab(value: string) {
-    setParams(value === 'all' ? {} : { status: value }, { replace: true })
-  }
-
-  function clearFilters() {
-    setQuery('')
-    setApplicationId('')
-    selectTab('all')
-  }
+  }, [
+    subscriptions,
+    tab,
+    applicationId,
+    tenantId,
+    period,
+    endsDays,
+    now,
+    query,
+    tenantsById,
+    applicationsById,
+  ])
 
   const appName = (s: Subscription) =>
     applicationsById.get(s.applicationId)?.name ?? s.applicationId
@@ -173,31 +203,9 @@ export function SubscriptionsPage() {
         title="Subscriptions"
         description="Which organization subscribes to which application. Status decides access; payment never does on its own."
         actions={
-          <>
-            <Select
-              value={applicationId}
-              onChange={(e) => setApplicationId(e.target.value)}
-              aria-label="Filter by application"
-              className="[&_select]:shadow-card w-full sm:w-52 [&_select]:rounded-full [&_select]:border-0"
-            >
-              <option value="">All applications</option>
-              {applications.map((a) => (
-                <option key={a.id} value={a.id}>
-                  {a.name}
-                </option>
-              ))}
-            </Select>
-            <Input
-              leftIcon={<Search />}
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search organization or application"
-              className="[&_input]:shadow-card w-full sm:w-72 [&_input]:rounded-full [&_input]:border-0"
-            />
-            <Button onClick={() => setEditing(emptySubscription())}>
-              <Plus /> New subscription
-            </Button>
-          </>
+          <Button onClick={() => setEditing(emptySubscription())}>
+            <Plus /> New subscription
+          </Button>
         }
       />
 
@@ -233,7 +241,7 @@ export function SubscriptionsPage() {
           />
         </div>
 
-        <Tabs value={tab} onValueChange={selectTab}>
+        <Tabs value={tab} onValueChange={(v) => filters.set('status', v)}>
           <TabsList>
             <TabsTrigger value="all">
               All{' '}
@@ -250,6 +258,51 @@ export function SubscriptionsPage() {
             ))}
           </TabsList>
         </Tabs>
+
+        <div className="flex flex-wrap items-center gap-2">
+          <Input
+            leftIcon={<Search />}
+            value={query}
+            onChange={(e) => filters.set('q', e.target.value)}
+            placeholder="Search organization or application"
+            aria-label="Search subscriptions"
+            className={`w-full sm:w-64 ${PILL_INPUT}`}
+          />
+          <Combobox
+            value={tenantId}
+            onChange={(v) => filters.set('tenant', v)}
+            options={[allOption('All organizations'), ...tenantOptions(tenants)]}
+            searchPlaceholder="Search organizations"
+            className={`w-full sm:w-52 ${PILL_COMBOBOX}`}
+          />
+          <Combobox
+            value={applicationId}
+            onChange={(v) => filters.set('app', v)}
+            options={[allOption('All applications'), ...applicationOptions(applications)]}
+            searchPlaceholder="Search applications"
+            className={`w-full sm:w-52 ${PILL_COMBOBOX}`}
+          />
+          <Combobox
+            value={period}
+            onChange={(v) => filters.set('period', v)}
+            options={[
+              allOption('All billing periods'),
+              ...labelOptions(BILLING_PERIODS, BILLING_PERIOD_LABEL),
+            ]}
+            className={`w-full sm:w-44 ${PILL_COMBOBOX}`}
+          />
+          <Combobox
+            value={filters.get('ends')}
+            onChange={(v) => filters.set('ends', v)}
+            options={ENDS_WINDOWS}
+            className={`w-full sm:w-48 ${PILL_COMBOBOX}`}
+          />
+          {filters.active ? (
+            <Button variant="ghost" size="sm" onClick={filters.clear}>
+              Clear filters
+            </Button>
+          ) : null}
+        </div>
 
         <Card>
           <DataTable
@@ -305,21 +358,18 @@ export function SubscriptionsPage() {
             )}
             empty={{
               icon: <Receipt />,
-              title:
-                subscriptions.length === 0
-                  ? 'No subscriptions yet'
-                  : `No ${tab === 'all' ? '' : SUBSCRIPTION_STATUS_LABEL[tab].toLowerCase() + ' '}subscriptions match`,
+              title: subscriptions.length === 0 ? 'No subscriptions yet' : 'No matches',
               description:
                 subscriptions.length === 0
                   ? 'Subscribe an organization to an application to start.'
-                  : 'Try another status tab, application or search.',
+                  : 'Try another status tab, organization, application or search.',
               action:
                 subscriptions.length === 0 ? (
                   <Button size="sm" onClick={() => setEditing(emptySubscription())}>
                     New subscription
                   </Button>
                 ) : (
-                  <Button variant="outline" size="sm" onClick={clearFilters}>
+                  <Button variant="outline" size="sm" onClick={filters.clear}>
                     Clear filters
                   </Button>
                 ),
