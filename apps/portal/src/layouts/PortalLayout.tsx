@@ -16,9 +16,9 @@ import {
   RailAction,
   RailItem,
   RailWorkspace,
-  Sheet,
-  SheetContent,
-  SheetTitle,
+  MobileMenu,
+  MobileMenuGroup,
+  MobileMenuItem,
 } from '@scp/ui'
 import {
   ArrowLeft,
@@ -146,6 +146,7 @@ const searchPill =
 export function PortalLayout() {
   const [expanded, setExpanded] = React.useState(readRail)
   const [drawerOpen, setDrawerOpen] = React.useState(false)
+  const navItems = useNavItems()
   const [commandOpen, setCommandOpen] = React.useState(false)
   const [actionOpen, setActionOpen] = React.useState(false)
   const [supportOpen, setSupportOpen] = React.useState(false)
@@ -255,19 +256,23 @@ export function PortalLayout() {
           </Rail>
         </div>
 
-        <Sheet open={drawerOpen} onOpenChange={setDrawerOpen}>
-          <SheetContent side="left" hideClose className="bg-ink text-on-ink w-72 p-0">
-            <SheetTitle className="sr-only">Navigation</SheetTitle>
-            <Rail
-              expanded
-              onToggle={() => setDrawerOpen(false)}
-              header={<Wordmark expanded />}
-              className="h-full w-full rounded-none shadow-none"
-            >
-              <NavLinks onNavigate={() => setDrawerOpen(false)} />
-            </Rail>
-          </SheetContent>
-        </Sheet>
+        <MobileMenu open={drawerOpen} onOpenChange={setDrawerOpen} header={<Wordmark expanded />}>
+          <MobileMenuGroup>
+            {navItems.map((item) => (
+              <MobileMenuItem
+                key={item.to}
+                icon={<item.icon />}
+                label={item.label}
+                active={isActive(item, pathname)}
+                render={(p) => (
+                  <Link to={item.to} onClick={() => setDrawerOpen(false)} {...p}>
+                    {p.children}
+                  </Link>
+                )}
+              />
+            ))}
+          </MobileMenuGroup>
+        </MobileMenu>
 
         <div className="relative flex min-w-0 flex-1 flex-col gap-4">
           <header className="flex h-14 shrink-0 items-center gap-3">

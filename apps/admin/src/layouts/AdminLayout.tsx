@@ -17,9 +17,9 @@ import {
   RailGroup,
   RailItem,
   RailWorkspace,
-  Sheet,
-  SheetContent,
-  SheetTitle,
+  MobileMenu,
+  MobileMenuGroup,
+  MobileMenuItem,
   cn,
 } from '@scp/ui'
 import {
@@ -227,19 +227,32 @@ export function AdminLayout() {
         </Rail>
       </div>
 
-      <Sheet open={drawerOpen} onOpenChange={setDrawerOpen}>
-        <SheetContent side="left" hideClose className="bg-ink text-on-ink w-72 p-0">
-          <SheetTitle className="sr-only">Navigation</SheetTitle>
-          <Rail
-            expanded
-            onToggle={() => setDrawerOpen(false)}
-            header={<Wordmark expanded />}
-            className="h-full w-full rounded-none shadow-none"
-          >
-            <NavLinks onNavigate={() => setDrawerOpen(false)} />
-          </Rail>
-        </SheetContent>
-      </Sheet>
+      <MobileMenu open={drawerOpen} onOpenChange={setDrawerOpen} header={<Wordmark expanded />}>
+        {NAV_SECTIONS.map((section) => (
+          <MobileMenuGroup key={section.label} label={section.label}>
+            {section.items.map((item) => (
+              <MobileMenuItem
+                key={item.to}
+                icon={<item.icon />}
+                label={item.label}
+                active={isActive(item, pathname)}
+                badge={
+                  item.to === '/logs'
+                    ? kpis.deniedToday
+                    : item.to === '/webhooks'
+                      ? kpis.failedWebhooks
+                      : undefined
+                }
+                render={(p) => (
+                  <Link to={item.to} onClick={() => setDrawerOpen(false)} {...p}>
+                    {p.children}
+                  </Link>
+                )}
+              />
+            ))}
+          </MobileMenuGroup>
+        ))}
+      </MobileMenu>
 
       <div className="relative flex min-w-0 flex-1 flex-col gap-4">
         <header className="flex h-14 shrink-0 items-center gap-3">
