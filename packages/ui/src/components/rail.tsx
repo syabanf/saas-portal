@@ -43,8 +43,8 @@ export function Rail({
         ) : null}
         <nav
           className={cn(
-            'mt-4 flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto [scrollbar-width:none]',
-            expanded ? 'w-full' : 'items-center',
+            'mt-3 flex min-h-0 w-full flex-1 flex-col gap-1 overflow-y-auto pt-1 [scrollbar-width:none]',
+            expanded ? '' : 'items-center',
           )}
         >
           {children}
