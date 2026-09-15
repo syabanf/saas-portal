@@ -179,7 +179,7 @@ export function AuditPage() {
             disabled={rows.length === 0}
           >
             <Download />
-            Export {rows.length} entries
+            Export {rows.length} {rows.length === 1 ? 'entry' : 'entries'}
           </Button>
         }
       />

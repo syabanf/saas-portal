@@ -1,7 +1,7 @@
 import { Button, EmptyState } from '@scp/ui'
 import { Link, useParams } from 'react-router'
 import { useScoped } from '../../state/app-state'
-import { ProductWizard } from './ProductWizard'
+import { ProductForm } from './ProductForm'
 
 /** Loads the product behind `/applications/:id/edit` and hands it to the wizard. */
 export function ApplicationEditPage() {
@@ -23,5 +23,5 @@ export function ApplicationEditPage() {
     )
   }
 
-  return <ProductWizard key={app.id} application={app} />
+  return <ProductForm key={app.id} application={app} />
 }

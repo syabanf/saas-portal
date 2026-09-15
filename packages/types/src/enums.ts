@@ -33,6 +33,33 @@ export const APPLICATION_STATUS_LABEL: Record<ApplicationStatus, string> = {
   draft: 'Draft',
 }
 
+/**
+ * How a product is protected (blueprint §18, §21).
+ * `verify`: the application calls SaaS Gate to check the subscription, then serves the request itself.
+ * `gateway`: callers hit SaaS Gate first; it checks the subscription and forwards to the product API.
+ */
+export type IntegrationMode = 'verify' | 'gateway'
+export const INTEGRATION_MODES: IntegrationMode[] = ['verify', 'gateway']
+export const INTEGRATION_MODE_LABEL: Record<IntegrationMode, string> = {
+  verify: 'Application checks with SaaS Gate',
+  gateway: 'SaaS Gate forwards to the application',
+}
+export const INTEGRATION_MODE_HINT: Record<IntegrationMode, string> = {
+  verify: 'Your application calls our check endpoint, then answers the request itself.',
+  gateway: 'Callers reach our gateway first. We check the subscription and pass the request on.',
+}
+/** The request chain shown on the product screens, one step per hop. */
+export const INTEGRATION_MODE_FLOW: Record<IntegrationMode, string[]> = {
+  verify: [
+    'Application',
+    'SaaS Gate check',
+    'Subscription state',
+    'Allow or deny',
+    'Application responds',
+  ],
+  gateway: ['Caller', 'SaaS Gate gateway', 'Subscription state', 'Product API', 'Response'],
+}
+
 export type AuthMode = 'sso' | 'own_login' | 'service_only'
 export const AUTH_MODE_LABEL: Record<AuthMode, string> = {
   sso: 'Login through SaaS Platform',

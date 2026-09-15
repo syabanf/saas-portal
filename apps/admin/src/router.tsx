@@ -7,7 +7,7 @@ import { ApiClientsPage } from './pages/api-clients/ApiClientsPage'
 import { ApplicationDetailPage } from './pages/applications/ApplicationDetailPage'
 import { ApplicationEditPage } from './pages/applications/ApplicationEditPage'
 import { ApplicationsPage } from './pages/applications/ApplicationsPage'
-import { ProductWizard } from './pages/applications/ProductWizard'
+import { ProductForm } from './pages/applications/ProductForm'
 import { AuditPage } from './pages/audit/AuditPage'
 import { LoginPage } from './pages/auth/LoginPage'
 import { BillingPage } from './pages/billing/BillingPage'
@@ -65,7 +65,7 @@ export const router = createBrowserRouter([
       { path: 'organizations/:id', element: <OrganizationDetailPage /> },
       { path: 'users', element: <UsersPage /> },
       { path: 'applications', element: <ApplicationsPage /> },
-      { path: 'applications/new', element: <ProductWizard /> },
+      { path: 'applications/new', element: <ProductForm /> },
       { path: 'applications/:id', element: <ApplicationDetailPage /> },
       { path: 'applications/:id/edit', element: <ApplicationEditPage /> },
       { path: 'subscriptions', element: <SubscriptionsPage /> },

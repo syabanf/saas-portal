@@ -1,9 +1,10 @@
+import { integrationModeOf } from '@scp/fixtures'
 import type { Application, ApplicationStatus, ApplicationType } from '@scp/types'
 import {
   ACCESS_POLICY_LABEL,
   APPLICATION_STATUS_LABEL,
   APPLICATION_TYPE_LABEL,
-  AUTH_MODE_LABEL,
+  INTEGRATION_MODE_LABEL,
 } from '@scp/types'
 import {
   Badge,
@@ -113,7 +114,7 @@ export function ApplicationsPage() {
     return {
       active: applications.filter((a) => a.status === 'active').length,
       healthy: applications.filter((a) => a.health === 'healthy').length,
-      sso: applications.filter((a) => a.authMode === 'sso').length,
+      gateway: applications.filter((a) => integrationModeOf(a) === 'gateway').length,
       subscribedOrganizations: tenantsSubscribed.size,
     }
   }, [applications, subscriptionsByApplication])
@@ -167,9 +168,9 @@ export function ApplicationsPage() {
           className="bg-surface-2 shadow-none"
         />
         <StatCard
-          label="SSO enabled"
-          value={stats.sso}
-          hint="Login through SaaS Platform"
+          label="Gateway products"
+          value={stats.gateway}
+          hint="SaaS Gate forwards the request"
           icon={<KeyRound />}
           tone="info"
           className="bg-surface-2 shadow-none"
@@ -388,7 +389,7 @@ function ApplicationCard({
           ) : null}
         </div>
         <p className="text-muted mt-2 truncate text-xs">
-          {APPLICATION_TYPE_LABEL[app.type]} · {AUTH_MODE_LABEL[app.authMode]}
+          {APPLICATION_TYPE_LABEL[app.type]} · {INTEGRATION_MODE_LABEL[integrationModeOf(app)]}
         </p>
         <div className="mt-3 mb-5 flex flex-wrap gap-1.5">
           <Badge variant="outline">{ACCESS_POLICY_LABEL[app.accessPolicy]}</Badge>

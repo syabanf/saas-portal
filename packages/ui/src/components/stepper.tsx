@@ -22,7 +22,11 @@ export function Stepper({
     <ol
       className={cn(
         'grid gap-2',
-        steps.length === 6 ? 'grid-cols-3 md:grid-cols-6' : 'grid-cols-2 md:grid-cols-4',
+        steps.length === 6
+          ? 'grid-cols-3 md:grid-cols-6'
+          : steps.length === 5
+            ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-5'
+            : 'grid-cols-2 md:grid-cols-4',
         className,
       )}
     >

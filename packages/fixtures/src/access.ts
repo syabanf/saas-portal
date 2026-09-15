@@ -1,6 +1,7 @@
 import type {
   AppAccessState,
   Application,
+  IntegrationMode,
   Subscription,
   SubscriptionStatus,
   TenantMember,
@@ -88,4 +89,33 @@ export function priceFor(
   period: Subscription['billingPeriod'],
 ): number {
   return period === 'annual' ? app.priceAnnual : app.priceMonthly
+}
+
+/** Integration mode of a product, defaulting older records to the check flow. */
+export function integrationModeOf(
+  app: Pick<Application, 'integrationMode' | 'authMode'>,
+): IntegrationMode {
+  return app.integrationMode ?? (app.authMode === 'service_only' ? 'gateway' : 'verify')
+}
+
+/** The product API SaaS Gate protects, falling back to the application URL. */
+export function apiUrlOf(app: Pick<Application, 'apiUrl' | 'baseUrl'>): string {
+  return app.apiUrl || `${app.baseUrl.replace(/\/$/, '')}/api`
+}
+
+/** Origin a user is sent to when opening the product. */
+export function openUrlOf(app: Pick<Application, 'baseUrl' | 'callbackUrl'>): string {
+  if (app.baseUrl) return app.baseUrl
+  try {
+    return new URL(app.callbackUrl).origin
+  } catch {
+    return app.callbackUrl
+  }
+}
+
+/** A product a person can open in a browser, as opposed to a machine-to-machine API. */
+export function isUserFacing(
+  app: Pick<Application, 'callbackUrl' | 'integrationMode' | 'authMode'>,
+): boolean {
+  return app.callbackUrl.trim() !== '' && integrationModeOf(app) !== 'gateway'
 }

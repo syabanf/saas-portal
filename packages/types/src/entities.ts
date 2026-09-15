@@ -10,6 +10,7 @@ import type {
   BillingPeriod,
   DeliveryStatus,
   Environment,
+  IntegrationMode,
   EventType,
   IntegrationHealth,
   InvoiceStatus,
@@ -69,6 +70,10 @@ export interface Application {
   type: ApplicationType
   status: ApplicationStatus
   authMode: AuthMode
+  /** How the product is protected. Optional while the older records are migrated. */
+  integrationMode?: IntegrationMode
+  /** The product API that SaaS Gate protects or forwards to. */
+  apiUrl?: string
   accessPolicy: AccessPolicyMode
   allowedStatuses: SubscriptionStatus[]
   /** Price per billing period; 0 means the period is not offered. */

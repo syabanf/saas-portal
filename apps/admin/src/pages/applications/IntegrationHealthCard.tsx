@@ -1,6 +1,6 @@
-import { fmtAgo } from '@scp/fixtures'
+import { fmtAgo, integrationModeOf } from '@scp/fixtures'
 import type { Application } from '@scp/types'
-import { ACCESS_POLICY_LABEL, AUTH_MODE_LABEL } from '@scp/types'
+import { ACCESS_POLICY_LABEL, INTEGRATION_MODE_LABEL } from '@scp/types'
 import { Button, Card, CardContent, CardHeader, SectionTitle, SettingRow } from '@scp/ui'
 import {
   BookOpen,
@@ -94,7 +94,7 @@ export function IntegrationHealthCard({ app, onEdit, onDelete }: IntegrationHeal
             {
               icon: <KeyRound />,
               title: 'Authentication',
-              subtitle: AUTH_MODE_LABEL[app.authMode],
+              subtitle: INTEGRATION_MODE_LABEL[integrationModeOf(app)],
             },
             {
               icon: <ShieldCheck />,

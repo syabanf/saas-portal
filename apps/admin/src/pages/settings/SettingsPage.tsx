@@ -131,7 +131,7 @@ export function SettingsPage() {
               onChange={(v) => set('mode', v as IntegrationConfig['mode'])}
               options={MODE_OPTIONS}
               searchPlaceholder="Search modes…"
-              className="w-full sm:w-56"
+              className="text-foreground w-full sm:w-56"
             />
           </div>
           <form onSubmit={save}>

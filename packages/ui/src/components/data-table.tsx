@@ -123,7 +123,7 @@ export function DataTable<T>({
                     <button
                       type="button"
                       onClick={() => toggleSort(c.key)}
-                      className="hover:text-foreground focus-visible:ring-accent inline-flex min-h-10 items-center gap-1 rounded-lg focus-visible:ring-2 focus-visible:outline-none"
+                      className="hover:text-foreground focus-visible:ring-accent inline-flex min-h-10 items-center gap-1 rounded-lg uppercase focus-visible:ring-2 focus-visible:outline-none"
                     >
                       {c.header}
                       {sort?.key === c.key ? (

@@ -237,7 +237,7 @@ export function SessionsPage() {
         {filters.active ? <ClearFiltersButton onClick={filters.clear} /> : null}
       </div>
 
-      <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_340px]">
+      <div className="grid grid-cols-1 gap-4 2xl:grid-cols-[1fr_340px]">
         <Card className="min-w-0">
           <DataTable
             rows={rows}

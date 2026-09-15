@@ -1,11 +1,11 @@
-import { fmtAgo, fmtIdr } from '@scp/fixtures'
+import { apiUrlOf, fmtAgo, fmtIdr, integrationGuide, integrationModeOf } from '@scp/fixtures'
 import type { Application } from '@scp/types'
 import {
   ACCESS_POLICY_LABEL,
   ACCESS_REASON_LABEL,
   APPLICATION_STATUS_LABEL,
   APPLICATION_TYPE_LABEL,
-  AUTH_MODE_LABEL,
+  INTEGRATION_MODE_LABEL,
 } from '@scp/types'
 import {
   AlertDialog,
@@ -20,8 +20,10 @@ import {
   Button,
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
+  CodeBlock,
   ConfirmDelete,
   EmptyState,
   IconTile,
@@ -40,6 +42,7 @@ import {
 } from '../../components/badges'
 import { actorOf, useScoped } from '../../state/app-state'
 import { ApiClientsCard } from './ApiClientsCard'
+import { FlowChain } from './ProductForm'
 import { IntegrationHealthCard } from './IntegrationHealthCard'
 import { SubscriptionsCard } from './SubscriptionsCard'
 import { WebhooksCard } from './WebhooksCard'
@@ -53,6 +56,8 @@ export function ApplicationDetailPage() {
   const [confirmDisable, setConfirmDisable] = React.useState(false)
   const [removing, setRemoving] = React.useState(false)
   const now = Date.now()
+  const mode = app ? integrationModeOf(app) : 'verify'
+  const guide = integrationGuide(mode, app?.code ?? '', app ? apiUrlOf(app) : '')
 
   const recentAccess = React.useMemo(
     () => state.accessLogs.filter((l) => l.applicationId === id).slice(0, 8),
@@ -130,6 +135,37 @@ export function ApplicationDetailPage() {
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_340px]">
         <div className="min-w-0 space-y-4">
           <Card>
+            <CardHeader className="flex-row items-start justify-between space-y-0">
+              <div>
+                <CardTitle>How this product is protected</CardTitle>
+                <CardDescription>{guide.summary}</CardDescription>
+              </div>
+              <Button variant="outline" size="sm" asChild>
+                <Link to={`/applications/${app.id}/edit`}>Change</Link>
+              </Button>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <FlowChain mode={mode} />
+              <dl className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <div className="bg-surface-2 rounded-2xl p-3">
+                  <dt className="text-muted text-[11px] font-semibold tracking-wider uppercase">
+                    API URL
+                  </dt>
+                  <dd className="mt-1 font-mono text-xs break-all">{apiUrlOf(app)}</dd>
+                </div>
+                <div className="bg-surface-2 rounded-2xl p-3">
+                  <dt className="text-muted text-[11px] font-semibold tracking-wider uppercase">
+                    Callback URL
+                  </dt>
+                  <dd className="mt-1 font-mono text-xs break-all">
+                    {app.callbackUrl || 'Not used in this mode'}
+                  </dd>
+                </div>
+              </dl>
+              <CodeBlock code={guide.code} tone="dark" />
+            </CardContent>
+          </Card>
+          <Card>
             <CardHeader>
               <CardTitle>Configuration</CardTitle>
             </CardHeader>
@@ -139,7 +175,8 @@ export function ApplicationDetailPage() {
                 rows={[
                   { label: 'Type', value: APPLICATION_TYPE_LABEL[app.type] },
                   { label: 'URL', value: <Mono>{app.baseUrl}</Mono> },
-                  { label: 'Authentication', value: AUTH_MODE_LABEL[app.authMode] },
+                  { label: 'Integration', value: INTEGRATION_MODE_LABEL[integrationModeOf(app)] },
+                  { label: 'API URL', value: <Mono>{apiUrlOf(app)}</Mono> },
                   { label: 'Access policy', value: ACCESS_POLICY_LABEL[app.accessPolicy] },
                   {
                     label: 'Monthly price',

@@ -7,6 +7,7 @@ import {
   type AppAccess,
   type AppAction,
   type AppState,
+  isUserFacing,
 } from '@scp/fixtures'
 import type {
   Application,
@@ -191,7 +192,7 @@ export function useScoped(): ScopedViews {
         return user ? [{ ...m, user }] : []
       })
     const applications = state.applications
-      .filter((a) => a.status === 'active' && a.authMode !== 'service_only')
+      .filter((a) => a.status === 'active' && isUserFacing(a))
       .map<PortalApplication>((app) => {
         const subscription = subscriptionByApplication.get(app.id) ?? null
         return {

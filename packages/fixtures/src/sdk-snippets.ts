@@ -1,4 +1,4 @@
-import type { SdkStack } from '@scp/types'
+import type { IntegrationMode, SdkStack } from '@scp/types'
 
 export interface SdkSnippet {
   install: string
@@ -102,4 +102,58 @@ SAAS_CLIENT_ID=${clientId}
 SAAS_CLIENT_SECRET=<shown once at creation>
 SAAS_AUDIENCE=${audience}
 SAAS_CALLBACK_URL=${callbackUrl}`
+}
+
+export interface IntegrationGuide {
+  /** One sentence describing who calls whom. */
+  summary: string
+  /** What the product owner must build or point at. */
+  todo: string[]
+  language: string
+  code: string
+}
+
+/** Copy-paste guide for the two ways a product can be protected (blueprint §18, §21). */
+export function integrationGuide(
+  mode: IntegrationMode,
+  code: string,
+  apiUrl: string,
+): IntegrationGuide {
+  if (mode === 'gateway') {
+    return {
+      summary: `Callers send requests to the SaaS Gate gateway. We check the subscription and forward to ${apiUrl}.`,
+      todo: [
+        'Point your clients at the gateway URL below instead of your own API.',
+        'Accept the forwarded request on your API and trust the X-Tenant-Id header.',
+      ],
+      language: 'http',
+      code: `GET https://gateway.saasgate.example/${code}/devices
+Authorization: Bearer <client_token>
+
+# SaaS Gate checks the subscription, then forwards to
+# ${apiUrl}/devices with these headers:
+#   X-Tenant-Id: org_abc
+#   X-Subscription-Status: active
+#   X-Forwarded-By: saas-gate`,
+    }
+  }
+  return {
+    summary: `Your application calls the SaaS Gate check endpoint, then serves the request from ${apiUrl}.`,
+    todo: [
+      'Call the check endpoint at the start of a protected request.',
+      'Deny the request yourself when the answer is not allowed.',
+    ],
+    language: 'javascript',
+    code: `const res = await fetch("https://api.saasgate.example/v1/access/check", {
+  method: "POST",
+  headers: {
+    "content-type": "application/json",
+    authorization: \`Bearer \${process.env.SAAS_CLIENT_SECRET}\`,
+  },
+  body: JSON.stringify({ product: "${code}", tenant_id: tenantId }),
+});
+
+const { allowed, reason } = await res.json();
+if (!allowed) return reply.code(403).send({ error: reason });`,
+  }
 }

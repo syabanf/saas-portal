@@ -68,7 +68,7 @@ export function DashboardPage() {
     return map
   }, [state.accessLogs, now])
 
-  const recentDecisions = state.accessLogs.slice(0, 6)
+  const recentDecisions = state.accessLogs.slice(0, view === 'access' ? 12 : 6)
   const paymentIssues = state.subscriptions
     .filter(
       (s) => s.status === 'past_due' || s.status === 'grace_period' || s.status === 'suspended',
@@ -313,7 +313,12 @@ export function DashboardPage() {
         />
       </div>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-[1fr_1fr_20rem]">
+      <div
+        className={cn(
+          'grid grid-cols-1 gap-4',
+          view === 'commercial' && 'md:grid-cols-2 xl:grid-cols-[1fr_1fr_20rem]',
+        )}
+      >
         <Card>
           <CardHeader className="flex-row items-center justify-between space-y-0">
             <CardTitle className="flex items-center gap-2">
@@ -366,103 +371,107 @@ export function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex-row items-center justify-between space-y-0">
-            <CardTitle className="flex items-center gap-2">
-              Payment issues <Badge variant="muted">{paymentIssues.length}</Badge>
-            </CardTitle>
-            <Button variant="outline" size="sm" asChild>
-              <Link to="/billing">Billing</Link>
-            </Button>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            {paymentIssues.length === 0 ? (
-              <EmptyState
-                title="All accounts in good standing"
-                description="No past due, grace or suspended subscriptions."
-              />
-            ) : (
-              paymentIssues.map((s) => (
-                <Link
-                  key={s.id}
-                  to={`/subscriptions/${s.id}`}
-                  className="bg-surface-2 hover:bg-card hover:shadow-card flex items-center gap-3 rounded-2xl p-3 transition-colors"
-                >
-                  <span className="bg-warning-soft text-warning flex size-9 shrink-0 items-center justify-center rounded-full [&_svg]:size-4">
-                    <AlertTriangle />
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-semibold">
-                      {tenantsById.get(s.tenantId)?.name}
-                    </p>
-                    <p className="text-muted truncate text-xs">
-                      {applicationsById.get(s.applicationId)?.name} ·{' '}
-                      {BILLING_PERIOD_LABEL[s.billingPeriod]}
-                    </p>
-                  </div>
-                  <SubscriptionBadge status={s.status} />
-                </Link>
-              ))
-            )}
-          </CardContent>
-        </Card>
-
-        <Card className="md:col-span-2 xl:col-span-1">
-          <CardHeader>
-            <CardTitle>Subscriptions by status</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="bg-surface flex h-3 w-full overflow-hidden rounded-full">
-              {SUBSCRIPTION_STATUSES.map((st) => {
-                const n = kpis.statusBreakdown[st]
-                if (!n) return null
-                return (
-                  <div
-                    key={st}
-                    className={STATUS_BAR[st]}
-                    style={{ width: `${(n / state.subscriptions.length) * 100}%` }}
-                    title={SUBSCRIPTION_STATUS_LABEL[st]}
+        {view === 'commercial' ? (
+          <>
+            <Card>
+              <CardHeader className="flex-row items-center justify-between space-y-0">
+                <CardTitle className="flex items-center gap-2">
+                  Payment issues <Badge variant="muted">{paymentIssues.length}</Badge>
+                </CardTitle>
+                <Button variant="outline" size="sm" asChild>
+                  <Link to="/billing">Billing</Link>
+                </Button>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {paymentIssues.length === 0 ? (
+                  <EmptyState
+                    title="All accounts in good standing"
+                    description="No past due, grace or suspended subscriptions."
                   />
-                )
-              })}
-            </div>
-            <ul className="mt-4 space-y-2 text-sm">
-              {SUBSCRIPTION_STATUSES.map((st) => (
-                <li key={st} className="flex items-center gap-2">
-                  <span className={cn('size-2.5 rounded-full', STATUS_BAR[st])} />
-                  <span className="text-body flex-1">{SUBSCRIPTION_STATUS_LABEL[st]}</span>
-                  <span className="font-semibold tabular-nums">{kpis.statusBreakdown[st]}</span>
-                </li>
-              ))}
-            </ul>
-            <div className="mt-5 grid grid-cols-2 gap-2 text-xs">
-              <Link
-                to="/webhooks"
-                className="bg-surface-2 hover:bg-surface flex items-center gap-2 rounded-2xl p-3"
-              >
-                <Webhook className="text-muted size-4" />
-                <span>
-                  <span className="block text-base font-bold tabular-nums">
-                    {kpis.failedWebhooks}
-                  </span>
-                  failed hooks
-                </span>
-              </Link>
-              <Link
-                to="/health"
-                className="bg-surface-2 hover:bg-surface flex items-center gap-2 rounded-2xl p-3"
-              >
-                <WifiOff className="text-muted size-4" />
-                <span>
-                  <span className="block text-base font-bold tabular-nums">
-                    {kpis.integrationsWithIssues}
-                  </span>
-                  with issues
-                </span>
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
+                ) : (
+                  paymentIssues.map((s) => (
+                    <Link
+                      key={s.id}
+                      to={`/subscriptions/${s.id}`}
+                      className="bg-surface-2 hover:bg-card hover:shadow-card flex items-center gap-3 rounded-2xl p-3 transition-colors"
+                    >
+                      <span className="bg-warning-soft text-warning flex size-9 shrink-0 items-center justify-center rounded-full [&_svg]:size-4">
+                        <AlertTriangle />
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-sm font-semibold">
+                          {tenantsById.get(s.tenantId)?.name}
+                        </p>
+                        <p className="text-muted truncate text-xs">
+                          {applicationsById.get(s.applicationId)?.name} ·{' '}
+                          {BILLING_PERIOD_LABEL[s.billingPeriod]}
+                        </p>
+                      </div>
+                      <SubscriptionBadge status={s.status} />
+                    </Link>
+                  ))
+                )}
+              </CardContent>
+            </Card>
+
+            <Card className="md:col-span-2 xl:col-span-1">
+              <CardHeader>
+                <CardTitle>Subscriptions by status</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="bg-surface flex h-3 w-full overflow-hidden rounded-full">
+                  {SUBSCRIPTION_STATUSES.map((st) => {
+                    const n = kpis.statusBreakdown[st]
+                    if (!n) return null
+                    return (
+                      <div
+                        key={st}
+                        className={STATUS_BAR[st]}
+                        style={{ width: `${(n / state.subscriptions.length) * 100}%` }}
+                        title={SUBSCRIPTION_STATUS_LABEL[st]}
+                      />
+                    )
+                  })}
+                </div>
+                <ul className="mt-4 space-y-2 text-sm">
+                  {SUBSCRIPTION_STATUSES.map((st) => (
+                    <li key={st} className="flex items-center gap-2">
+                      <span className={cn('size-2.5 rounded-full', STATUS_BAR[st])} />
+                      <span className="text-body flex-1">{SUBSCRIPTION_STATUS_LABEL[st]}</span>
+                      <span className="font-semibold tabular-nums">{kpis.statusBreakdown[st]}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-5 grid grid-cols-2 gap-2 text-xs">
+                  <Link
+                    to="/webhooks"
+                    className="bg-surface-2 hover:bg-surface flex items-center gap-2 rounded-2xl p-3"
+                  >
+                    <Webhook className="text-muted size-4" />
+                    <span>
+                      <span className="block text-base font-bold tabular-nums">
+                        {kpis.failedWebhooks}
+                      </span>
+                      failed hooks
+                    </span>
+                  </Link>
+                  <Link
+                    to="/health"
+                    className="bg-surface-2 hover:bg-surface flex items-center gap-2 rounded-2xl p-3"
+                  >
+                    <WifiOff className="text-muted size-4" />
+                    <span>
+                      <span className="block text-base font-bold tabular-nums">
+                        {kpis.integrationsWithIssues}
+                      </span>
+                      with issues
+                    </span>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+          </>
+        ) : null}
       </div>
     </div>
   )

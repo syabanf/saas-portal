@@ -11,6 +11,13 @@ import {
 import { Combobox } from './combobox'
 import { FormField, Input, Checkbox } from './input'
 
+/** Matches the app's date style without pulling a domain package into the kit. */
+const expiryDate = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+})
+
 export interface InvitationDraft {
   name: string
   email: string
@@ -175,7 +182,7 @@ export function InvitationLink({
       <p className="text-muted">
         {expired
           ? 'Invitation expired or not yet issued.'
-          : `Invitation expires ${new Date(expiresAt!).toLocaleDateString()}.`}
+          : `Invitation expires ${expiryDate.format(new Date(expiresAt!))}.`}
       </p>
       {url && !expired && (
         <>

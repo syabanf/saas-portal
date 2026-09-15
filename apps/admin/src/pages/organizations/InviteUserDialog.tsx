@@ -1,4 +1,4 @@
-import { invitationFields, newId } from '@scp/fixtures'
+import { invitationFields, isUserFacing, newId } from '@scp/fixtures'
 import type { Tenant } from '@scp/types'
 import { InvitationDialog } from '@scp/ui'
 import { useScoped } from '../../state/app-state'
@@ -20,7 +20,7 @@ export function InviteUserDialog({
       applications={applications.filter(
         (a) =>
           a.status === 'active' &&
-          a.authMode !== 'service_only' &&
+          isUserFacing(a) &&
           (a.accessPolicy === 'free' || subscriptions.some((s) => s.applicationId === a.id)),
       )}
       onInvite={(draft) => {

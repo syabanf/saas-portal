@@ -2,30 +2,26 @@ import { avatarColor, initials } from '@scp/fixtures'
 import { Avatar, Button, Input, Label } from '@scp/ui'
 import { ShieldCheck } from 'lucide-react'
 import * as React from 'react'
-import { Navigate, useLocation, useNavigate } from 'react-router'
+import { Navigate, useLocation } from 'react-router'
 import { useAuth } from '../../auth/auth'
 import { useAppState } from '../../state/app-state'
 
 export function LoginPage() {
   const { user, login } = useAuth()
   const { state } = useAppState()
-  const navigate = useNavigate()
   const location = useLocation()
   const [email, setEmail] = React.useState('admin@platform.example')
   const [password, setPassword] = React.useState('demo')
   const [error, setError] = React.useState<string | null>(null)
   const admins = state.users.filter((u) => u.platformAdmin && u.status === 'active')
+  /** Where RequireAuth sent the visitor from, so sign-in returns them there. */
+  const from = (location.state as { from?: string } | null)?.from ?? '/'
 
-  if (user) return <Navigate to="/" replace />
+  if (user) return <Navigate to={from} replace />
 
   function signIn(address: string) {
     const res = login(address)
-    if (!res.ok) {
-      setError(res.error)
-      return
-    }
-    const from = (location.state as { from?: string } | null)?.from ?? '/'
-    navigate(from, { replace: true })
+    if (!res.ok) setError(res.error)
   }
 
   function submit(e: React.FormEvent) {

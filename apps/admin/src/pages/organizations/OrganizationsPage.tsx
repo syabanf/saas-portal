@@ -249,7 +249,7 @@ export function OrganizationsPage() {
       {selected.size > 0 ? (
         <Card className="flex flex-wrap items-center gap-2 p-3">
           <p role="status" aria-live="polite" className="mr-auto text-sm font-semibold">
-            {selected.size} organizations selected
+            {selected.size} {selected.size === 1 ? 'organization' : 'organizations'} selected
           </p>
           <Button size="sm" variant="outline" onClick={() => setSelectedStatus('active')}>
             <CheckCircle2 /> Activate

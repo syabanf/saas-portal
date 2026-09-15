@@ -6,6 +6,7 @@ import {
   newId,
   nextInvoiceNumber,
   priceFor,
+  isUserFacing,
 } from '@scp/fixtures'
 import type { BillingPeriod, Subscription, Tenant, TenantMember } from '@scp/types'
 import { BILLING_PERIODS, BILLING_PERIOD_LABEL } from '@scp/types'
@@ -77,11 +78,10 @@ export function OrganizationNewPage() {
   }, [draft, step, startedAt, dirty, created])
   const app = applications.find((a) => a.id === draft.applicationId)
   const choices = applications.filter(
-    (a) =>
-      a.status === 'active' && a.accessPolicy === 'subscription' && a.authMode !== 'service_only',
+    (a) => a.status === 'active' && a.accessPolicy === 'subscription' && isUserFacing(a),
   )
   const freeApps = applications.filter(
-    (a) => a.status === 'active' && a.accessPolicy === 'free' && a.authMode !== 'service_only',
+    (a) => a.status === 'active' && a.accessPolicy === 'free' && isUserFacing(a),
   )
   const price = app ? priceFor(app, draft.billingPeriod) : 0
   const trial = Boolean(app && app.trialDays > 0)
@@ -292,7 +292,7 @@ export function OrganizationNewPage() {
       <p className="text-muted">
         Create a workspace and invite its first admin. Paid subscriptions are optional.
       </p>
-      <Stepper steps={STEPS} current={step} />
+      <Stepper steps={STEPS} current={step} onSelect={setStep} />
       <Card>
         <CardHeader>
           <CardTitle>{STEPS[step]}</CardTitle>
