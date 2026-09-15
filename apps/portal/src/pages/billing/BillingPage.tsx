@@ -188,6 +188,14 @@ export function BillingPage() {
           >
             Continue
           </Link>
+        ) : p.status === 'success' ? (
+          <Link
+            to={`/payments/${p.id}/receipt`}
+            onClick={(e) => e.stopPropagation()}
+            className="text-muted hover:text-foreground text-xs font-semibold"
+          >
+            Receipt
+          </Link>
         ) : null,
     },
   ]

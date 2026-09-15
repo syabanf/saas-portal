@@ -94,7 +94,14 @@ export function isActive(item: NavItem, pathname: string): boolean {
     : pathname === item.to || pathname.startsWith(`${item.to}/`)
 }
 
+/** Pages reachable from the avatar menu, not the rail. */
+const UNLISTED_PAGES: Record<string, { title: string; section: string }> = {
+  '/profile': { title: 'Profile', section: 'Account' },
+}
+
 export function pageTitle(pathname: string): { title: string; section: string } {
+  const unlisted = UNLISTED_PAGES[pathname]
+  if (unlisted) return unlisted
   for (const section of NAV_SECTIONS) {
     for (const item of section.items) {
       if (isActive(item, pathname)) return { title: item.label, section: section.label }

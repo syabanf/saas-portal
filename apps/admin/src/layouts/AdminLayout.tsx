@@ -32,6 +32,7 @@ import {
   RotateCcw,
   Search,
   ShieldCheck,
+  UserRound,
 } from 'lucide-react'
 import * as React from 'react'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router'
@@ -108,6 +109,7 @@ function WorkspaceMenu({ children }: { children: React.ReactNode }) {
   const { logout } = useAuth()
   const { resetDemo } = useAppState()
   const user = useCurrentUser()
+  const navigate = useNavigate()
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
@@ -117,6 +119,9 @@ function WorkspaceMenu({ children }: { children: React.ReactNode }) {
           <p className="font-semibold">{user.name}</p>
           <p className="text-muted text-xs">{user.email}</p>
         </div>
+        <DropdownMenuItem onSelect={() => navigate('/profile')}>
+          <UserRound /> Profile
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
           <a href={PORTAL_URL} target="_blank" rel="noreferrer">

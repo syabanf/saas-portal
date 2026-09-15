@@ -1,4 +1,5 @@
 import { createBrowserRouter } from 'react-router'
+import { ReceiptDocumentPage } from './pages/payments/ReceiptDocumentPage'
 import { RequireAuth, RequireWorkspaceAdmin } from './auth/auth'
 import { PortalLayout } from './layouts/PortalLayout'
 import { ApplicationsPage } from './pages/applications/ApplicationsPage'
@@ -9,6 +10,7 @@ import { InvoiceDocumentPage } from './pages/billing/InvoiceDocumentPage'
 import { PaymentPage } from './pages/billing/PaymentPage'
 import { HomePage } from './pages/home/HomePage'
 import { PaymentStatusPage } from './pages/payments/PaymentStatusPage'
+import { ProfilePage } from './pages/profile/ProfilePage'
 import { SettingsPage } from './pages/settings/SettingsPage'
 import { SubscriptionPage } from './pages/subscription/SubscriptionPage'
 import { UsersPage } from './pages/users/UsersPage'
@@ -70,6 +72,7 @@ export const router = createBrowserRouter([
         ),
       },
       { path: 'settings', element: <SettingsPage /> },
+      { path: 'profile', element: <ProfilePage /> },
     ],
   },
   {
@@ -78,6 +81,16 @@ export const router = createBrowserRouter([
       <RequireAuth>
         <RequireWorkspaceAdmin>
           <InvoiceDocumentPage />
+        </RequireWorkspaceAdmin>
+      </RequireAuth>
+    ),
+  },
+  {
+    path: '/payments/:paymentId/receipt',
+    element: (
+      <RequireAuth>
+        <RequireWorkspaceAdmin>
+          <ReceiptDocumentPage />
         </RequireWorkspaceAdmin>
       </RequireAuth>
     ),

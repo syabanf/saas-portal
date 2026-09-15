@@ -20,7 +20,7 @@ import {
   type KeyValueRow,
   type TimelineItem,
 } from '@scp/ui'
-import { Check, Copy, RotateCcw } from 'lucide-react'
+import { Check, Copy, Receipt, RotateCcw } from 'lucide-react'
 import * as React from 'react'
 import { Link, useNavigate, useParams } from 'react-router'
 import { useCurrentUser } from '../../auth/auth'
@@ -192,9 +192,16 @@ export function PaymentDetailPage() {
               ))
             : null}
           {payment.status === 'success' ? (
-            <Button variant="outline" className="text-danger" onClick={() => setRefunding(true)}>
-              <RotateCcw /> Refund
-            </Button>
+            <>
+              <Button variant="outline" asChild>
+                <Link to={`/payments/${payment.id}/receipt`}>
+                  <Receipt /> Receipt
+                </Link>
+              </Button>
+              <Button variant="outline" className="text-danger" onClick={() => setRefunding(true)}>
+                <RotateCcw /> Refund
+              </Button>
+            </>
           ) : null}
           <Button variant="ghost" onClick={copyReference}>
             {copied ? <Check /> : <Copy />} {copied ? 'Copied' : 'Copy Xendit id'}

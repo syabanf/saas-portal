@@ -40,6 +40,7 @@ import { ClearFiltersButton } from '../../components/ClearFiltersButton'
 import { Mono } from '../../components/badges'
 import { PILL_COMBOBOX, PILL_INPUT, useFilterParams } from '../../lib/filters'
 import { tenantOptions, userOptions, withAll } from '../../lib/options'
+import { SESSION_STATE_LABEL, SESSION_STATE_TONE, sessionState } from '../../lib/sessions'
 import { actorOf, useScoped } from '../../state/app-state'
 
 const HOUR = 3_600_000
@@ -49,17 +50,6 @@ const REVOCATION_EVENTS = [
   'session.revoked',
   'access.revoked',
 ]
-
-type SessionState = 'active' | 'expired' | 'revoked'
-const SESSION_STATE_LABEL: Record<SessionState, string> = {
-  active: 'Active',
-  revoked: 'Revoked',
-  expired: 'Expired',
-}
-function sessionState(s: Session, now: number): SessionState {
-  if (s.revoked) return 'revoked'
-  return new Date(s.expiresAt).getTime() < now ? 'expired' : 'active'
-}
 
 const STATUS_FILTERS = withAll(
   'All statuses',
@@ -183,11 +173,7 @@ export function SessionsPage() {
       header: 'Status',
       cell: (s) => {
         const st = sessionState(s, now)
-        return (
-          <Badge variant={st === 'active' ? 'success' : st === 'revoked' ? 'muted' : 'default'}>
-            {SESSION_STATE_LABEL[st]}
-          </Badge>
-        )
+        return <Badge variant={SESSION_STATE_TONE[st]}>{SESSION_STATE_LABEL[st]}</Badge>
       },
       sortValue: (s) => sessionState(s, now),
     },

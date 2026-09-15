@@ -390,6 +390,9 @@ export function PaymentStatusPage() {
                   Open {app.name}
                 </a>
               </Button>
+              <Button size="sm" variant="outline" asChild>
+                <Link to={`/payments/${payment.id}/receipt`}>Receipt</Link>
+              </Button>
               {payment.invoiceId ? (
                 <Button size="sm" variant="outline" asChild>
                   <Link to={`/billing/${payment.invoiceId}/document`}>View invoice</Link>

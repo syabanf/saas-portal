@@ -22,7 +22,9 @@ import {
   KeyValue,
   PageHeader,
 } from '@scp/ui'
+import { UserRound } from 'lucide-react'
 import * as React from 'react'
+import { Link } from 'react-router'
 import { useAuth, useCurrentUser } from '../../auth/auth'
 import { Mono } from '../../components/badges'
 import { useApi } from '../../state/api'
@@ -119,8 +121,13 @@ function AccountCard() {
   const { member, session, liveSession } = useAuth()
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex-row items-center justify-between">
         <CardTitle>Your account</CardTitle>
+        <Button variant="outline" size="sm" asChild>
+          <Link to="/profile">
+            <UserRound /> Open profile
+          </Link>
+        </Button>
       </CardHeader>
       <CardContent>
         <KeyValue

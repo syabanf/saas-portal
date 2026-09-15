@@ -1,4 +1,5 @@
 import { createBrowserRouter } from 'react-router'
+import { ReceiptDocumentPage } from './pages/payments/ReceiptDocumentPage'
 import { RequireAuth } from './auth/auth'
 import { AdminLayout } from './layouts/AdminLayout'
 import { AccessPoliciesPage } from './pages/access-policies/AccessPoliciesPage'
@@ -20,6 +21,7 @@ import { OrganizationNewPage } from './pages/organizations/OrganizationNewPage'
 import { OrganizationsPage } from './pages/organizations/OrganizationsPage'
 import { PaymentDetailPage } from './pages/payments/PaymentDetailPage'
 import { PaymentsPage } from './pages/payments/PaymentsPage'
+import { ProfilePage } from './pages/profile/ProfilePage'
 import { SdkPage } from './pages/sdk/SdkPage'
 import { SecurityPage } from './pages/security/SecurityPage'
 import { SessionsPage } from './pages/sessions/SessionsPage'
@@ -38,6 +40,14 @@ export const router = createBrowserRouter([
     element: (
       <RequireAuth>
         <InvoiceDocumentPage />
+      </RequireAuth>
+    ),
+  },
+  {
+    path: '/payments/:id/receipt',
+    element: (
+      <RequireAuth>
+        <ReceiptDocumentPage />
       </RequireAuth>
     ),
   },
@@ -75,6 +85,7 @@ export const router = createBrowserRouter([
       { path: 'audit', element: <AuditPage /> },
       { path: 'security', element: <SecurityPage /> },
       { path: 'settings', element: <SettingsPage /> },
+      { path: 'profile', element: <ProfilePage /> },
     ],
   },
 ])

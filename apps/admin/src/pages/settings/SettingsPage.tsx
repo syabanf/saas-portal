@@ -26,8 +26,9 @@ import {
   Kicker,
   PageHeader,
 } from '@scp/ui'
-import { Database, Download, RotateCcw, Save, Server } from 'lucide-react'
+import { Database, Download, RotateCcw, Save, Server, UserRound } from 'lucide-react'
 import * as React from 'react'
+import { Link } from 'react-router'
 import { useCurrentUser } from '../../auth/auth'
 import { Mono } from '../../components/badges'
 import { useApi } from '../../state/api'
@@ -234,6 +235,11 @@ export function SettingsPage() {
               <p className="text-muted truncate text-xs">{user.email}</p>
             </div>
             <Badge variant="ink">Platform admin</Badge>
+            <Button variant="outline" size="sm" asChild>
+              <Link to="/profile">
+                <UserRound /> Open profile
+              </Link>
+            </Button>
           </CardContent>
         </Card>
 

@@ -27,6 +27,7 @@ import {
   CreditCard,
   MoreHorizontal,
   Plus,
+  Receipt,
   RotateCcw,
   Search,
   Webhook,
@@ -305,9 +306,14 @@ export function PaymentsPage() {
                         </DropdownMenuItem>
                       ))
                     ) : (
-                      <DropdownMenuItem danger onSelect={() => setRefunding(p)}>
-                        <RotateCcw /> Refund
-                      </DropdownMenuItem>
+                      <>
+                        <DropdownMenuItem onSelect={() => navigate(`/payments/${p.id}/receipt`)}>
+                          <Receipt /> Receipt
+                        </DropdownMenuItem>
+                        <DropdownMenuItem danger onSelect={() => setRefunding(p)}>
+                          <RotateCcw /> Refund
+                        </DropdownMenuItem>
+                      </>
                     )}
                   </DropdownMenuContent>
                 </DropdownMenu>

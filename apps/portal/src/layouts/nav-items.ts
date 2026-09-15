@@ -33,6 +33,11 @@ export function isActive(item: NavItem, pathname: string): boolean {
   )
 }
 
+/** Pages reachable from the avatar menu, not the rail. */
+const UNLISTED_TITLES: Record<string, string> = { '/profile': 'Profile' }
+
 export function pageTitle(pathname: string): string {
-  return NAV_ITEMS.find((i) => isActive(i, pathname))?.label ?? 'Portal'
+  return (
+    UNLISTED_TITLES[pathname] ?? NAV_ITEMS.find((i) => isActive(i, pathname))?.label ?? 'Portal'
+  )
 }
