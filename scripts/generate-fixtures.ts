@@ -77,6 +77,7 @@ const tenants: Tenant[] = [
 
 const users: User[] = [
   ['usr-platform-admin', 'Nadia Rahma', 'admin@platform.example', true],
+  ['usr-platform-ops', 'Rizal Firmansyah', 'ops@platform.example', true],
   ['usr-alpha-admin', 'Fahmi Syaban', 'alpha.admin@example.com', false],
   ['usr-alpha-operator', 'Reyza Pratama', 'alpha.operator@example.com', false],
   ['usr-beta-admin', 'Aditiya Nugraha', 'beta.admin@example.com', false],
@@ -96,7 +97,7 @@ const users: User[] = [
   id: id as string,
   name: name as string,
   email: email as string,
-  status: (i === 15 ? 'invited' : 'active') as User['status'],
+  status: (i === 16 ? 'invited' : 'active') as User['status'],
   platformAdmin: platformAdmin as boolean,
   createdAt: daysAgo(between(20, 380)),
   updatedAt: daysAgo(between(0, 10)),

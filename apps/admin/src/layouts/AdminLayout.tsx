@@ -322,7 +322,11 @@ export function AdminLayout() {
           </div>
         </header>
 
-        <main id="main-content" tabIndex={-1} className="min-h-0 flex-1 overflow-y-auto pr-0.5 pb-24 focus:outline-none md:pb-2">
+        <main
+          id="main-content"
+          tabIndex={-1}
+          className="min-h-0 flex-1 overflow-y-auto pr-0.5 pb-24 focus:outline-none md:pb-2"
+        >
           <Outlet />
         </main>
       </div>

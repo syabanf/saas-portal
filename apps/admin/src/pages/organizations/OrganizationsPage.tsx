@@ -45,7 +45,9 @@ export function OrganizationsPage() {
   const [selected, setSelected] = React.useState<Set<string>>(new Set())
 
   React.useEffect(() => {
-    setSelected((current) => new Set([...current].filter((id) => tenants.some((tenant) => tenant.id === id))))
+    setSelected(
+      (current) => new Set([...current].filter((id) => tenants.some((tenant) => tenant.id === id))),
+    )
   }, [tenants])
 
   function setSelectedStatus(nextStatus: TenantStatus) {
@@ -167,10 +169,23 @@ export function OrganizationsPage() {
       />
       {selected.size > 0 ? (
         <Card className="flex flex-wrap items-center gap-2 p-3">
-          <p role="status" aria-live="polite" className="mr-auto text-sm font-semibold">{selected.size} organizations selected</p>
-          <Button size="sm" variant="outline" onClick={() => setSelectedStatus('active')}><CheckCircle2 /> Activate</Button>
-          <Button size="sm" variant="outline" onClick={() => setSelectedStatus('suspended')}><ShieldBan /> Suspend</Button>
-          <Button size="icon-sm" variant="ghost" aria-label="Clear selection" onClick={() => setSelected(new Set())}><X /></Button>
+          <p role="status" aria-live="polite" className="mr-auto text-sm font-semibold">
+            {selected.size} organizations selected
+          </p>
+          <Button size="sm" variant="outline" onClick={() => setSelectedStatus('active')}>
+            <CheckCircle2 /> Activate
+          </Button>
+          <Button size="sm" variant="outline" onClick={() => setSelectedStatus('suspended')}>
+            <ShieldBan /> Suspend
+          </Button>
+          <Button
+            size="icon-sm"
+            variant="ghost"
+            aria-label="Clear selection"
+            onClick={() => setSelected(new Set())}
+          >
+            <X />
+          </Button>
         </Card>
       ) : null}
       <Card>

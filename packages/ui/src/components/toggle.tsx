@@ -18,7 +18,7 @@ export function Toggle({ checked, onCheckedChange, disabled, label, className }:
       disabled={disabled}
       onClick={() => onCheckedChange(!checked)}
       className={cn(
-        'focus-visible:ring-accent relative inline-flex h-11 w-12 shrink-0 items-center rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none sm:h-7 disabled:opacity-50',
+        'focus-visible:ring-accent relative inline-flex h-11 w-12 shrink-0 items-center rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-50 sm:h-7',
         checked ? 'bg-accent' : 'bg-silver/60',
         className,
       )}

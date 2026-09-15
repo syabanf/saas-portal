@@ -3,13 +3,21 @@ import * as React from 'react'
 import { cn } from '../lib/cn'
 import { buttonVariants } from './button'
 
-const AlertFocusContext = React.createContext<React.MutableRefObject<HTMLElement | null> | null>(null)
+const AlertFocusContext = React.createContext<React.MutableRefObject<HTMLElement | null> | null>(
+  null,
+)
 
-export function AlertDialog({ open, defaultOpen, onOpenChange, ...props }: React.ComponentProps<typeof AlertDialogPrimitive.Root>) {
+export function AlertDialog({
+  open,
+  defaultOpen,
+  onOpenChange,
+  ...props
+}: React.ComponentProps<typeof AlertDialogPrimitive.Root>) {
   const returnFocus = React.useRef<HTMLElement | null>(null)
   const previousOpen = React.useRef(Boolean(open ?? defaultOpen))
   if (open !== undefined && open !== previousOpen.current) {
-    if (open && document.activeElement instanceof HTMLElement) returnFocus.current = document.activeElement
+    if (open && document.activeElement instanceof HTMLElement)
+      returnFocus.current = document.activeElement
     previousOpen.current = open
   }
   return (
@@ -18,7 +26,8 @@ export function AlertDialog({ open, defaultOpen, onOpenChange, ...props }: React
         open={open}
         defaultOpen={defaultOpen}
         onOpenChange={(next) => {
-          if (next && document.activeElement instanceof HTMLElement) returnFocus.current = document.activeElement
+          if (next && document.activeElement instanceof HTMLElement)
+            returnFocus.current = document.activeElement
           previousOpen.current = next
           onOpenChange?.(next)
         }}
@@ -34,30 +43,32 @@ export const AlertDialogContent = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Content>
 >(({ className, onCloseAutoFocus, ...props }, ref) => {
   const returnFocus = React.useContext(AlertFocusContext)
-  return <AlertDialogPrimitive.Portal>
-    <AlertDialogPrimitive.Overlay className="bg-ink/50 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0 fixed inset-0 z-50 backdrop-blur-[2px]" />
-    <AlertDialogPrimitive.Content
-      ref={ref}
-      onCloseAutoFocus={(event) => {
-        onCloseAutoFocus?.(event)
-        if (!event.defaultPrevented && returnFocus?.current?.isConnected) {
-          event.preventDefault()
-          returnFocus.current.focus({ preventScroll: true })
-        } else if (!event.defaultPrevented) {
-          const main = document.querySelector<HTMLElement>('main')
-          if (main) {
+  return (
+    <AlertDialogPrimitive.Portal>
+      <AlertDialogPrimitive.Overlay className="bg-ink/50 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0 fixed inset-0 z-50 backdrop-blur-[2px]" />
+      <AlertDialogPrimitive.Content
+        ref={ref}
+        onCloseAutoFocus={(event) => {
+          onCloseAutoFocus?.(event)
+          if (!event.defaultPrevented && returnFocus?.current?.isConnected) {
             event.preventDefault()
-            main.focus({ preventScroll: true })
+            returnFocus.current.focus({ preventScroll: true })
+          } else if (!event.defaultPrevented) {
+            const main = document.querySelector<HTMLElement>('main')
+            if (main) {
+              event.preventDefault()
+              main.focus({ preventScroll: true })
+            }
           }
-        }
-      }}
-      className={cn(
-        'rounded-card bg-card shadow-float data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 fixed top-1/2 left-1/2 z-50 w-[calc(100%-2rem)] max-w-md -translate-x-1/2 -translate-y-1/2 p-6',
-        className,
-      )}
-      {...props}
-    />
-  </AlertDialogPrimitive.Portal>
+        }}
+        className={cn(
+          'rounded-card bg-card shadow-float data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 fixed top-1/2 left-1/2 z-50 w-[calc(100%-2rem)] max-w-md -translate-x-1/2 -translate-y-1/2 p-6',
+          className,
+        )}
+        {...props}
+      />
+    </AlertDialogPrimitive.Portal>
+  )
 })
 AlertDialogContent.displayName = 'AlertDialogContent'
 

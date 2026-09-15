@@ -30,7 +30,14 @@ interface AppStateContextValue {
 const AppStateContext = React.createContext<AppStateContextValue | null>(null)
 
 export function AppStateProvider({ children }: { children: React.ReactNode }) {
-  const { state, dispatch: storeDispatch, ready, error, retry, pending } = useDemoStore({
+  const {
+    state,
+    dispatch: storeDispatch,
+    ready,
+    error,
+    retry,
+    pending,
+  } = useDemoStore({
     initial: loadFixtures,
     reducer,
     storageKey: 'scp.portal.store.v5',
@@ -39,46 +46,49 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
   const stateRef = React.useRef(state)
   stateRef.current = state
 
-  const dispatch = React.useCallback<React.Dispatch<AppAction>>((action) => {
-    const before = stateRef.current
-    storeDispatch(action)
-    const feedback: Partial<Record<AppAction['type'], string>> = {
-      'members/upsert': 'Member access saved',
-      'members/remove': 'Member removed',
-      'subscriptions/upsert': 'Subscription saved',
-      'subscriptions/cancel': 'Subscription cancellation scheduled',
-      'subscriptions/reactivate': 'Subscription reactivated',
-      'subscriptions/changePeriod': 'Billing change scheduled',
-      'subscriptions/cancelChange': 'Scheduled change cancelled',
-      'payments/create': 'Payment request created',
-      'payments/simulate': 'Payment completed',
-      'sessions/revoke': 'Session revoked',
-      'invitations/accept': 'Invitation accepted',
-    }
-    const undoable = new Set<AppAction['type']>([
-      'members/upsert',
-      'members/remove',
-      'subscriptions/cancel',
-      'subscriptions/reactivate',
-      'subscriptions/changePeriod',
-      'subscriptions/cancelChange',
-      'sessions/revoke',
-    ])
-    const title = feedback[action.type]
-    if (title)
-      pushToast({
-        title,
-        action: undoable.has(action.type)
-          ? {
-              label: 'Undo',
-              onClick: () => {
-                storeDispatch({ type: 'store/replace', state: before })
-                pushToast({ title: 'Change undone', tone: 'info' })
-              },
-            }
-          : undefined,
-      })
-  }, [storeDispatch])
+  const dispatch = React.useCallback<React.Dispatch<AppAction>>(
+    (action) => {
+      const before = stateRef.current
+      storeDispatch(action)
+      const feedback: Partial<Record<AppAction['type'], string>> = {
+        'members/upsert': 'Member access saved',
+        'members/remove': 'Member removed',
+        'subscriptions/upsert': 'Subscription saved',
+        'subscriptions/cancel': 'Subscription cancellation scheduled',
+        'subscriptions/reactivate': 'Subscription reactivated',
+        'subscriptions/changePeriod': 'Billing change scheduled',
+        'subscriptions/cancelChange': 'Scheduled change cancelled',
+        'payments/create': 'Payment request created',
+        'payments/simulate': 'Payment completed',
+        'sessions/revoke': 'Session revoked',
+        'invitations/accept': 'Invitation accepted',
+      }
+      const undoable = new Set<AppAction['type']>([
+        'members/upsert',
+        'members/remove',
+        'subscriptions/cancel',
+        'subscriptions/reactivate',
+        'subscriptions/changePeriod',
+        'subscriptions/cancelChange',
+        'sessions/revoke',
+      ])
+      const title = feedback[action.type]
+      if (title)
+        pushToast({
+          title,
+          action: undoable.has(action.type)
+            ? {
+                label: 'Undo',
+                onClick: () => {
+                  storeDispatch({ type: 'store/replace', state: before })
+                  pushToast({ title: 'Change undone', tone: 'info' })
+                },
+              }
+            : undefined,
+        })
+    },
+    [storeDispatch],
+  )
 
   React.useEffect(() => {
     if (import.meta.env.DEV) return
@@ -101,7 +111,12 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
         </div>
       )}
       {pending && !error && (
-        <div role="status" aria-live="polite" aria-atomic="true" className="bg-surface-2 px-3 text-xs">
+        <div
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+          className="bg-surface-2 px-3 text-xs"
+        >
           Saving changes…
         </div>
       )}

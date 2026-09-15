@@ -205,7 +205,9 @@ export function UsersPage() {
   const [bulkApplicationId, setBulkApplicationId] = React.useState(requestedApp ?? '')
 
   React.useEffect(() => {
-    setSelected((current) => new Set([...current].filter((id) => members.some((member) => member.id === id))))
+    setSelected(
+      (current) => new Set([...current].filter((id) => members.some((member) => member.id === id))),
+    )
   }, [members])
 
   function updateSelectedAccess(grant: boolean) {
@@ -317,14 +319,46 @@ export function UsersPage() {
       />
       {selected.size > 0 ? (
         <Card className="flex flex-wrap items-center gap-2 p-3">
-          <p role="status" aria-live="polite" className="mr-auto text-sm font-semibold">{selected.size} users selected</p>
-          <Select value={bulkApplicationId} onChange={(event) => setBulkApplicationId(event.target.value)} className="w-full sm:w-56">
+          <p role="status" aria-live="polite" className="mr-auto text-sm font-semibold">
+            {selected.size} users selected
+          </p>
+          <Select
+            value={bulkApplicationId}
+            onChange={(event) => setBulkApplicationId(event.target.value)}
+            className="w-full sm:w-56"
+          >
             <option value="">Choose application</option>
-            {applications.filter((item) => item.app.accessPolicy === 'free' || item.subscription).map((item) => <option key={item.app.id} value={item.app.id}>{item.app.name}</option>)}
+            {applications
+              .filter((item) => item.app.accessPolicy === 'free' || item.subscription)
+              .map((item) => (
+                <option key={item.app.id} value={item.app.id}>
+                  {item.app.name}
+                </option>
+              ))}
           </Select>
-          <Button size="sm" disabled={!bulkApplicationId} onClick={() => updateSelectedAccess(true)}><KeyRound /> Grant access</Button>
-          <Button size="sm" variant="outline" disabled={!bulkApplicationId} onClick={() => updateSelectedAccess(false)}><UserMinus /> Remove access</Button>
-          <Button size="icon-sm" variant="ghost" aria-label="Clear selection" onClick={() => setSelected(new Set())}><X /></Button>
+          <Button
+            size="sm"
+            disabled={!bulkApplicationId}
+            onClick={() => updateSelectedAccess(true)}
+          >
+            <KeyRound /> Grant access
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            disabled={!bulkApplicationId}
+            onClick={() => updateSelectedAccess(false)}
+          >
+            <UserMinus /> Remove access
+          </Button>
+          <Button
+            size="icon-sm"
+            variant="ghost"
+            aria-label="Clear selection"
+            onClick={() => setSelected(new Set())}
+          >
+            <X />
+          </Button>
         </Card>
       ) : null}
       <Card>

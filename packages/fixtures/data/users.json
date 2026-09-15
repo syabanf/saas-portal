@@ -9,13 +9,22 @@
     "updatedAt": "2026-09-09T02:00:00.000Z"
   },
   {
+    "id": "usr-platform-ops",
+    "name": "Rizal Firmansyah",
+    "email": "ops@platform.example",
+    "status": "active",
+    "platformAdmin": true,
+    "createdAt": "2026-05-22T02:00:00.000Z",
+    "updatedAt": "2026-09-11T02:00:00.000Z"
+  },
+  {
     "id": "usr-alpha-admin",
     "name": "Fahmi Syaban",
     "email": "alpha.admin@example.com",
     "status": "active",
     "platformAdmin": false,
-    "createdAt": "2026-05-22T02:00:00.000Z",
-    "updatedAt": "2026-09-11T02:00:00.000Z"
+    "createdAt": "2026-02-08T02:00:00.000Z",
+    "updatedAt": "2026-09-14T02:00:00.000Z"
   },
   {
     "id": "usr-alpha-operator",
@@ -23,8 +32,8 @@
     "email": "alpha.operator@example.com",
     "status": "active",
     "platformAdmin": false,
-    "createdAt": "2026-02-08T02:00:00.000Z",
-    "updatedAt": "2026-09-14T02:00:00.000Z"
+    "createdAt": "2026-05-24T02:00:00.000Z",
+    "updatedAt": "2026-09-04T02:00:00.000Z"
   },
   {
     "id": "usr-beta-admin",
@@ -32,8 +41,8 @@
     "email": "beta.admin@example.com",
     "status": "active",
     "platformAdmin": false,
-    "createdAt": "2026-05-24T02:00:00.000Z",
-    "updatedAt": "2026-09-04T02:00:00.000Z"
+    "createdAt": "2026-05-09T02:00:00.000Z",
+    "updatedAt": "2026-09-12T02:00:00.000Z"
   },
   {
     "id": "usr-beta-operator",
@@ -41,8 +50,8 @@
     "email": "beta.operator@example.com",
     "status": "active",
     "platformAdmin": false,
-    "createdAt": "2026-05-09T02:00:00.000Z",
-    "updatedAt": "2026-09-12T02:00:00.000Z"
+    "createdAt": "2026-06-22T02:00:00.000Z",
+    "updatedAt": "2026-09-14T02:00:00.000Z"
   },
   {
     "id": "usr-gamma-admin",
@@ -50,8 +59,8 @@
     "email": "gamma.admin@example.com",
     "status": "active",
     "platformAdmin": false,
-    "createdAt": "2026-06-22T02:00:00.000Z",
-    "updatedAt": "2026-09-14T02:00:00.000Z"
+    "createdAt": "2025-09-26T02:00:00.000Z",
+    "updatedAt": "2026-09-12T02:00:00.000Z"
   },
   {
     "id": "usr-gamma-operator",
@@ -59,8 +68,8 @@
     "email": "gamma.operator@example.com",
     "status": "active",
     "platformAdmin": false,
-    "createdAt": "2025-09-26T02:00:00.000Z",
-    "updatedAt": "2026-09-12T02:00:00.000Z"
+    "createdAt": "2025-09-02T02:00:00.000Z",
+    "updatedAt": "2026-09-09T02:00:00.000Z"
   },
   {
     "id": "usr-delta-admin",
@@ -68,8 +77,8 @@
     "email": "delta.admin@example.com",
     "status": "active",
     "platformAdmin": false,
-    "createdAt": "2025-09-02T02:00:00.000Z",
-    "updatedAt": "2026-09-09T02:00:00.000Z"
+    "createdAt": "2026-04-25T02:00:00.000Z",
+    "updatedAt": "2026-09-08T02:00:00.000Z"
   },
   {
     "id": "usr-epsilon-admin",
@@ -78,7 +87,7 @@
     "status": "active",
     "platformAdmin": false,
     "createdAt": "2026-04-25T02:00:00.000Z",
-    "updatedAt": "2026-09-08T02:00:00.000Z"
+    "updatedAt": "2026-09-06T02:00:00.000Z"
   },
   {
     "id": "usr-zeta-admin",
@@ -86,8 +95,8 @@
     "email": "zeta.admin@example.com",
     "status": "active",
     "platformAdmin": false,
-    "createdAt": "2026-04-25T02:00:00.000Z",
-    "updatedAt": "2026-09-06T02:00:00.000Z"
+    "createdAt": "2026-04-11T02:00:00.000Z",
+    "updatedAt": "2026-09-08T02:00:00.000Z"
   },
   {
     "id": "usr-eta-admin",
@@ -95,8 +104,8 @@
     "email": "eta.admin@example.com",
     "status": "active",
     "platformAdmin": false,
-    "createdAt": "2026-04-11T02:00:00.000Z",
-    "updatedAt": "2026-09-08T02:00:00.000Z"
+    "createdAt": "2025-11-14T02:00:00.000Z",
+    "updatedAt": "2026-09-10T02:00:00.000Z"
   },
   {
     "id": "usr-theta-admin",
@@ -104,8 +113,8 @@
     "email": "theta.admin@example.com",
     "status": "active",
     "platformAdmin": false,
-    "createdAt": "2025-11-14T02:00:00.000Z",
-    "updatedAt": "2026-09-10T02:00:00.000Z"
+    "createdAt": "2025-09-11T02:00:00.000Z",
+    "updatedAt": "2026-09-12T02:00:00.000Z"
   },
   {
     "id": "usr-kappa-admin",
@@ -113,7 +122,7 @@
     "email": "kappa.admin@example.com",
     "status": "active",
     "platformAdmin": false,
-    "createdAt": "2025-09-11T02:00:00.000Z",
+    "createdAt": "2026-02-04T02:00:00.000Z",
     "updatedAt": "2026-09-12T02:00:00.000Z"
   },
   {
@@ -122,8 +131,8 @@
     "email": "lambda.admin@example.com",
     "status": "active",
     "platformAdmin": false,
-    "createdAt": "2026-02-04T02:00:00.000Z",
-    "updatedAt": "2026-09-12T02:00:00.000Z"
+    "createdAt": "2026-03-02T02:00:00.000Z",
+    "updatedAt": "2026-09-13T02:00:00.000Z"
   },
   {
     "id": "usr-lambda-operator",
@@ -132,7 +141,7 @@
     "status": "active",
     "platformAdmin": false,
     "createdAt": "2026-03-02T02:00:00.000Z",
-    "updatedAt": "2026-09-13T02:00:00.000Z"
+    "updatedAt": "2026-09-04T02:00:00.000Z"
   },
   {
     "id": "usr-mu-admin",
@@ -140,7 +149,7 @@
     "email": "mu.admin@example.com",
     "status": "invited",
     "platformAdmin": false,
-    "createdAt": "2026-03-02T02:00:00.000Z",
-    "updatedAt": "2026-09-04T02:00:00.000Z"
+    "createdAt": "2026-04-21T02:00:00.000Z",
+    "updatedAt": "2026-09-10T02:00:00.000Z"
   }
 ]

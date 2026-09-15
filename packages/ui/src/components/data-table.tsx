@@ -69,7 +69,8 @@ export function DataTable<T>({
 
   const selectable = Boolean(selectedKeys && onSelectionChange)
   const visibleKeys = slice.map(rowKey)
-  const allVisibleSelected = visibleKeys.length > 0 && visibleKeys.every((key) => selectedKeys?.has(key))
+  const allVisibleSelected =
+    visibleKeys.length > 0 && visibleKeys.every((key) => selectedKeys?.has(key))
 
   function toggleAll(checked: boolean) {
     if (!selectedKeys || !onSelectionChange) return
@@ -200,7 +201,7 @@ export function DataTable<T>({
                   {rowActions ? (
                     <td className="px-4 py-3 align-middle">
                       <div
-                        className="flex justify-end gap-1 opacity-60 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100"
+                        className="flex justify-end gap-1 opacity-60 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100"
                         onClick={(e) => e.stopPropagation()}
                       >
                         {rowActions(row)}
@@ -244,8 +245,13 @@ export function DataTable<T>({
                     </div>
                   ) : null}
                   {columns.map((column, index) => (
-                    <div key={column.key} className={cn(index === 0 ? 'block' : 'grid grid-cols-[7rem_1fr] gap-3')}>
-                      {index > 0 ? <p className="text-muted text-xs font-semibold">{column.header}</p> : null}
+                    <div
+                      key={column.key}
+                      className={cn(index === 0 ? 'block' : 'grid grid-cols-[7rem_1fr] gap-3')}
+                    >
+                      {index > 0 ? (
+                        <p className="text-muted text-xs font-semibold">{column.header}</p>
+                      ) : null}
                       <div className={cn(index > 0 && column.align === 'right' && 'text-left')}>
                         {index === 0 && onRowClick ? (
                           <button

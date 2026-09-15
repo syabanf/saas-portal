@@ -125,9 +125,20 @@ export function RailItem({
     </>
   )
   const node = render ? (
-    render({ className, children: inner, 'data-active': active, 'aria-current': active ? 'page' : undefined })
+    render({
+      className,
+      children: inner,
+      'data-active': active,
+      'aria-current': active ? 'page' : undefined,
+    })
   ) : (
-    <button type="button" onClick={onClick} data-active={active} aria-pressed={active} className={className}>
+    <button
+      type="button"
+      onClick={onClick}
+      data-active={active}
+      aria-pressed={active}
+      className={className}
+    >
       {inner}
     </button>
   )

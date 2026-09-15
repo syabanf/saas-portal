@@ -22,7 +22,8 @@ export function ProgressBar({ value, max = 100, tone = 'accent', className }: Pr
         className,
       )}
     >
-      <div aria-hidden="true"
+      <div
+        aria-hidden="true"
         className={cn(
           'h-full rounded-full transition-[width]',
           tone === 'onDark' && 'bg-white',

@@ -13,7 +13,7 @@
     "gracePeriodEnd": null,
     "cancelAtPeriodEnd": false,
     "createdAt": "2025-12-31T02:00:00.000Z",
-    "updatedAt": "2026-09-12T02:00:00.000Z"
+    "updatedAt": "2026-09-11T02:00:00.000Z"
   },
   {
     "id": "sub-alpha-iot-mobile",
@@ -29,7 +29,7 @@
     "gracePeriodEnd": null,
     "cancelAtPeriodEnd": false,
     "createdAt": "2026-05-16T02:00:00.000Z",
-    "updatedAt": "2026-09-12T02:00:00.000Z"
+    "updatedAt": "2026-09-09T02:00:00.000Z"
   },
   {
     "id": "sub-alpha-erp",
@@ -45,7 +45,7 @@
     "gracePeriodEnd": null,
     "cancelAtPeriodEnd": false,
     "createdAt": "2026-02-25T02:00:00.000Z",
-    "updatedAt": "2026-09-11T02:00:00.000Z"
+    "updatedAt": "2026-09-13T02:00:00.000Z"
   },
   {
     "id": "sub-beta-iot",
@@ -61,7 +61,7 @@
     "gracePeriodEnd": "2026-10-07T02:00:00.000Z",
     "cancelAtPeriodEnd": false,
     "createdAt": "2025-08-29T02:00:00.000Z",
-    "updatedAt": "2026-09-09T02:00:00.000Z"
+    "updatedAt": "2026-09-11T02:00:00.000Z"
   },
   {
     "id": "sub-beta-crm",
@@ -77,7 +77,7 @@
     "gracePeriodEnd": null,
     "cancelAtPeriodEnd": false,
     "createdAt": "2026-08-04T02:00:00.000Z",
-    "updatedAt": "2026-09-13T02:00:00.000Z"
+    "updatedAt": "2026-09-14T02:00:00.000Z"
   },
   {
     "id": "sub-gamma-iot",
@@ -109,7 +109,7 @@
     "gracePeriodEnd": null,
     "cancelAtPeriodEnd": false,
     "createdAt": "2025-11-17T02:00:00.000Z",
-    "updatedAt": "2026-09-14T02:00:00.000Z"
+    "updatedAt": "2026-09-12T02:00:00.000Z"
   },
   {
     "id": "sub-delta-iot",
@@ -125,7 +125,7 @@
     "gracePeriodEnd": null,
     "cancelAtPeriodEnd": false,
     "createdAt": "2026-06-05T02:00:00.000Z",
-    "updatedAt": "2026-09-11T02:00:00.000Z"
+    "updatedAt": "2026-09-10T02:00:00.000Z"
   },
   {
     "id": "sub-delta-crm",
@@ -141,7 +141,7 @@
     "gracePeriodEnd": null,
     "cancelAtPeriodEnd": false,
     "createdAt": "2025-09-08T02:00:00.000Z",
-    "updatedAt": "2026-09-12T02:00:00.000Z"
+    "updatedAt": "2026-09-13T02:00:00.000Z"
   },
   {
     "id": "sub-epsilon-erp",
@@ -157,7 +157,7 @@
     "gracePeriodEnd": null,
     "cancelAtPeriodEnd": false,
     "createdAt": "2026-09-07T02:00:00.000Z",
-    "updatedAt": "2026-09-10T02:00:00.000Z"
+    "updatedAt": "2026-09-12T02:00:00.000Z"
   },
   {
     "id": "sub-zeta-iot",
@@ -173,7 +173,7 @@
     "gracePeriodEnd": null,
     "cancelAtPeriodEnd": false,
     "createdAt": "2026-02-15T02:00:00.000Z",
-    "updatedAt": "2026-09-13T02:00:00.000Z"
+    "updatedAt": "2026-09-11T02:00:00.000Z"
   },
   {
     "id": "sub-eta-iot",
@@ -205,7 +205,7 @@
     "gracePeriodEnd": null,
     "cancelAtPeriodEnd": true,
     "createdAt": "2026-07-31T02:00:00.000Z",
-    "updatedAt": "2026-09-11T02:00:00.000Z"
+    "updatedAt": "2026-09-14T02:00:00.000Z"
   },
   {
     "id": "sub-iota-iot",
@@ -221,7 +221,7 @@
     "gracePeriodEnd": null,
     "cancelAtPeriodEnd": false,
     "createdAt": "2026-09-13T02:00:00.000Z",
-    "updatedAt": "2026-09-12T02:00:00.000Z"
+    "updatedAt": "2026-09-09T02:00:00.000Z"
   },
   {
     "id": "sub-kappa-erp",
@@ -253,7 +253,7 @@
     "gracePeriodEnd": null,
     "cancelAtPeriodEnd": false,
     "createdAt": "2025-09-13T02:00:00.000Z",
-    "updatedAt": "2026-09-09T02:00:00.000Z"
+    "updatedAt": "2026-09-11T02:00:00.000Z"
   },
   {
     "id": "sub-lambda-iot",
@@ -269,7 +269,7 @@
     "gracePeriodEnd": null,
     "cancelAtPeriodEnd": false,
     "createdAt": "2025-05-21T02:00:00.000Z",
-    "updatedAt": "2026-09-14T02:00:00.000Z"
+    "updatedAt": "2026-09-11T02:00:00.000Z"
   },
   {
     "id": "sub-lambda-iot-api",
@@ -285,7 +285,7 @@
     "gracePeriodEnd": null,
     "cancelAtPeriodEnd": false,
     "createdAt": "2025-08-09T02:00:00.000Z",
-    "updatedAt": "2026-09-11T02:00:00.000Z"
+    "updatedAt": "2026-09-09T02:00:00.000Z"
   },
   {
     "id": "sub-lambda-erp",
@@ -301,7 +301,7 @@
     "gracePeriodEnd": null,
     "cancelAtPeriodEnd": false,
     "createdAt": "2025-05-31T02:00:00.000Z",
-    "updatedAt": "2026-09-11T02:00:00.000Z"
+    "updatedAt": "2026-09-14T02:00:00.000Z"
   },
   {
     "id": "sub-lambda-crm",
@@ -317,7 +317,7 @@
     "gracePeriodEnd": null,
     "cancelAtPeriodEnd": false,
     "createdAt": "2026-02-25T02:00:00.000Z",
-    "updatedAt": "2026-09-09T02:00:00.000Z"
+    "updatedAt": "2026-09-10T02:00:00.000Z"
   },
   {
     "id": "sub-mu-crm",
@@ -333,6 +333,6 @@
     "gracePeriodEnd": null,
     "cancelAtPeriodEnd": false,
     "createdAt": "2026-09-10T02:00:00.000Z",
-    "updatedAt": "2026-09-14T02:00:00.000Z"
+    "updatedAt": "2026-09-11T02:00:00.000Z"
   }
 ]

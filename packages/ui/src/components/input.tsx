@@ -110,7 +110,9 @@ export function FormField({ label, htmlFor, hint, error, className, children }: 
       <Label htmlFor={htmlFor}>{label}</Label>
       {children}
       {error ? (
-        <p role="alert" className="text-danger mt-1 text-xs">{error}</p>
+        <p role="alert" className="text-danger mt-1 text-xs">
+          {error}
+        </p>
       ) : hint ? (
         <p className="text-muted mt-1 text-xs">{hint}</p>
       ) : null}

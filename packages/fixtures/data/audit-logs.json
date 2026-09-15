@@ -1,7 +1,7 @@
 [
   {
     "id": "aud-0009v",
-    "sourceIp": "10.0.1.40",
+    "sourceIp": "10.0.6.221",
     "actorId": "usr-kappa-admin",
     "actorName": "Intan Permata",
     "tenantId": "ten-kappa",
@@ -13,12 +13,12 @@
       "reason": "OK",
       "decision": "allow"
     },
-    "requestId": "req_95lr56",
+    "requestId": "req_95lr55",
     "at": "2026-09-14T01:51:00.000Z"
   },
   {
     "id": "aud-0009w",
-    "sourceIp": "10.0.0.163",
+    "sourceIp": "10.0.9.51",
     "actorId": "usr-beta-admin",
     "actorName": "Aditiya Nugraha",
     "tenantId": "ten-beta",
@@ -30,12 +30,12 @@
       "reason": "OK",
       "decision": "allow"
     },
-    "requestId": "req_4v0b74",
+    "requestId": "req_4v0b73",
     "at": "2026-09-14T01:45:00.000Z"
   },
   {
     "id": "aud-0009x",
-    "sourceIp": "10.0.2.27",
+    "sourceIp": "10.0.8.139",
     "actorId": "usr-lambda-admin",
     "actorName": "Agus Setiawan",
     "tenantId": "ten-lambda",
@@ -47,12 +47,12 @@
       "reason": "OK",
       "decision": "allow"
     },
-    "requestId": "req_9llz38",
+    "requestId": "req_9llz37",
     "at": "2026-09-14T01:44:00.000Z"
   },
   {
     "id": "aud-0009y",
-    "sourceIp": "10.0.6.221",
+    "sourceIp": "10.0.7.123",
     "actorId": "usr-zeta-admin",
     "actorName": "Hendra Wijaya",
     "tenantId": "ten-zeta",
@@ -64,12 +64,12 @@
       "reason": "SUBSCRIPTION_EXPIRED",
       "decision": "deny"
     },
-    "requestId": "req_560f11",
+    "requestId": "req_560f10",
     "at": "2026-09-14T01:36:00.000Z"
   },
   {
     "id": "aud-0009z",
-    "sourceIp": "10.0.9.51",
+    "sourceIp": "10.0.1.118",
     "actorId": "usr-gamma-operator",
     "actorName": "Dewi Lestari",
     "tenantId": "ten-gamma",
@@ -81,12 +81,28 @@
       "reason": "SUBSCRIPTION_SUSPENDED",
       "decision": "deny"
     },
-    "requestId": "req_798d1",
+    "requestId": "req_798d0",
+    "at": "2026-09-14T01:00:00.000Z"
+  },
+  {
+    "id": "aud-000b1",
+    "sourceIp": "10.0.6.54",
+    "actorId": "usr-beta-admin",
+    "actorName": "Aditiya Nugraha",
+    "tenantId": "ten-beta",
+    "action": "user.login",
+    "resourceType": "session",
+    "resourceId": "ses-beta-admin",
+    "before": null,
+    "after": {
+      "method": "password"
+    },
+    "requestId": "req_login470",
     "at": "2026-09-14T01:00:00.000Z"
   },
   {
     "id": "aud-000a0",
-    "sourceIp": "10.0.8.139",
+    "sourceIp": "10.0.7.245",
     "actorId": "usr-epsilon-admin",
     "actorName": "Putri Ayu",
     "tenantId": "ten-epsilon",
@@ -98,12 +114,12 @@
       "reason": "OK",
       "decision": "allow"
     },
-    "requestId": "req_ehh31j",
+    "requestId": "req_ehh31i",
     "at": "2026-09-14T00:43:00.000Z"
   },
   {
     "id": "aud-000a1",
-    "sourceIp": "10.0.7.123",
+    "sourceIp": "10.0.2.161",
     "actorId": "usr-beta-operator",
     "actorName": "Sari Wulandari",
     "tenantId": "ten-beta",
@@ -115,12 +131,12 @@
       "reason": "OK",
       "decision": "allow"
     },
-    "requestId": "req_a8o86h",
+    "requestId": "req_a8o86g",
     "at": "2026-09-14T00:37:00.000Z"
   },
   {
     "id": "aud-000a2",
-    "sourceIp": "10.0.1.118",
+    "sourceIp": "10.0.7.177",
     "actorId": "usr-gamma-admin",
     "actorName": "Bima Santoso",
     "tenantId": "ten-gamma",
@@ -132,12 +148,12 @@
       "reason": "OK",
       "decision": "allow"
     },
-    "requestId": "req_clfg3c",
+    "requestId": "req_clfg3b",
     "at": "2026-09-14T00:32:00.000Z"
   },
   {
     "id": "aud-000a3",
-    "sourceIp": "10.0.7.245",
+    "sourceIp": "10.0.2.208",
     "actorId": "usr-eta-admin",
     "actorName": "Lina Marlina",
     "tenantId": "ten-eta",
@@ -149,12 +165,12 @@
       "reason": "OK",
       "decision": "allow"
     },
-    "requestId": "req_7kdm6x",
+    "requestId": "req_7kdm6w",
     "at": "2026-09-14T00:30:00.000Z"
   },
   {
     "id": "aud-000a4",
-    "sourceIp": "10.0.2.161",
+    "sourceIp": "10.0.3.234",
     "actorId": "usr-zeta-admin",
     "actorName": "Hendra Wijaya",
     "tenantId": "ten-zeta",
@@ -166,12 +182,12 @@
       "reason": "SUBSCRIPTION_EXPIRED",
       "decision": "deny"
     },
-    "requestId": "req_5fll45",
+    "requestId": "req_5fll44",
     "at": "2026-09-14T00:26:00.000Z"
   },
   {
     "id": "aud-000a5",
-    "sourceIp": "10.0.7.177",
+    "sourceIp": "10.0.2.23",
     "actorId": "usr-eta-admin",
     "actorName": "Lina Marlina",
     "tenantId": "ten-eta",
@@ -183,12 +199,12 @@
       "reason": "APPLICATION_DISABLED",
       "decision": "deny"
     },
-    "requestId": "req_hsn93d",
+    "requestId": "req_hsn93c",
     "at": "2026-09-14T00:21:00.000Z"
   },
   {
     "id": "aud-000a6",
-    "sourceIp": "10.0.2.208",
+    "sourceIp": "10.0.1.155",
     "actorId": "usr-zeta-admin",
     "actorName": "Hendra Wijaya",
     "tenantId": "ten-zeta",
@@ -200,12 +216,12 @@
       "reason": "SUBSCRIPTION_EXPIRED",
       "decision": "deny"
     },
-    "requestId": "req_e7ij65",
+    "requestId": "req_e7ij64",
     "at": "2026-09-14T00:04:00.000Z"
   },
   {
     "id": "aud-000a7",
-    "sourceIp": "10.0.3.234",
+    "sourceIp": "10.0.1.132",
     "actorId": "usr-lambda-operator",
     "actorName": "Mega Sari",
     "tenantId": "ten-lambda",
@@ -217,12 +233,12 @@
       "reason": "NO_SUBSCRIPTION",
       "decision": "deny"
     },
-    "requestId": "req_iwv96o",
+    "requestId": "req_iwv96n",
     "at": "2026-09-14T00:04:00.000Z"
   },
   {
     "id": "aud-000a8",
-    "sourceIp": "10.0.2.23",
+    "sourceIp": "10.0.4.42",
     "actorId": "usr-epsilon-admin",
     "actorName": "Putri Ayu",
     "tenantId": "ten-epsilon",
@@ -234,12 +250,12 @@
       "reason": "OK",
       "decision": "allow"
     },
-    "requestId": "req_6pz657",
+    "requestId": "req_6pz656",
     "at": "2026-09-13T23:53:00.000Z"
   },
   {
     "id": "aud-000a9",
-    "sourceIp": "10.0.1.155",
+    "sourceIp": "10.0.7.90",
     "actorId": "usr-alpha-admin",
     "actorName": "Fahmi Syaban",
     "tenantId": "ten-alpha",
@@ -251,12 +267,12 @@
       "reason": "OK",
       "decision": "allow"
     },
-    "requestId": "req_h92r73",
+    "requestId": "req_h92r72",
     "at": "2026-09-13T23:41:00.000Z"
   },
   {
     "id": "aud-000aa",
-    "sourceIp": "10.0.1.132",
+    "sourceIp": "10.0.3.242",
     "actorId": "usr-gamma-admin",
     "actorName": "Bima Santoso",
     "tenantId": "ten-gamma",
@@ -268,12 +284,12 @@
       "reason": "OK",
       "decision": "allow"
     },
-    "requestId": "req_7kz52t",
+    "requestId": "req_7kz52s",
     "at": "2026-09-13T23:37:00.000Z"
   },
   {
     "id": "aud-000ab",
-    "sourceIp": "10.0.4.42",
+    "sourceIp": "10.0.5.42",
     "actorId": "usr-beta-operator",
     "actorName": "Sari Wulandari",
     "tenantId": "ten-beta",
@@ -285,12 +301,12 @@
       "reason": "OK",
       "decision": "allow"
     },
-    "requestId": "req_476c31",
+    "requestId": "req_476c30",
     "at": "2026-09-13T23:32:00.000Z"
   },
   {
     "id": "aud-000ac",
-    "sourceIp": "10.0.7.90",
+    "sourceIp": "10.0.5.164",
     "actorId": "usr-mu-admin",
     "actorName": "Dian Kusuma",
     "tenantId": "ten-mu",
@@ -302,12 +318,12 @@
       "reason": "OK",
       "decision": "allow"
     },
-    "requestId": "req_gqf71x",
+    "requestId": "req_gqf71w",
     "at": "2026-09-13T23:16:00.000Z"
   },
   {
     "id": "aud-000ad",
-    "sourceIp": "10.0.3.242",
+    "sourceIp": "10.0.0.22",
     "actorId": "usr-alpha-operator",
     "actorName": "Reyza Pratama",
     "tenantId": "ten-alpha",
@@ -319,12 +335,12 @@
       "reason": "OK",
       "decision": "allow"
     },
-    "requestId": "req_g4l43r",
+    "requestId": "req_g4l43q",
     "at": "2026-09-13T23:13:00.000Z"
   },
   {
     "id": "aud-000ae",
-    "sourceIp": "10.0.5.42",
+    "sourceIp": "10.0.5.14",
     "actorId": "usr-gamma-admin",
     "actorName": "Bima Santoso",
     "tenantId": "ten-gamma",
@@ -336,12 +352,28 @@
       "reason": "OK",
       "decision": "allow"
     },
-    "requestId": "req_cinz1u",
+    "requestId": "req_cinz1t",
     "at": "2026-09-13T23:11:00.000Z"
   },
   {
+    "id": "aud-000b5",
+    "sourceIp": "10.0.3.230",
+    "actorId": "usr-delta-admin",
+    "actorName": "Rizky Maulana",
+    "tenantId": "ten-delta",
+    "action": "user.login",
+    "resourceType": "session",
+    "resourceId": "ses-delta-admin",
+    "before": null,
+    "after": {
+      "method": "password"
+    },
+    "requestId": "req_login996",
+    "at": "2026-09-13T23:00:00.000Z"
+  },
+  {
     "id": "aud-000af",
-    "sourceIp": "10.0.5.164",
+    "sourceIp": "10.0.5.3",
     "actorId": "usr-gamma-operator",
     "actorName": "Dewi Lestari",
     "tenantId": "ten-gamma",
@@ -353,62 +385,11 @@
       "reason": "OK",
       "decision": "allow"
     },
-    "requestId": "req_5pdk2s",
+    "requestId": "req_5pdk2r",
     "at": "2026-09-13T22:51:00.000Z"
   },
   {
     "id": "aud-000ag",
-    "sourceIp": "10.0.0.22",
-    "actorId": "usr-beta-operator",
-    "actorName": "Sari Wulandari",
-    "tenantId": "ten-beta",
-    "action": "access.allowed",
-    "resourceType": "application",
-    "resourceId": "app-iot",
-    "before": null,
-    "after": {
-      "reason": "OK",
-      "decision": "allow"
-    },
-    "requestId": "req_6wp04f",
-    "at": "2026-09-13T22:39:00.000Z"
-  },
-  {
-    "id": "aud-000ah",
-    "sourceIp": "10.0.5.14",
-    "actorId": "usr-beta-operator",
-    "actorName": "Sari Wulandari",
-    "tenantId": "ten-beta",
-    "action": "access.allowed",
-    "resourceType": "application",
-    "resourceId": "app-iot",
-    "before": null,
-    "after": {
-      "reason": "OK",
-      "decision": "allow"
-    },
-    "requestId": "req_ecnlv",
-    "at": "2026-09-13T22:32:00.000Z"
-  },
-  {
-    "id": "aud-000ai",
-    "sourceIp": "10.0.5.3",
-    "actorId": "usr-mu-admin",
-    "actorName": "Dian Kusuma",
-    "tenantId": "ten-mu",
-    "action": "access.allowed",
-    "resourceType": "application",
-    "resourceId": "app-crm",
-    "before": null,
-    "after": {
-      "reason": "OK",
-      "decision": "allow"
-    },
-    "requestId": "req_e4is5q",
-    "at": "2026-09-13T22:28:00.000Z"
-  },
-  {
-    "id": "aud-000aj",
     "sourceIp": "10.0.5.208",
     "actorId": "usr-beta-operator",
     "actorName": "Sari Wulandari",
@@ -421,11 +402,11 @@
       "reason": "OK",
       "decision": "allow"
     },
-    "requestId": "req_7k7z18",
-    "at": "2026-09-13T22:24:00.000Z"
+    "requestId": "req_6wp04e",
+    "at": "2026-09-13T22:39:00.000Z"
   },
   {
-    "id": "aud-000ak",
+    "id": "aud-000ah",
     "sourceIp": "10.0.9.224",
     "actorId": "usr-beta-operator",
     "actorName": "Sari Wulandari",
@@ -438,29 +419,12 @@
       "reason": "OK",
       "decision": "allow"
     },
-    "requestId": "req_8ynl1l",
-    "at": "2026-09-13T22:21:00.000Z"
+    "requestId": "req_ecnlu",
+    "at": "2026-09-13T22:32:00.000Z"
   },
   {
-    "id": "aud-000al",
+    "id": "aud-000ai",
     "sourceIp": "10.0.1.243",
-    "actorId": "usr-alpha-operator",
-    "actorName": "Reyza Pratama",
-    "tenantId": "ten-alpha",
-    "action": "access.allowed",
-    "resourceType": "application",
-    "resourceId": "app-helpdesk",
-    "before": null,
-    "after": {
-      "reason": "OK",
-      "decision": "allow"
-    },
-    "requestId": "req_46m3e",
-    "at": "2026-09-13T22:02:00.000Z"
-  },
-  {
-    "id": "aud-000am",
-    "sourceIp": "10.0.6.217",
     "actorId": "usr-mu-admin",
     "actorName": "Dian Kusuma",
     "tenantId": "ten-mu",
@@ -472,63 +436,12 @@
       "reason": "OK",
       "decision": "allow"
     },
-    "requestId": "req_8suqd",
-    "at": "2026-09-13T21:58:00.000Z"
+    "requestId": "req_e4is5p",
+    "at": "2026-09-13T22:28:00.000Z"
   },
   {
-    "id": "aud-000an",
-    "sourceIp": "10.0.8.170",
-    "actorId": "usr-delta-admin",
-    "actorName": "Rizky Maulana",
-    "tenantId": "ten-delta",
-    "action": "access.allowed",
-    "resourceType": "application",
-    "resourceId": "app-iot",
-    "before": null,
-    "after": {
-      "reason": "OK",
-      "decision": "allow"
-    },
-    "requestId": "req_iqt55f",
-    "at": "2026-09-13T21:55:00.000Z"
-  },
-  {
-    "id": "aud-000ao",
-    "sourceIp": "10.0.3.218",
-    "actorId": "usr-epsilon-admin",
-    "actorName": "Putri Ayu",
-    "tenantId": "ten-epsilon",
-    "action": "access.allowed",
-    "resourceType": "application",
-    "resourceId": "app-erp",
-    "before": null,
-    "after": {
-      "reason": "OK",
-      "decision": "allow"
-    },
-    "requestId": "req_houe4r",
-    "at": "2026-09-13T21:51:00.000Z"
-  },
-  {
-    "id": "aud-000ap",
-    "sourceIp": "10.0.0.49",
-    "actorId": "usr-beta-admin",
-    "actorName": "Aditiya Nugraha",
-    "tenantId": "ten-beta",
-    "action": "access.allowed",
-    "resourceType": "application",
-    "resourceId": "app-helpdesk",
-    "before": null,
-    "after": {
-      "reason": "OK",
-      "decision": "allow"
-    },
-    "requestId": "req_imiv6n",
-    "at": "2026-09-13T21:45:00.000Z"
-  },
-  {
-    "id": "aud-000aq",
-    "sourceIp": "10.0.9.141",
+    "id": "aud-000aj",
+    "sourceIp": "10.0.6.217",
     "actorId": "usr-beta-operator",
     "actorName": "Sari Wulandari",
     "tenantId": "ten-beta",
@@ -540,11 +453,95 @@
       "reason": "OK",
       "decision": "allow"
     },
-    "requestId": "req_cwbb1y",
-    "at": "2026-09-13T21:40:00.000Z"
+    "requestId": "req_7k7z17",
+    "at": "2026-09-13T22:24:00.000Z"
   },
   {
-    "id": "aud-000ar",
+    "id": "aud-000ak",
+    "sourceIp": "10.0.8.170",
+    "actorId": "usr-beta-operator",
+    "actorName": "Sari Wulandari",
+    "tenantId": "ten-beta",
+    "action": "access.allowed",
+    "resourceType": "application",
+    "resourceId": "app-iot",
+    "before": null,
+    "after": {
+      "reason": "OK",
+      "decision": "allow"
+    },
+    "requestId": "req_8ynl1k",
+    "at": "2026-09-13T22:21:00.000Z"
+  },
+  {
+    "id": "aud-000al",
+    "sourceIp": "10.0.3.218",
+    "actorId": "usr-alpha-operator",
+    "actorName": "Reyza Pratama",
+    "tenantId": "ten-alpha",
+    "action": "access.allowed",
+    "resourceType": "application",
+    "resourceId": "app-helpdesk",
+    "before": null,
+    "after": {
+      "reason": "OK",
+      "decision": "allow"
+    },
+    "requestId": "req_46m3d",
+    "at": "2026-09-13T22:02:00.000Z"
+  },
+  {
+    "id": "aud-000az",
+    "sourceIp": "10.0.7.50",
+    "actorId": "usr-alpha-admin",
+    "actorName": "Fahmi Syaban",
+    "tenantId": "ten-alpha",
+    "action": "user.login",
+    "resourceType": "session",
+    "resourceId": "ses-alpha-admin",
+    "before": null,
+    "after": {
+      "method": "password"
+    },
+    "requestId": "req_login153",
+    "at": "2026-09-13T22:00:00.000Z"
+  },
+  {
+    "id": "aud-000am",
+    "sourceIp": "10.0.0.49",
+    "actorId": "usr-mu-admin",
+    "actorName": "Dian Kusuma",
+    "tenantId": "ten-mu",
+    "action": "access.allowed",
+    "resourceType": "application",
+    "resourceId": "app-crm",
+    "before": null,
+    "after": {
+      "reason": "OK",
+      "decision": "allow"
+    },
+    "requestId": "req_8suqc",
+    "at": "2026-09-13T21:58:00.000Z"
+  },
+  {
+    "id": "aud-000an",
+    "sourceIp": "10.0.9.141",
+    "actorId": "usr-delta-admin",
+    "actorName": "Rizky Maulana",
+    "tenantId": "ten-delta",
+    "action": "access.allowed",
+    "resourceType": "application",
+    "resourceId": "app-iot",
+    "before": null,
+    "after": {
+      "reason": "OK",
+      "decision": "allow"
+    },
+    "requestId": "req_iqt55e",
+    "at": "2026-09-13T21:55:00.000Z"
+  },
+  {
+    "id": "aud-000ao",
     "sourceIp": "10.0.0.141",
     "actorId": "usr-epsilon-admin",
     "actorName": "Putri Ayu",
@@ -557,12 +554,63 @@
       "reason": "OK",
       "decision": "allow"
     },
-    "requestId": "req_av2j3f",
+    "requestId": "req_houe4q",
+    "at": "2026-09-13T21:51:00.000Z"
+  },
+  {
+    "id": "aud-000ap",
+    "sourceIp": "10.0.1.233",
+    "actorId": "usr-beta-admin",
+    "actorName": "Aditiya Nugraha",
+    "tenantId": "ten-beta",
+    "action": "access.allowed",
+    "resourceType": "application",
+    "resourceId": "app-helpdesk",
+    "before": null,
+    "after": {
+      "reason": "OK",
+      "decision": "allow"
+    },
+    "requestId": "req_imiv6m",
+    "at": "2026-09-13T21:45:00.000Z"
+  },
+  {
+    "id": "aud-000aq",
+    "sourceIp": "10.0.0.88",
+    "actorId": "usr-beta-operator",
+    "actorName": "Sari Wulandari",
+    "tenantId": "ten-beta",
+    "action": "access.allowed",
+    "resourceType": "application",
+    "resourceId": "app-iot",
+    "before": null,
+    "after": {
+      "reason": "OK",
+      "decision": "allow"
+    },
+    "requestId": "req_cwbb1x",
+    "at": "2026-09-13T21:40:00.000Z"
+  },
+  {
+    "id": "aud-000ar",
+    "sourceIp": "10.0.4.235",
+    "actorId": "usr-epsilon-admin",
+    "actorName": "Putri Ayu",
+    "tenantId": "ten-epsilon",
+    "action": "access.allowed",
+    "resourceType": "application",
+    "resourceId": "app-erp",
+    "before": null,
+    "after": {
+      "reason": "OK",
+      "decision": "allow"
+    },
+    "requestId": "req_av2j3e",
     "at": "2026-09-13T21:38:00.000Z"
   },
   {
     "id": "aud-000as",
-    "sourceIp": "10.0.1.233",
+    "sourceIp": "10.0.2.63",
     "actorId": "usr-delta-admin",
     "actorName": "Rizky Maulana",
     "tenantId": "ten-delta",
@@ -574,12 +622,12 @@
       "reason": "OK",
       "decision": "allow"
     },
-    "requestId": "req_bkzj4q",
+    "requestId": "req_bkzj4p",
     "at": "2026-09-13T21:12:00.000Z"
   },
   {
     "id": "aud-000at",
-    "sourceIp": "10.0.0.88",
+    "sourceIp": "10.0.4.31",
     "actorId": "usr-delta-admin",
     "actorName": "Rizky Maulana",
     "tenantId": "ten-delta",
@@ -591,12 +639,12 @@
       "reason": "OK",
       "decision": "allow"
     },
-    "requestId": "req_i8k05a",
+    "requestId": "req_i8k059",
     "at": "2026-09-13T21:03:00.000Z"
   },
   {
     "id": "aud-000au",
-    "sourceIp": "10.0.4.235",
+    "sourceIp": "10.0.5.39",
     "actorId": "usr-lambda-operator",
     "actorName": "Mega Sari",
     "tenantId": "ten-lambda",
@@ -608,12 +656,12 @@
       "reason": "OK",
       "decision": "allow"
     },
-    "requestId": "req_g57r24",
+    "requestId": "req_g57r23",
     "at": "2026-09-13T20:53:00.000Z"
   },
   {
     "id": "aud-000av",
-    "sourceIp": "10.0.2.63",
+    "sourceIp": "10.0.1.67",
     "actorId": "usr-beta-admin",
     "actorName": "Aditiya Nugraha",
     "tenantId": "ten-beta",
@@ -625,12 +673,12 @@
       "reason": "OK",
       "decision": "allow"
     },
-    "requestId": "req_agl332",
+    "requestId": "req_agl331",
     "at": "2026-09-13T20:53:00.000Z"
   },
   {
     "id": "aud-000aw",
-    "sourceIp": "10.0.4.31",
+    "sourceIp": "10.0.8.134",
     "actorId": "usr-lambda-admin",
     "actorName": "Agus Setiawan",
     "tenantId": "ten-lambda",
@@ -642,12 +690,12 @@
       "reason": "OK",
       "decision": "allow"
     },
-    "requestId": "req_5erd2v",
+    "requestId": "req_5erd2u",
     "at": "2026-09-13T20:47:00.000Z"
   },
   {
     "id": "aud-000ax",
-    "sourceIp": "10.0.5.39",
+    "sourceIp": "10.0.9.202",
     "actorId": "usr-beta-operator",
     "actorName": "Sari Wulandari",
     "tenantId": "ten-beta",
@@ -659,12 +707,12 @@
       "reason": "OK",
       "decision": "allow"
     },
-    "requestId": "req_a36627",
+    "requestId": "req_a36626",
     "at": "2026-09-13T20:40:00.000Z"
   },
   {
     "id": "aud-000ay",
-    "sourceIp": "10.0.1.67",
+    "sourceIp": "10.0.5.239",
     "actorId": "usr-lambda-operator",
     "actorName": "Mega Sari",
     "tenantId": "ten-lambda",
@@ -676,44 +724,12 @@
       "reason": "OK",
       "decision": "allow"
     },
-    "requestId": "req_il315o",
+    "requestId": "req_il315n",
     "at": "2026-09-13T20:38:00.000Z"
   },
   {
-    "id": "aud-000b1",
-    "sourceIp": "10.0.7.133",
-    "actorId": "usr-beta-admin",
-    "actorName": "Aditiya Nugraha",
-    "tenantId": "ten-beta",
-    "action": "user.login",
-    "resourceType": "session",
-    "resourceId": "ses-beta-admin",
-    "before": null,
-    "after": {
-      "method": "password"
-    },
-    "requestId": "req_login741",
-    "at": "2026-09-13T18:00:00.000Z"
-  },
-  {
-    "id": "aud-000b3",
-    "sourceIp": "10.0.3.194",
-    "actorId": "usr-gamma-admin",
-    "actorName": "Bima Santoso",
-    "tenantId": "ten-gamma",
-    "action": "user.login",
-    "resourceType": "session",
-    "resourceId": "ses-gamma-admin",
-    "before": null,
-    "after": {
-      "method": "password"
-    },
-    "requestId": "req_login698",
-    "at": "2026-09-13T17:00:00.000Z"
-  },
-  {
     "id": "aud-000b4",
-    "sourceIp": "10.0.6.244",
+    "sourceIp": "10.0.1.63",
     "actorId": "usr-gamma-operator",
     "actorName": "Dewi Lestari",
     "tenantId": "ten-gamma",
@@ -724,12 +740,12 @@
     "after": {
       "method": "password"
     },
-    "requestId": "req_login962",
-    "at": "2026-09-13T16:00:00.000Z"
+    "requestId": "req_login724",
+    "at": "2026-09-13T15:00:00.000Z"
   },
   {
     "id": "aud-000b6",
-    "sourceIp": "10.0.9.18",
+    "sourceIp": "10.0.8.154",
     "actorId": "usr-epsilon-admin",
     "actorName": "Putri Ayu",
     "tenantId": "ten-epsilon",
@@ -740,60 +756,12 @@
     "after": {
       "method": "password"
     },
-    "requestId": "req_login233",
-    "at": "2026-09-13T16:00:00.000Z"
-  },
-  {
-    "id": "aud-000b5",
-    "sourceIp": "10.0.6.67",
-    "actorId": "usr-delta-admin",
-    "actorName": "Rizky Maulana",
-    "tenantId": "ten-delta",
-    "action": "user.login",
-    "resourceType": "session",
-    "resourceId": "ses-delta-admin",
-    "before": null,
-    "after": {
-      "method": "password"
-    },
-    "requestId": "req_login614",
-    "at": "2026-09-13T12:00:00.000Z"
-  },
-  {
-    "id": "aud-000az",
-    "sourceIp": "10.0.9.202",
-    "actorId": "usr-alpha-admin",
-    "actorName": "Fahmi Syaban",
-    "tenantId": "ten-alpha",
-    "action": "user.login",
-    "resourceType": "session",
-    "resourceId": "ses-alpha-admin",
-    "before": null,
-    "after": {
-      "method": "password"
-    },
-    "requestId": "req_login871",
-    "at": "2026-09-13T04:00:00.000Z"
-  },
-  {
-    "id": "aud-000b2",
-    "sourceIp": "10.0.4.4",
-    "actorId": "usr-beta-operator",
-    "actorName": "Sari Wulandari",
-    "tenantId": "ten-beta",
-    "action": "user.login",
-    "resourceType": "session",
-    "resourceId": "ses-beta-operator",
-    "before": null,
-    "after": {
-      "method": "password"
-    },
-    "requestId": "req_login220",
-    "at": "2026-09-12T15:00:00.000Z"
+    "requestId": "req_login360",
+    "at": "2026-09-13T15:00:00.000Z"
   },
   {
     "id": "aud-000b0",
-    "sourceIp": "10.0.0.24",
+    "sourceIp": "10.0.1.216",
     "actorId": "usr-alpha-operator",
     "actorName": "Reyza Pratama",
     "tenantId": "ten-alpha",
@@ -804,12 +772,44 @@
     "after": {
       "method": "password"
     },
-    "requestId": "req_login563",
+    "requestId": "req_login771",
+    "at": "2026-09-13T04:00:00.000Z"
+  },
+  {
+    "id": "aud-000b2",
+    "sourceIp": "10.0.9.62",
+    "actorId": "usr-beta-operator",
+    "actorName": "Sari Wulandari",
+    "tenantId": "ten-beta",
+    "action": "user.login",
+    "resourceType": "session",
+    "resourceId": "ses-beta-operator",
+    "before": null,
+    "after": {
+      "method": "password"
+    },
+    "requestId": "req_login443",
+    "at": "2026-09-12T19:00:00.000Z"
+  },
+  {
+    "id": "aud-000b3",
+    "sourceIp": "10.0.5.84",
+    "actorId": "usr-gamma-admin",
+    "actorName": "Bima Santoso",
+    "tenantId": "ten-gamma",
+    "action": "user.login",
+    "resourceType": "session",
+    "resourceId": "ses-gamma-admin",
+    "before": null,
+    "after": {
+      "method": "password"
+    },
+    "requestId": "req_login665",
     "at": "2026-09-12T11:00:00.000Z"
   },
   {
     "id": "aud-0009r",
-    "sourceIp": "10.0.6.172",
+    "sourceIp": "10.0.2.67",
     "actorId": "usr-platform-admin",
     "actorName": "Nadia Rahma",
     "tenantId": null,
@@ -827,7 +827,7 @@
   },
   {
     "id": "aud-0009s",
-    "sourceIp": "10.0.7.242",
+    "sourceIp": "10.0.1.40",
     "actorId": "usr-platform-admin",
     "actorName": "Nadia Rahma",
     "tenantId": "ten-iota",
@@ -844,7 +844,7 @@
   },
   {
     "id": "aud-0009p",
-    "sourceIp": "10.0.1.58",
+    "sourceIp": "10.0.7.242",
     "actorId": "usr-platform-admin",
     "actorName": "Nadia Rahma",
     "tenantId": "ten-gamma",
@@ -862,7 +862,7 @@
   },
   {
     "id": "aud-0009q",
-    "sourceIp": "10.0.4.150",
+    "sourceIp": "10.0.4.46",
     "actorId": "usr-platform-admin",
     "actorName": "Nadia Rahma",
     "tenantId": null,
@@ -880,7 +880,7 @@
   },
   {
     "id": "aud-0009t",
-    "sourceIp": "10.0.4.46",
+    "sourceIp": "10.0.0.163",
     "actorId": "usr-platform-admin",
     "actorName": "Nadia Rahma",
     "tenantId": "ten-zeta",
@@ -898,7 +898,7 @@
   },
   {
     "id": "aud-0009u",
-    "sourceIp": "10.0.2.67",
+    "sourceIp": "10.0.2.27",
     "actorId": "usr-platform-admin",
     "actorName": "Nadia Rahma",
     "tenantId": null,

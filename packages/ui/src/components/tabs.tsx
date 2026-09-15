@@ -90,7 +90,11 @@ export function Segmented<T extends string>({
   className?: string
 }) {
   return (
-    <div role="group" aria-label="View options" className={cn('bg-card shadow-card flex gap-1 rounded-full p-1', className)}>
+    <div
+      role="group"
+      aria-label="View options"
+      className={cn('bg-card shadow-card flex gap-1 rounded-full p-1', className)}
+    >
       {options.map((o) => {
         const active = o.value === value
         return (

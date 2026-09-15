@@ -27,7 +27,11 @@ export interface BottomBarItemProps {
   active?: boolean
   badge?: number
   onClick?: () => void
-  render?: (props: { className: string; children: React.ReactNode; 'aria-current'?: 'page' }) => React.ReactNode
+  render?: (props: {
+    className: string
+    children: React.ReactNode
+    'aria-current'?: 'page'
+  }) => React.ReactNode
 }
 
 export function BottomBarItem({
@@ -53,9 +57,18 @@ export function BottomBarItem({
       ) : null}
     </>
   )
-  if (render) return <>{render({ className, children: inner, 'aria-current': active ? 'page' : undefined })}</>
+  if (render)
+    return (
+      <>{render({ className, children: inner, 'aria-current': active ? 'page' : undefined })}</>
+    )
   return (
-    <button type="button" onClick={onClick} className={className} aria-label={label} aria-pressed={active}>
+    <button
+      type="button"
+      onClick={onClick}
+      className={className}
+      aria-label={label}
+      aria-pressed={active}
+    >
       {inner}
     </button>
   )

@@ -180,7 +180,12 @@ export function InvitationLink({
       </p>
       {url && !expired && (
         <>
-          <a className="text-accent inline-flex min-h-11 items-center underline" href={url} target="_blank" rel="noreferrer">
+          <a
+            className="text-accent inline-flex min-h-11 items-center underline"
+            href={url}
+            target="_blank"
+            rel="noreferrer"
+          >
             Open invitation
           </a>
           <Button

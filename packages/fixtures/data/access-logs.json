@@ -1,7 +1,7 @@
 [
   {
-    "id": "acc-0007n",
-    "requestId": "req_95lr56",
+    "id": "acc-0007m",
+    "requestId": "req_95lr55",
     "at": "2026-09-14T01:51:00.000Z",
     "tenantId": "ten-kappa",
     "userId": "usr-kappa-admin",
@@ -13,8 +13,8 @@
     "latencyMs": 16
   },
   {
-    "id": "acc-0009l",
-    "requestId": "req_4v0b74",
+    "id": "acc-0009k",
+    "requestId": "req_4v0b73",
     "at": "2026-09-14T01:45:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-admin",
@@ -26,8 +26,8 @@
     "latencyMs": 38
   },
   {
-    "id": "acc-0005p",
-    "requestId": "req_9llz38",
+    "id": "acc-0005o",
+    "requestId": "req_9llz37",
     "at": "2026-09-14T01:44:00.000Z",
     "tenantId": "ten-lambda",
     "userId": "usr-lambda-admin",
@@ -39,8 +39,8 @@
     "latencyMs": 10
   },
   {
-    "id": "acc-0003i",
-    "requestId": "req_560f11",
+    "id": "acc-0003h",
+    "requestId": "req_560f10",
     "at": "2026-09-14T01:36:00.000Z",
     "tenantId": "ten-zeta",
     "userId": "usr-zeta-admin",
@@ -52,8 +52,8 @@
     "latencyMs": 33
   },
   {
-    "id": "acc-0002i",
-    "requestId": "req_798d1",
+    "id": "acc-0002h",
+    "requestId": "req_798d0",
     "at": "2026-09-14T01:00:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-operator",
@@ -65,8 +65,8 @@
     "latencyMs": 58
   },
   {
-    "id": "acc-00040",
-    "requestId": "req_ehh31j",
+    "id": "acc-0003z",
+    "requestId": "req_ehh31i",
     "at": "2026-09-14T00:43:00.000Z",
     "tenantId": "ten-epsilon",
     "userId": "usr-epsilon-admin",
@@ -78,8 +78,8 @@
     "latencyMs": 61
   },
   {
-    "id": "acc-0008y",
-    "requestId": "req_a8o86h",
+    "id": "acc-0008x",
+    "requestId": "req_a8o86g",
     "at": "2026-09-14T00:37:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-operator",
@@ -91,8 +91,8 @@
     "latencyMs": 29
   },
   {
-    "id": "acc-0005t",
-    "requestId": "req_clfg3c",
+    "id": "acc-0005s",
+    "requestId": "req_clfg3b",
     "at": "2026-09-14T00:32:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-admin",
@@ -104,8 +104,8 @@
     "latencyMs": 27
   },
   {
-    "id": "acc-0009e",
-    "requestId": "req_7kdm6x",
+    "id": "acc-0009d",
+    "requestId": "req_7kdm6w",
     "at": "2026-09-14T00:30:00.000Z",
     "tenantId": "ten-eta",
     "userId": "usr-eta-admin",
@@ -117,8 +117,8 @@
     "latencyMs": 51
   },
   {
-    "id": "acc-0006m",
-    "requestId": "req_5fll45",
+    "id": "acc-0006l",
+    "requestId": "req_5fll44",
     "at": "2026-09-14T00:26:00.000Z",
     "tenantId": "ten-zeta",
     "userId": "usr-zeta-admin",
@@ -130,8 +130,8 @@
     "latencyMs": 42
   },
   {
-    "id": "acc-0005u",
-    "requestId": "req_hsn93d",
+    "id": "acc-0005t",
+    "requestId": "req_hsn93c",
     "at": "2026-09-14T00:21:00.000Z",
     "tenantId": "ten-eta",
     "userId": "usr-eta-admin",
@@ -143,8 +143,8 @@
     "latencyMs": 16
   },
   {
-    "id": "acc-0008m",
-    "requestId": "req_e7ij65",
+    "id": "acc-0008l",
+    "requestId": "req_e7ij64",
     "at": "2026-09-14T00:04:00.000Z",
     "tenantId": "ten-zeta",
     "userId": "usr-zeta-admin",
@@ -156,8 +156,8 @@
     "latencyMs": 26
   },
   {
-    "id": "acc-00095",
-    "requestId": "req_iwv96o",
+    "id": "acc-00094",
+    "requestId": "req_iwv96n",
     "at": "2026-09-14T00:04:00.000Z",
     "tenantId": "ten-lambda",
     "userId": "usr-lambda-operator",
@@ -169,8 +169,8 @@
     "latencyMs": 37
   },
   {
-    "id": "acc-0007o",
-    "requestId": "req_6pz657",
+    "id": "acc-0007n",
+    "requestId": "req_6pz656",
     "at": "2026-09-13T23:53:00.000Z",
     "tenantId": "ten-epsilon",
     "userId": "usr-epsilon-admin",
@@ -182,8 +182,8 @@
     "latencyMs": 50
   },
   {
-    "id": "acc-0009k",
-    "requestId": "req_h92r73",
+    "id": "acc-0009j",
+    "requestId": "req_h92r72",
     "at": "2026-09-13T23:41:00.000Z",
     "tenantId": "ten-alpha",
     "userId": "usr-alpha-admin",
@@ -195,8 +195,8 @@
     "latencyMs": 41
   },
   {
-    "id": "acc-0005a",
-    "requestId": "req_7kz52t",
+    "id": "acc-00059",
+    "requestId": "req_7kz52s",
     "at": "2026-09-13T23:37:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-admin",
@@ -208,8 +208,8 @@
     "latencyMs": 37
   },
   {
-    "id": "acc-0005i",
-    "requestId": "req_476c31",
+    "id": "acc-0005h",
+    "requestId": "req_476c30",
     "at": "2026-09-13T23:32:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-operator",
@@ -221,8 +221,8 @@
     "latencyMs": 37
   },
   {
-    "id": "acc-0004e",
-    "requestId": "req_gqf71x",
+    "id": "acc-0004d",
+    "requestId": "req_gqf71w",
     "at": "2026-09-13T23:16:00.000Z",
     "tenantId": "ten-mu",
     "userId": "usr-mu-admin",
@@ -234,8 +234,8 @@
     "latencyMs": 21
   },
   {
-    "id": "acc-00068",
-    "requestId": "req_g4l43r",
+    "id": "acc-00067",
+    "requestId": "req_g4l43q",
     "at": "2026-09-13T23:13:00.000Z",
     "tenantId": "ten-alpha",
     "userId": "usr-alpha-operator",
@@ -247,8 +247,8 @@
     "latencyMs": 47
   },
   {
-    "id": "acc-0004b",
-    "requestId": "req_cinz1u",
+    "id": "acc-0004a",
+    "requestId": "req_cinz1t",
     "at": "2026-09-13T23:11:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-admin",
@@ -260,8 +260,8 @@
     "latencyMs": 63
   },
   {
-    "id": "acc-00059",
-    "requestId": "req_5pdk2s",
+    "id": "acc-00058",
+    "requestId": "req_5pdk2r",
     "at": "2026-09-13T22:51:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-operator",
@@ -273,8 +273,8 @@
     "latencyMs": 43
   },
   {
-    "id": "acc-0006w",
-    "requestId": "req_6wp04f",
+    "id": "acc-0006v",
+    "requestId": "req_6wp04e",
     "at": "2026-09-13T22:39:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-operator",
@@ -286,8 +286,8 @@
     "latencyMs": 64
   },
   {
-    "id": "acc-0003c",
-    "requestId": "req_ecnlv",
+    "id": "acc-0003b",
+    "requestId": "req_ecnlu",
     "at": "2026-09-13T22:32:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-operator",
@@ -299,8 +299,8 @@
     "latencyMs": 48
   },
   {
-    "id": "acc-00087",
-    "requestId": "req_e4is5q",
+    "id": "acc-00086",
+    "requestId": "req_e4is5p",
     "at": "2026-09-13T22:28:00.000Z",
     "tenantId": "ten-mu",
     "userId": "usr-mu-admin",
@@ -312,8 +312,8 @@
     "latencyMs": 64
   },
   {
-    "id": "acc-0003p",
-    "requestId": "req_7k7z18",
+    "id": "acc-0003o",
+    "requestId": "req_7k7z17",
     "at": "2026-09-13T22:24:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-operator",
@@ -325,8 +325,8 @@
     "latencyMs": 47
   },
   {
-    "id": "acc-00042",
-    "requestId": "req_8ynl1l",
+    "id": "acc-00041",
+    "requestId": "req_8ynl1k",
     "at": "2026-09-13T22:21:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-operator",
@@ -338,8 +338,8 @@
     "latencyMs": 60
   },
   {
-    "id": "acc-0002v",
-    "requestId": "req_46m3e",
+    "id": "acc-0002u",
+    "requestId": "req_46m3d",
     "at": "2026-09-13T22:02:00.000Z",
     "tenantId": "ten-alpha",
     "userId": "usr-alpha-operator",
@@ -351,8 +351,8 @@
     "latencyMs": 10
   },
   {
-    "id": "acc-0002u",
-    "requestId": "req_8suqd",
+    "id": "acc-0002t",
+    "requestId": "req_8suqc",
     "at": "2026-09-13T21:58:00.000Z",
     "tenantId": "ten-mu",
     "userId": "usr-mu-admin",
@@ -364,8 +364,8 @@
     "latencyMs": 52
   },
   {
-    "id": "acc-0007w",
-    "requestId": "req_iqt55f",
+    "id": "acc-0007v",
+    "requestId": "req_iqt55e",
     "at": "2026-09-13T21:55:00.000Z",
     "tenantId": "ten-delta",
     "userId": "usr-delta-admin",
@@ -377,8 +377,8 @@
     "latencyMs": 8
   },
   {
-    "id": "acc-00078",
-    "requestId": "req_houe4r",
+    "id": "acc-00077",
+    "requestId": "req_houe4q",
     "at": "2026-09-13T21:51:00.000Z",
     "tenantId": "ten-epsilon",
     "userId": "usr-epsilon-admin",
@@ -390,8 +390,8 @@
     "latencyMs": 37
   },
   {
-    "id": "acc-00094",
-    "requestId": "req_imiv6n",
+    "id": "acc-00093",
+    "requestId": "req_imiv6m",
     "at": "2026-09-13T21:45:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-admin",
@@ -403,8 +403,8 @@
     "latencyMs": 32
   },
   {
-    "id": "acc-0004f",
-    "requestId": "req_cwbb1y",
+    "id": "acc-0004e",
+    "requestId": "req_cwbb1x",
     "at": "2026-09-13T21:40:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-operator",
@@ -416,8 +416,8 @@
     "latencyMs": 13
   },
   {
-    "id": "acc-0005w",
-    "requestId": "req_av2j3f",
+    "id": "acc-0005v",
+    "requestId": "req_av2j3e",
     "at": "2026-09-13T21:38:00.000Z",
     "tenantId": "ten-epsilon",
     "userId": "usr-epsilon-admin",
@@ -429,8 +429,8 @@
     "latencyMs": 23
   },
   {
-    "id": "acc-00077",
-    "requestId": "req_bkzj4q",
+    "id": "acc-00076",
+    "requestId": "req_bkzj4p",
     "at": "2026-09-13T21:12:00.000Z",
     "tenantId": "ten-delta",
     "userId": "usr-delta-admin",
@@ -442,8 +442,8 @@
     "latencyMs": 30
   },
   {
-    "id": "acc-0007r",
-    "requestId": "req_i8k05a",
+    "id": "acc-0007q",
+    "requestId": "req_i8k059",
     "at": "2026-09-13T21:03:00.000Z",
     "tenantId": "ten-delta",
     "userId": "usr-delta-admin",
@@ -455,8 +455,8 @@
     "latencyMs": 56
   },
   {
-    "id": "acc-0004l",
-    "requestId": "req_g57r24",
+    "id": "acc-0004k",
+    "requestId": "req_g57r23",
     "at": "2026-09-13T20:53:00.000Z",
     "tenantId": "ten-lambda",
     "userId": "usr-lambda-operator",
@@ -468,8 +468,8 @@
     "latencyMs": 33
   },
   {
-    "id": "acc-0005j",
-    "requestId": "req_agl332",
+    "id": "acc-0005i",
+    "requestId": "req_agl331",
     "at": "2026-09-13T20:53:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-admin",
@@ -481,8 +481,8 @@
     "latencyMs": 52
   },
   {
-    "id": "acc-0005c",
-    "requestId": "req_5erd2v",
+    "id": "acc-0005b",
+    "requestId": "req_5erd2u",
     "at": "2026-09-13T20:47:00.000Z",
     "tenantId": "ten-lambda",
     "userId": "usr-lambda-admin",
@@ -494,8 +494,8 @@
     "latencyMs": 36
   },
   {
-    "id": "acc-0004o",
-    "requestId": "req_a36627",
+    "id": "acc-0004n",
+    "requestId": "req_a36626",
     "at": "2026-09-13T20:40:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-operator",
@@ -507,8 +507,8 @@
     "latencyMs": 41
   },
   {
-    "id": "acc-00085",
-    "requestId": "req_il315o",
+    "id": "acc-00084",
+    "requestId": "req_il315n",
     "at": "2026-09-13T20:38:00.000Z",
     "tenantId": "ten-lambda",
     "userId": "usr-lambda-operator",
@@ -520,8 +520,8 @@
     "latencyMs": 8
   },
   {
-    "id": "acc-0009h",
-    "requestId": "req_lcx570",
+    "id": "acc-0009g",
+    "requestId": "req_lcx56z",
     "at": "2026-09-13T20:31:00.000Z",
     "tenantId": "ten-theta",
     "userId": "usr-theta-admin",
@@ -533,8 +533,8 @@
     "latencyMs": 64
   },
   {
-    "id": "acc-0006n",
-    "requestId": "req_6o5146",
+    "id": "acc-0006m",
+    "requestId": "req_6o5145",
     "at": "2026-09-13T20:30:00.000Z",
     "tenantId": "ten-zeta",
     "userId": "usr-zeta-admin",
@@ -546,8 +546,8 @@
     "latencyMs": 16
   },
   {
-    "id": "acc-00086",
-    "requestId": "req_jgtb5p",
+    "id": "acc-00085",
+    "requestId": "req_jgtb5o",
     "at": "2026-09-13T20:30:00.000Z",
     "tenantId": "ten-theta",
     "userId": "usr-theta-admin",
@@ -559,8 +559,8 @@
     "latencyMs": 35
   },
   {
-    "id": "acc-0002y",
-    "requestId": "req_7sq1h",
+    "id": "acc-0002x",
+    "requestId": "req_7sq1g",
     "at": "2026-09-13T20:29:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-admin",
@@ -572,8 +572,8 @@
     "latencyMs": 48
   },
   {
-    "id": "acc-0004x",
-    "requestId": "req_4dlq2g",
+    "id": "acc-0004w",
+    "requestId": "req_4dlq2f",
     "at": "2026-09-13T20:24:00.000Z",
     "tenantId": "ten-kappa",
     "userId": "usr-kappa-admin",
@@ -585,8 +585,8 @@
     "latencyMs": 34
   },
   {
-    "id": "acc-0003f",
-    "requestId": "req_csgqy",
+    "id": "acc-0003e",
+    "requestId": "req_csgqx",
     "at": "2026-09-13T20:19:00.000Z",
     "tenantId": "ten-theta",
     "userId": "usr-theta-admin",
@@ -598,8 +598,8 @@
     "latencyMs": 12
   },
   {
-    "id": "acc-0003a",
-    "requestId": "req_kku2t",
+    "id": "acc-00039",
+    "requestId": "req_kku2s",
     "at": "2026-09-13T20:18:00.000Z",
     "tenantId": "ten-delta",
     "userId": "usr-delta-admin",
@@ -611,8 +611,8 @@
     "latencyMs": 50
   },
   {
-    "id": "acc-0005b",
-    "requestId": "req_g8zz2u",
+    "id": "acc-0005a",
+    "requestId": "req_g8zz2t",
     "at": "2026-09-13T20:13:00.000Z",
     "tenantId": "ten-zeta",
     "userId": "usr-zeta-admin",
@@ -624,8 +624,8 @@
     "latencyMs": 37
   },
   {
-    "id": "acc-0003k",
-    "requestId": "req_49bw13",
+    "id": "acc-0003j",
+    "requestId": "req_49bw12",
     "at": "2026-09-13T20:09:00.000Z",
     "tenantId": "ten-delta",
     "userId": "usr-delta-admin",
@@ -637,8 +637,8 @@
     "latencyMs": 64
   },
   {
-    "id": "acc-00060",
-    "requestId": "req_l99i3j",
+    "id": "acc-0005z",
+    "requestId": "req_l99i3i",
     "at": "2026-09-13T20:06:00.000Z",
     "tenantId": "ten-kappa",
     "userId": "usr-kappa-admin",
@@ -650,8 +650,8 @@
     "latencyMs": 44
   },
   {
-    "id": "acc-0006e",
-    "requestId": "req_b9753x",
+    "id": "acc-0006d",
+    "requestId": "req_b9753w",
     "at": "2026-09-13T19:53:00.000Z",
     "tenantId": "ten-epsilon",
     "userId": "usr-epsilon-admin",
@@ -663,8 +663,8 @@
     "latencyMs": 10
   },
   {
-    "id": "acc-0004n",
-    "requestId": "req_4x4o26",
+    "id": "acc-0004m",
+    "requestId": "req_4x4o25",
     "at": "2026-09-13T19:40:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-operator",
@@ -676,8 +676,8 @@
     "latencyMs": 29
   },
   {
-    "id": "acc-0004w",
-    "requestId": "req_hr372f",
+    "id": "acc-0004v",
+    "requestId": "req_hr372e",
     "at": "2026-09-13T19:36:00.000Z",
     "tenantId": "ten-delta",
     "userId": "usr-delta-admin",
@@ -689,8 +689,8 @@
     "latencyMs": 10
   },
   {
-    "id": "acc-0006r",
-    "requestId": "req_i6t04a",
+    "id": "acc-0006q",
+    "requestId": "req_i6t049",
     "at": "2026-09-13T19:30:00.000Z",
     "tenantId": "ten-delta",
     "userId": "usr-delta-admin",
@@ -702,8 +702,8 @@
     "latencyMs": 28
   },
   {
-    "id": "acc-0007p",
-    "requestId": "req_b85458",
+    "id": "acc-0007o",
+    "requestId": "req_b85457",
     "at": "2026-09-13T19:21:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-operator",
@@ -715,8 +715,8 @@
     "latencyMs": 47
   },
   {
-    "id": "acc-0003o",
-    "requestId": "req_l5fi17",
+    "id": "acc-0003n",
+    "requestId": "req_l5fi16",
     "at": "2026-09-13T19:18:00.000Z",
     "tenantId": "ten-mu",
     "userId": "usr-mu-admin",
@@ -728,8 +728,8 @@
     "latencyMs": 49
   },
   {
-    "id": "acc-0002l",
-    "requestId": "req_blpw4",
+    "id": "acc-0002k",
+    "requestId": "req_blpw3",
     "at": "2026-09-13T19:15:00.000Z",
     "tenantId": "ten-kappa",
     "userId": "usr-kappa-admin",
@@ -741,8 +741,8 @@
     "latencyMs": 9
   },
   {
-    "id": "acc-0007x",
-    "requestId": "req_2w7m5g",
+    "id": "acc-0007w",
+    "requestId": "req_2w7m5f",
     "at": "2026-09-13T18:57:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-operator",
@@ -754,8 +754,8 @@
     "latencyMs": 22
   },
   {
-    "id": "acc-0009f",
-    "requestId": "req_helf6y",
+    "id": "acc-0009e",
+    "requestId": "req_helf6x",
     "at": "2026-09-13T18:56:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-admin",
@@ -767,8 +767,8 @@
     "latencyMs": 12
   },
   {
-    "id": "acc-0003y",
-    "requestId": "req_7hxf1h",
+    "id": "acc-0003x",
+    "requestId": "req_7hxf1g",
     "at": "2026-09-13T18:50:00.000Z",
     "tenantId": "ten-kappa",
     "userId": "usr-kappa-admin",
@@ -780,8 +780,8 @@
     "latencyMs": 33
   },
   {
-    "id": "acc-00066",
-    "requestId": "req_bupc3p",
+    "id": "acc-00065",
+    "requestId": "req_bupc3o",
     "at": "2026-09-13T18:39:00.000Z",
     "tenantId": "ten-theta",
     "userId": "usr-theta-admin",
@@ -793,8 +793,8 @@
     "latencyMs": 12
   },
   {
-    "id": "acc-0003q",
-    "requestId": "req_93np19",
+    "id": "acc-0003p",
+    "requestId": "req_93np18",
     "at": "2026-09-13T18:31:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-admin",
@@ -806,8 +806,8 @@
     "latencyMs": 44
   },
   {
-    "id": "acc-00091",
-    "requestId": "req_7spb6k",
+    "id": "acc-00090",
+    "requestId": "req_7spb6j",
     "at": "2026-09-13T18:30:00.000Z",
     "tenantId": "ten-lambda",
     "userId": "usr-lambda-operator",
@@ -819,8 +819,8 @@
     "latencyMs": 55
   },
   {
-    "id": "acc-0004q",
-    "requestId": "req_7lwf29",
+    "id": "acc-0004p",
+    "requestId": "req_7lwf28",
     "at": "2026-09-13T18:22:00.000Z",
     "tenantId": "ten-eta",
     "userId": "usr-eta-admin",
@@ -832,8 +832,8 @@
     "latencyMs": 18
   },
   {
-    "id": "acc-0007z",
-    "requestId": "req_6swn5i",
+    "id": "acc-0007y",
+    "requestId": "req_6swn5h",
     "at": "2026-09-13T18:21:00.000Z",
     "tenantId": "ten-alpha",
     "userId": "usr-alpha-admin",
@@ -845,8 +845,8 @@
     "latencyMs": 51
   },
   {
-    "id": "acc-0008d",
-    "requestId": "req_kfhj5w",
+    "id": "acc-0008c",
+    "requestId": "req_kfhj5v",
     "at": "2026-09-13T18:21:00.000Z",
     "tenantId": "ten-alpha",
     "userId": "usr-alpha-admin",
@@ -858,8 +858,8 @@
     "latencyMs": 25
   },
   {
-    "id": "acc-0008h",
-    "requestId": "req_cnc460",
+    "id": "acc-0008g",
+    "requestId": "req_cnc45z",
     "at": "2026-09-13T18:17:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-operator",
@@ -871,8 +871,8 @@
     "latencyMs": 43
   },
   {
-    "id": "acc-0005s",
-    "requestId": "req_ak8n3b",
+    "id": "acc-0005r",
+    "requestId": "req_ak8n3a",
     "at": "2026-09-13T18:09:00.000Z",
     "tenantId": "ten-theta",
     "userId": "usr-theta-admin",
@@ -884,8 +884,8 @@
     "latencyMs": 61
   },
   {
-    "id": "acc-00097",
-    "requestId": "req_dqnd6q",
+    "id": "acc-00096",
+    "requestId": "req_dqnd6p",
     "at": "2026-09-13T18:09:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-admin",
@@ -897,8 +897,8 @@
     "latencyMs": 60
   },
   {
-    "id": "acc-0005k",
-    "requestId": "req_h35g33",
+    "id": "acc-0005j",
+    "requestId": "req_h35g32",
     "at": "2026-09-13T17:57:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-admin",
@@ -910,8 +910,8 @@
     "latencyMs": 57
   },
   {
-    "id": "acc-0006j",
-    "requestId": "req_8w3f42",
+    "id": "acc-0006i",
+    "requestId": "req_8w3f41",
     "at": "2026-09-13T17:53:00.000Z",
     "tenantId": "ten-alpha",
     "userId": "usr-alpha-admin",
@@ -923,8 +923,8 @@
     "latencyMs": 38
   },
   {
-    "id": "acc-0008j",
-    "requestId": "req_f26n62",
+    "id": "acc-0008i",
+    "requestId": "req_f26n61",
     "at": "2026-09-13T17:52:00.000Z",
     "tenantId": "ten-eta",
     "userId": "usr-eta-admin",
@@ -936,8 +936,8 @@
     "latencyMs": 21
   },
   {
-    "id": "acc-0004j",
-    "requestId": "req_4zg622",
+    "id": "acc-0004i",
+    "requestId": "req_4zg621",
     "at": "2026-09-13T17:48:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-operator",
@@ -949,8 +949,8 @@
     "latencyMs": 38
   },
   {
-    "id": "acc-0003s",
-    "requestId": "req_fyhb1b",
+    "id": "acc-0003r",
+    "requestId": "req_fyhb1a",
     "at": "2026-09-13T17:47:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-admin",
@@ -962,8 +962,8 @@
     "latencyMs": 11
   },
   {
-    "id": "acc-0007y",
-    "requestId": "req_3ups5h",
+    "id": "acc-0007x",
+    "requestId": "req_3ups5g",
     "at": "2026-09-13T17:43:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-operator",
@@ -975,8 +975,8 @@
     "latencyMs": 42
   },
   {
-    "id": "acc-0002z",
-    "requestId": "req_8ctdi",
+    "id": "acc-0002y",
+    "requestId": "req_8ctdh",
     "at": "2026-09-13T17:35:00.000Z",
     "tenantId": "ten-eta",
     "userId": "usr-eta-admin",
@@ -988,8 +988,8 @@
     "latencyMs": 9
   },
   {
-    "id": "acc-0003x",
-    "requestId": "req_hp3y1g",
+    "id": "acc-0003w",
+    "requestId": "req_hp3y1f",
     "at": "2026-09-13T17:25:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-admin",
@@ -1001,21 +1001,8 @@
     "latencyMs": 42
   },
   {
-    "id": "acc-0002h",
-    "requestId": "req_2n1g0",
-    "at": "2026-09-13T17:22:00.000Z",
-    "tenantId": "ten-lambda",
-    "userId": "usr-lambda-operator",
-    "applicationId": "app-crm",
-    "subscriptionId": "sub-lambda-crm",
-    "decision": "allow",
-    "reason": "OK",
-    "warning": null,
-    "latencyMs": 26
-  },
-  {
-    "id": "acc-0006b",
-    "requestId": "req_4hwv3u",
+    "id": "acc-0006a",
+    "requestId": "req_4hwv3t",
     "at": "2026-09-13T17:19:00.000Z",
     "tenantId": "ten-alpha",
     "userId": "usr-alpha-admin",
@@ -1027,8 +1014,8 @@
     "latencyMs": 64
   },
   {
-    "id": "acc-0006y",
-    "requestId": "req_a42r4h",
+    "id": "acc-0006x",
+    "requestId": "req_a42r4g",
     "at": "2026-09-13T17:02:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-operator",
@@ -1040,8 +1027,8 @@
     "latencyMs": 36
   },
   {
-    "id": "acc-0006g",
-    "requestId": "req_7h9g3z",
+    "id": "acc-0006f",
+    "requestId": "req_7h9g3y",
     "at": "2026-09-13T16:57:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-admin",
@@ -1053,8 +1040,8 @@
     "latencyMs": 33
   },
   {
-    "id": "acc-0005l",
-    "requestId": "req_gkgp34",
+    "id": "acc-0005k",
+    "requestId": "req_gkgp33",
     "at": "2026-09-13T16:55:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-admin",
@@ -1066,8 +1053,8 @@
     "latencyMs": 44
   },
   {
-    "id": "acc-00058",
-    "requestId": "req_47nd2r",
+    "id": "acc-00057",
+    "requestId": "req_47nd2q",
     "at": "2026-09-13T16:52:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-operator",
@@ -1079,8 +1066,8 @@
     "latencyMs": 34
   },
   {
-    "id": "acc-0009a",
-    "requestId": "req_f5n66t",
+    "id": "acc-00099",
+    "requestId": "req_f5n66s",
     "at": "2026-09-13T16:44:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-admin",
@@ -1092,8 +1079,8 @@
     "latencyMs": 61
   },
   {
-    "id": "acc-00090",
-    "requestId": "req_kn456j",
+    "id": "acc-0008z",
+    "requestId": "req_kn456i",
     "at": "2026-09-13T16:31:00.000Z",
     "tenantId": "ten-alpha",
     "userId": "usr-alpha-operator",
@@ -1105,8 +1092,8 @@
     "latencyMs": 53
   },
   {
-    "id": "acc-0007q",
-    "requestId": "req_3ala59",
+    "id": "acc-0007p",
+    "requestId": "req_3ala58",
     "at": "2026-09-13T16:29:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-admin",
@@ -1118,8 +1105,8 @@
     "latencyMs": 24
   },
   {
-    "id": "acc-00061",
-    "requestId": "req_glf33k",
+    "id": "acc-00060",
+    "requestId": "req_glf33j",
     "at": "2026-09-13T16:27:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-admin",
@@ -1131,8 +1118,8 @@
     "latencyMs": 19
   },
   {
-    "id": "acc-0007e",
-    "requestId": "req_i9dz4x",
+    "id": "acc-0007d",
+    "requestId": "req_i9dz4w",
     "at": "2026-09-13T16:26:00.000Z",
     "tenantId": "ten-kappa",
     "userId": "usr-kappa-admin",
@@ -1144,8 +1131,8 @@
     "latencyMs": 31
   },
   {
-    "id": "acc-0007t",
-    "requestId": "req_c5te5c",
+    "id": "acc-0007s",
+    "requestId": "req_c5te5b",
     "at": "2026-09-13T16:25:00.000Z",
     "tenantId": "ten-kappa",
     "userId": "usr-kappa-admin",
@@ -1157,8 +1144,8 @@
     "latencyMs": 31
   },
   {
-    "id": "acc-0004c",
-    "requestId": "req_9end1v",
+    "id": "acc-0004b",
+    "requestId": "req_9end1u",
     "at": "2026-09-13T16:24:00.000Z",
     "tenantId": "ten-theta",
     "userId": "usr-theta-admin",
@@ -1170,8 +1157,8 @@
     "latencyMs": 41
   },
   {
-    "id": "acc-0008x",
-    "requestId": "req_b2ui6g",
+    "id": "acc-0008w",
+    "requestId": "req_b2ui6f",
     "at": "2026-09-13T16:18:00.000Z",
     "tenantId": "ten-zeta",
     "userId": "usr-zeta-admin",
@@ -1183,8 +1170,8 @@
     "latencyMs": 40
   },
   {
-    "id": "acc-0006i",
-    "requestId": "req_drcx41",
+    "id": "acc-0006h",
+    "requestId": "req_drcx40",
     "at": "2026-09-13T16:17:00.000Z",
     "tenantId": "ten-eta",
     "userId": "usr-eta-admin",
@@ -1196,8 +1183,8 @@
     "latencyMs": 33
   },
   {
-    "id": "acc-0006l",
-    "requestId": "req_2ccd44",
+    "id": "acc-0006k",
+    "requestId": "req_2ccd43",
     "at": "2026-09-13T16:15:00.000Z",
     "tenantId": "ten-theta",
     "userId": "usr-theta-admin",
@@ -1209,8 +1196,8 @@
     "latencyMs": 14
   },
   {
-    "id": "acc-00054",
-    "requestId": "req_hx2j2n",
+    "id": "acc-00053",
+    "requestId": "req_hx2j2m",
     "at": "2026-09-13T16:13:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-operator",
@@ -1222,8 +1209,8 @@
     "latencyMs": 56
   },
   {
-    "id": "acc-00045",
-    "requestId": "req_86lw1o",
+    "id": "acc-00044",
+    "requestId": "req_86lw1n",
     "at": "2026-09-13T16:10:00.000Z",
     "tenantId": "ten-lambda",
     "userId": "usr-lambda-operator",
@@ -1235,8 +1222,8 @@
     "latencyMs": 12
   },
   {
-    "id": "acc-00081",
-    "requestId": "req_ifw05k",
+    "id": "acc-00080",
+    "requestId": "req_ifw05j",
     "at": "2026-09-13T16:10:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-operator",
@@ -1248,8 +1235,8 @@
     "latencyMs": 55
   },
   {
-    "id": "acc-0008q",
-    "requestId": "req_dma169",
+    "id": "acc-0008p",
+    "requestId": "req_dma168",
     "at": "2026-09-13T16:10:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-operator",
@@ -1261,8 +1248,8 @@
     "latencyMs": 16
   },
   {
-    "id": "acc-00049",
-    "requestId": "req_c3ae1s",
+    "id": "acc-00048",
+    "requestId": "req_c3ae1r",
     "at": "2026-09-13T16:03:00.000Z",
     "tenantId": "ten-delta",
     "userId": "usr-delta-admin",
@@ -1274,8 +1261,8 @@
     "latencyMs": 36
   },
   {
-    "id": "acc-00032",
-    "requestId": "req_cewel",
+    "id": "acc-00031",
+    "requestId": "req_cewek",
     "at": "2026-09-13T15:37:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-operator",
@@ -1287,8 +1274,8 @@
     "latencyMs": 18
   },
   {
-    "id": "acc-0003b",
-    "requestId": "req_fni1u",
+    "id": "acc-0003a",
+    "requestId": "req_fni1t",
     "at": "2026-09-13T15:18:00.000Z",
     "tenantId": "ten-alpha",
     "userId": "usr-alpha-operator",
@@ -1300,8 +1287,8 @@
     "latencyMs": 45
   },
   {
-    "id": "acc-00039",
-    "requestId": "req_afpws",
+    "id": "acc-00038",
+    "requestId": "req_afpwr",
     "at": "2026-09-13T15:17:00.000Z",
     "tenantId": "ten-mu",
     "userId": "usr-mu-admin",
@@ -1313,8 +1300,8 @@
     "latencyMs": 24
   },
   {
-    "id": "acc-0002o",
-    "requestId": "req_2z4d7",
+    "id": "acc-0002n",
+    "requestId": "req_2z4d6",
     "at": "2026-09-13T15:16:00.000Z",
     "tenantId": "ten-delta",
     "userId": "usr-delta-admin",
@@ -1326,8 +1313,8 @@
     "latencyMs": 33
   },
   {
-    "id": "acc-00050",
-    "requestId": "req_grj32j",
+    "id": "acc-0004z",
+    "requestId": "req_grj32i",
     "at": "2026-09-13T15:09:00.000Z",
     "tenantId": "ten-alpha",
     "userId": "usr-alpha-operator",
@@ -1339,8 +1326,8 @@
     "latencyMs": 11
   },
   {
-    "id": "acc-0002k",
-    "requestId": "req_l75n3",
+    "id": "acc-0002j",
+    "requestId": "req_l75n2",
     "at": "2026-09-13T15:08:00.000Z",
     "tenantId": "ten-epsilon",
     "userId": "usr-epsilon-admin",
@@ -1352,8 +1339,8 @@
     "latencyMs": 28
   },
   {
-    "id": "acc-00041",
-    "requestId": "req_g9hy1k",
+    "id": "acc-00040",
+    "requestId": "req_g9hy1j",
     "at": "2026-09-13T15:03:00.000Z",
     "tenantId": "ten-epsilon",
     "userId": "usr-epsilon-admin",
@@ -1365,8 +1352,8 @@
     "latencyMs": 19
   },
   {
-    "id": "acc-0006x",
-    "requestId": "req_cx1x4g",
+    "id": "acc-0006w",
+    "requestId": "req_cx1x4f",
     "at": "2026-09-13T15:02:00.000Z",
     "tenantId": "ten-eta",
     "userId": "usr-eta-admin",
@@ -1378,8 +1365,8 @@
     "latencyMs": 38
   },
   {
-    "id": "acc-0003l",
-    "requestId": "req_2f4214",
+    "id": "acc-0003k",
+    "requestId": "req_2f4213",
     "at": "2026-09-13T14:46:00.000Z",
     "tenantId": "ten-theta",
     "userId": "usr-theta-admin",
@@ -1391,8 +1378,8 @@
     "latencyMs": 27
   },
   {
-    "id": "acc-0008a",
-    "requestId": "req_7ym15t",
+    "id": "acc-00089",
+    "requestId": "req_7ym15s",
     "at": "2026-09-13T14:46:00.000Z",
     "tenantId": "ten-eta",
     "userId": "usr-eta-admin",
@@ -1404,8 +1391,8 @@
     "latencyMs": 56
   },
   {
-    "id": "acc-0008o",
-    "requestId": "req_9e9x67",
+    "id": "acc-0008n",
+    "requestId": "req_9e9x66",
     "at": "2026-09-13T14:41:00.000Z",
     "tenantId": "ten-alpha",
     "userId": "usr-alpha-admin",
@@ -1417,8 +1404,8 @@
     "latencyMs": 22
   },
   {
-    "id": "acc-0005g",
-    "requestId": "req_iex82z",
+    "id": "acc-0005f",
+    "requestId": "req_iex82y",
     "at": "2026-09-13T14:05:00.000Z",
     "tenantId": "ten-kappa",
     "userId": "usr-kappa-admin",
@@ -1430,8 +1417,8 @@
     "latencyMs": 29
   },
   {
-    "id": "acc-0008b",
-    "requestId": "req_44hc5u",
+    "id": "acc-0008a",
+    "requestId": "req_44hc5t",
     "at": "2026-09-13T14:04:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-operator",
@@ -1443,8 +1430,8 @@
     "latencyMs": 41
   },
   {
-    "id": "acc-00034",
-    "requestId": "req_6mw9n",
+    "id": "acc-00033",
+    "requestId": "req_6mw9m",
     "at": "2026-09-13T13:59:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-admin",
@@ -1456,8 +1443,8 @@
     "latencyMs": 40
   },
   {
-    "id": "acc-0008f",
-    "requestId": "req_jstb5y",
+    "id": "acc-0008e",
+    "requestId": "req_jstb5x",
     "at": "2026-09-13T13:54:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-admin",
@@ -1469,8 +1456,8 @@
     "latencyMs": 52
   },
   {
-    "id": "acc-0003d",
-    "requestId": "req_k6hqw",
+    "id": "acc-0003c",
+    "requestId": "req_k6hqv",
     "at": "2026-09-13T13:52:00.000Z",
     "tenantId": "ten-mu",
     "userId": "usr-mu-admin",
@@ -1482,8 +1469,8 @@
     "latencyMs": 8
   },
   {
-    "id": "acc-0003w",
-    "requestId": "req_iuph1f",
+    "id": "acc-0003v",
+    "requestId": "req_iuph1e",
     "at": "2026-09-13T13:50:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-admin",
@@ -1495,8 +1482,8 @@
     "latencyMs": 30
   },
   {
-    "id": "acc-0007c",
-    "requestId": "req_dsr64v",
+    "id": "acc-0007b",
+    "requestId": "req_dsr64u",
     "at": "2026-09-13T13:43:00.000Z",
     "tenantId": "ten-eta",
     "userId": "usr-eta-admin",
@@ -1508,8 +1495,8 @@
     "latencyMs": 33
   },
   {
-    "id": "acc-0005n",
-    "requestId": "req_bemh36",
+    "id": "acc-0005m",
+    "requestId": "req_bemh35",
     "at": "2026-09-13T13:37:00.000Z",
     "tenantId": "ten-eta",
     "userId": "usr-eta-admin",
@@ -1521,8 +1508,8 @@
     "latencyMs": 52
   },
   {
-    "id": "acc-0003u",
-    "requestId": "req_d16r1d",
+    "id": "acc-0003t",
+    "requestId": "req_d16r1c",
     "at": "2026-09-13T13:35:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-operator",
@@ -1534,8 +1521,8 @@
     "latencyMs": 57
   },
   {
-    "id": "acc-0006u",
-    "requestId": "req_kjzs4d",
+    "id": "acc-0006t",
+    "requestId": "req_kjzs4c",
     "at": "2026-09-13T13:29:00.000Z",
     "tenantId": "ten-mu",
     "userId": "usr-mu-admin",
@@ -1547,8 +1534,8 @@
     "latencyMs": 42
   },
   {
-    "id": "acc-0003m",
-    "requestId": "req_335x15",
+    "id": "acc-0003l",
+    "requestId": "req_335x14",
     "at": "2026-09-13T13:27:00.000Z",
     "tenantId": "ten-kappa",
     "userId": "usr-kappa-admin",
@@ -1560,8 +1547,8 @@
     "latencyMs": 11
   },
   {
-    "id": "acc-0006t",
-    "requestId": "req_ji054c",
+    "id": "acc-0006s",
+    "requestId": "req_ji054b",
     "at": "2026-09-13T13:26:00.000Z",
     "tenantId": "ten-mu",
     "userId": "usr-mu-admin",
@@ -1573,8 +1560,8 @@
     "latencyMs": 55
   },
   {
-    "id": "acc-0005x",
-    "requestId": "req_602b3g",
+    "id": "acc-0005w",
+    "requestId": "req_602b3f",
     "at": "2026-09-13T13:22:00.000Z",
     "tenantId": "ten-mu",
     "userId": "usr-mu-admin",
@@ -1586,8 +1573,8 @@
     "latencyMs": 49
   },
   {
-    "id": "acc-0006p",
-    "requestId": "req_a5yc48",
+    "id": "acc-0006o",
+    "requestId": "req_a5yc47",
     "at": "2026-09-13T13:20:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-admin",
@@ -1599,8 +1586,8 @@
     "latencyMs": 26
   },
   {
-    "id": "acc-00079",
-    "requestId": "req_iygd4s",
+    "id": "acc-00078",
+    "requestId": "req_iygd4r",
     "at": "2026-09-13T13:18:00.000Z",
     "tenantId": "ten-eta",
     "userId": "usr-eta-admin",
@@ -1612,8 +1599,8 @@
     "latencyMs": 52
   },
   {
-    "id": "acc-0003n",
-    "requestId": "req_jw3j16",
+    "id": "acc-0003m",
+    "requestId": "req_jw3j15",
     "at": "2026-09-13T12:51:00.000Z",
     "tenantId": "ten-delta",
     "userId": "usr-delta-admin",
@@ -1625,8 +1612,8 @@
     "latencyMs": 35
   },
   {
-    "id": "acc-0006a",
-    "requestId": "req_7s6x3t",
+    "id": "acc-00069",
+    "requestId": "req_7s6x3s",
     "at": "2026-09-13T12:50:00.000Z",
     "tenantId": "ten-mu",
     "userId": "usr-mu-admin",
@@ -1638,8 +1625,8 @@
     "latencyMs": 13
   },
   {
-    "id": "acc-0004y",
-    "requestId": "req_6xuq2h",
+    "id": "acc-0004x",
+    "requestId": "req_6xuq2g",
     "at": "2026-09-13T12:48:00.000Z",
     "tenantId": "ten-mu",
     "userId": "usr-mu-admin",
@@ -1651,8 +1638,8 @@
     "latencyMs": 56
   },
   {
-    "id": "acc-0003t",
-    "requestId": "req_hv8j1c",
+    "id": "acc-0003s",
+    "requestId": "req_hv8j1b",
     "at": "2026-09-13T12:25:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-admin",
@@ -1664,8 +1651,8 @@
     "latencyMs": 17
   },
   {
-    "id": "acc-0007f",
-    "requestId": "req_9e824y",
+    "id": "acc-0007e",
+    "requestId": "req_9e824x",
     "at": "2026-09-13T12:24:00.000Z",
     "tenantId": "ten-alpha",
     "userId": "usr-alpha-admin",
@@ -1677,8 +1664,8 @@
     "latencyMs": 49
   },
   {
-    "id": "acc-00088",
-    "requestId": "req_e9ja5r",
+    "id": "acc-00087",
+    "requestId": "req_e9ja5q",
     "at": "2026-09-13T12:21:00.000Z",
     "tenantId": "ten-zeta",
     "userId": "usr-zeta-admin",
@@ -1690,8 +1677,8 @@
     "latencyMs": 19
   },
   {
-    "id": "acc-00064",
-    "requestId": "req_djlo3n",
+    "id": "acc-00063",
+    "requestId": "req_djlo3m",
     "at": "2026-09-13T12:14:00.000Z",
     "tenantId": "ten-kappa",
     "userId": "usr-kappa-admin",
@@ -1703,8 +1690,8 @@
     "latencyMs": 19
   },
   {
-    "id": "acc-0007s",
-    "requestId": "req_l1b55b",
+    "id": "acc-0007r",
+    "requestId": "req_l1b55a",
     "at": "2026-09-13T12:07:00.000Z",
     "tenantId": "ten-alpha",
     "userId": "usr-alpha-operator",
@@ -1716,8 +1703,8 @@
     "latencyMs": 12
   },
   {
-    "id": "acc-00083",
-    "requestId": "req_l9eq5m",
+    "id": "acc-00082",
+    "requestId": "req_l9eq5l",
     "at": "2026-09-13T12:01:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-admin",
@@ -1729,8 +1716,8 @@
     "latencyMs": 31
   },
   {
-    "id": "acc-0008k",
-    "requestId": "req_2m3i63",
+    "id": "acc-0008j",
+    "requestId": "req_2m3i62",
     "at": "2026-09-13T11:53:00.000Z",
     "tenantId": "ten-lambda",
     "userId": "usr-lambda-operator",
@@ -1742,8 +1729,8 @@
     "latencyMs": 40
   },
   {
-    "id": "acc-00098",
-    "requestId": "req_fqlg6r",
+    "id": "acc-00097",
+    "requestId": "req_fqlg6q",
     "at": "2026-09-13T11:41:00.000Z",
     "tenantId": "ten-alpha",
     "userId": "usr-alpha-operator",
@@ -1755,8 +1742,8 @@
     "latencyMs": 25
   },
   {
-    "id": "acc-0006z",
-    "requestId": "req_3yh54i",
+    "id": "acc-0006y",
+    "requestId": "req_3yh54h",
     "at": "2026-09-13T11:32:00.000Z",
     "tenantId": "ten-theta",
     "userId": "usr-theta-admin",
@@ -1768,8 +1755,8 @@
     "latencyMs": 59
   },
   {
-    "id": "acc-0008n",
-    "requestId": "req_gaze66",
+    "id": "acc-0008m",
+    "requestId": "req_gaze65",
     "at": "2026-09-13T11:31:00.000Z",
     "tenantId": "ten-eta",
     "userId": "usr-eta-admin",
@@ -1781,8 +1768,8 @@
     "latencyMs": 47
   },
   {
-    "id": "acc-0003j",
-    "requestId": "req_2ge312",
+    "id": "acc-0003i",
+    "requestId": "req_2ge311",
     "at": "2026-09-13T11:26:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-admin",
@@ -1794,8 +1781,8 @@
     "latencyMs": 25
   },
   {
-    "id": "acc-0008z",
-    "requestId": "req_2mft6i",
+    "id": "acc-0008y",
+    "requestId": "req_2mft6h",
     "at": "2026-09-13T11:15:00.000Z",
     "tenantId": "ten-theta",
     "userId": "usr-theta-admin",
@@ -1807,8 +1794,8 @@
     "latencyMs": 59
   },
   {
-    "id": "acc-0007a",
-    "requestId": "req_7btc4t",
+    "id": "acc-00079",
+    "requestId": "req_7btc4s",
     "at": "2026-09-13T10:51:00.000Z",
     "tenantId": "ten-zeta",
     "userId": "usr-zeta-admin",
@@ -1820,8 +1807,8 @@
     "latencyMs": 35
   },
   {
-    "id": "acc-00072",
-    "requestId": "req_cxv24l",
+    "id": "acc-00071",
+    "requestId": "req_cxv24k",
     "at": "2026-09-13T10:42:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-operator",
@@ -1833,8 +1820,8 @@
     "latencyMs": 19
   },
   {
-    "id": "acc-0004r",
-    "requestId": "req_j2jx2a",
+    "id": "acc-0004q",
+    "requestId": "req_j2jx29",
     "at": "2026-09-13T10:36:00.000Z",
     "tenantId": "ten-lambda",
     "userId": "usr-lambda-admin",
@@ -1846,8 +1833,8 @@
     "latencyMs": 33
   },
   {
-    "id": "acc-0006d",
-    "requestId": "req_9srb3w",
+    "id": "acc-0006c",
+    "requestId": "req_9srb3v",
     "at": "2026-09-13T10:31:00.000Z",
     "tenantId": "ten-theta",
     "userId": "usr-theta-admin",
@@ -1859,8 +1846,8 @@
     "latencyMs": 37
   },
   {
-    "id": "acc-00051",
-    "requestId": "req_86c72k",
+    "id": "acc-00050",
+    "requestId": "req_86c72j",
     "at": "2026-09-13T10:29:00.000Z",
     "tenantId": "ten-theta",
     "userId": "usr-theta-admin",
@@ -1872,8 +1859,8 @@
     "latencyMs": 49
   },
   {
-    "id": "acc-0004s",
-    "requestId": "req_g56u2b",
+    "id": "acc-0004r",
+    "requestId": "req_g56u2a",
     "at": "2026-09-13T10:25:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-admin",
@@ -1885,8 +1872,8 @@
     "latencyMs": 62
   },
   {
-    "id": "acc-0006q",
-    "requestId": "req_co8749",
+    "id": "acc-0006p",
+    "requestId": "req_co8748",
     "at": "2026-09-13T10:16:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-operator",
@@ -1898,8 +1885,8 @@
     "latencyMs": 14
   },
   {
-    "id": "acc-00099",
-    "requestId": "req_8zsu6s",
+    "id": "acc-00098",
+    "requestId": "req_8zsu6r",
     "at": "2026-09-13T10:14:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-admin",
@@ -1911,8 +1898,8 @@
     "latencyMs": 52
   },
   {
-    "id": "acc-0003e",
-    "requestId": "req_ckj8x",
+    "id": "acc-0003d",
+    "requestId": "req_ckj8w",
     "at": "2026-09-13T10:01:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-admin",
@@ -1924,8 +1911,8 @@
     "latencyMs": 59
   },
   {
-    "id": "acc-00069",
-    "requestId": "req_5m993s",
+    "id": "acc-00068",
+    "requestId": "req_5m993r",
     "at": "2026-09-13T09:55:00.000Z",
     "tenantId": "ten-lambda",
     "userId": "usr-lambda-operator",
@@ -1937,8 +1924,8 @@
     "latencyMs": 34
   },
   {
-    "id": "acc-0005r",
-    "requestId": "req_8ghf3a",
+    "id": "acc-0005q",
+    "requestId": "req_8ghf39",
     "at": "2026-09-13T09:48:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-admin",
@@ -1950,8 +1937,8 @@
     "latencyMs": 12
   },
   {
-    "id": "acc-0007j",
-    "requestId": "req_jzrx52",
+    "id": "acc-0007i",
+    "requestId": "req_jzrx51",
     "at": "2026-09-13T09:44:00.000Z",
     "tenantId": "ten-zeta",
     "userId": "usr-zeta-admin",
@@ -1963,8 +1950,8 @@
     "latencyMs": 29
   },
   {
-    "id": "acc-0007d",
-    "requestId": "req_7l3e4w",
+    "id": "acc-0007c",
+    "requestId": "req_7l3e4v",
     "at": "2026-09-13T09:32:00.000Z",
     "tenantId": "ten-delta",
     "userId": "usr-delta-admin",
@@ -1976,8 +1963,8 @@
     "latencyMs": 27
   },
   {
-    "id": "acc-00062",
-    "requestId": "req_bwg83l",
+    "id": "acc-00061",
+    "requestId": "req_bwg83k",
     "at": "2026-09-13T09:19:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-operator",
@@ -1989,8 +1976,8 @@
     "latencyMs": 36
   },
   {
-    "id": "acc-00065",
-    "requestId": "req_grhv3o",
+    "id": "acc-00064",
+    "requestId": "req_grhv3n",
     "at": "2026-09-13T09:13:00.000Z",
     "tenantId": "ten-alpha",
     "userId": "usr-alpha-operator",
@@ -2002,8 +1989,8 @@
     "latencyMs": 31
   },
   {
-    "id": "acc-0009i",
-    "requestId": "req_bfyz71",
+    "id": "acc-0009h",
+    "requestId": "req_bfyz70",
     "at": "2026-09-13T09:11:00.000Z",
     "tenantId": "ten-alpha",
     "userId": "usr-alpha-operator",
@@ -2015,8 +2002,8 @@
     "latencyMs": 18
   },
   {
-    "id": "acc-0003v",
-    "requestId": "req_5zzk1e",
+    "id": "acc-0003u",
+    "requestId": "req_5zzk1d",
     "at": "2026-09-13T09:07:00.000Z",
     "tenantId": "ten-lambda",
     "userId": "usr-lambda-admin",
@@ -2028,8 +2015,8 @@
     "latencyMs": 10
   },
   {
-    "id": "acc-0009c",
-    "requestId": "req_98dc6v",
+    "id": "acc-0009b",
+    "requestId": "req_98dc6u",
     "at": "2026-09-13T09:07:00.000Z",
     "tenantId": "ten-delta",
     "userId": "usr-delta-admin",
@@ -2041,8 +2028,8 @@
     "latencyMs": 8
   },
   {
-    "id": "acc-0007k",
-    "requestId": "req_7zs953",
+    "id": "acc-0007j",
+    "requestId": "req_7zs952",
     "at": "2026-09-13T09:03:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-admin",
@@ -2054,8 +2041,8 @@
     "latencyMs": 64
   },
   {
-    "id": "acc-0009d",
-    "requestId": "req_h5e96w",
+    "id": "acc-0009c",
+    "requestId": "req_h5e96v",
     "at": "2026-09-13T09:01:00.000Z",
     "tenantId": "ten-delta",
     "userId": "usr-delta-admin",
@@ -2067,8 +2054,8 @@
     "latencyMs": 11
   },
   {
-    "id": "acc-0006k",
-    "requestId": "req_h49343",
+    "id": "acc-0006j",
+    "requestId": "req_h49342",
     "at": "2026-09-13T08:52:00.000Z",
     "tenantId": "ten-epsilon",
     "userId": "usr-epsilon-admin",
@@ -2080,8 +2067,8 @@
     "latencyMs": 57
   },
   {
-    "id": "acc-0004h",
-    "requestId": "req_4igi20",
+    "id": "acc-0004g",
+    "requestId": "req_4igi1z",
     "at": "2026-09-13T08:34:00.000Z",
     "tenantId": "ten-lambda",
     "userId": "usr-lambda-operator",
@@ -2093,8 +2080,8 @@
     "latencyMs": 51
   },
   {
-    "id": "acc-0004m",
-    "requestId": "req_38vc25",
+    "id": "acc-0004l",
+    "requestId": "req_38vc24",
     "at": "2026-09-13T08:27:00.000Z",
     "tenantId": "ten-alpha",
     "userId": "usr-alpha-admin",
@@ -2106,8 +2093,8 @@
     "latencyMs": 44
   },
   {
-    "id": "acc-0006v",
-    "requestId": "req_a9444e",
+    "id": "acc-0006u",
+    "requestId": "req_a9444d",
     "at": "2026-09-13T08:07:00.000Z",
     "tenantId": "ten-epsilon",
     "userId": "usr-epsilon-admin",
@@ -2119,8 +2106,8 @@
     "latencyMs": 55
   },
   {
-    "id": "acc-00080",
-    "requestId": "req_dm9m5j",
+    "id": "acc-0007z",
+    "requestId": "req_dm9m5i",
     "at": "2026-09-13T08:06:00.000Z",
     "tenantId": "ten-lambda",
     "userId": "usr-lambda-admin",
@@ -2132,8 +2119,8 @@
     "latencyMs": 10
   },
   {
-    "id": "acc-0007u",
-    "requestId": "req_42io5d",
+    "id": "acc-0007t",
+    "requestId": "req_42io5c",
     "at": "2026-09-13T08:02:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-operator",
@@ -2145,8 +2132,21 @@
     "latencyMs": 48
   },
   {
-    "id": "acc-0002p",
-    "requestId": "req_agtr8",
+    "id": "acc-0009o",
+    "requestId": "req_dncj77",
+    "at": "2026-09-13T07:55:00.000Z",
+    "tenantId": "ten-beta",
+    "userId": "usr-beta-admin",
+    "applicationId": "app-iot",
+    "subscriptionId": "sub-beta-iot",
+    "decision": "allow",
+    "reason": "OK",
+    "warning": "PAYMENT_REQUIRED",
+    "latencyMs": 46
+  },
+  {
+    "id": "acc-0002o",
+    "requestId": "req_agtr7",
     "at": "2026-09-13T07:27:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-admin",
@@ -2158,8 +2158,8 @@
     "latencyMs": 17
   },
   {
-    "id": "acc-00075",
-    "requestId": "req_jia64o",
+    "id": "acc-00074",
+    "requestId": "req_jia64n",
     "at": "2026-09-13T07:21:00.000Z",
     "tenantId": "ten-delta",
     "userId": "usr-delta-admin",
@@ -2171,8 +2171,8 @@
     "latencyMs": 36
   },
   {
-    "id": "acc-00063",
-    "requestId": "req_i5ld3m",
+    "id": "acc-00062",
+    "requestId": "req_i5ld3l",
     "at": "2026-09-13T07:20:00.000Z",
     "tenantId": "ten-alpha",
     "userId": "usr-alpha-admin",
@@ -2184,8 +2184,8 @@
     "latencyMs": 25
   },
   {
-    "id": "acc-0004d",
-    "requestId": "req_jmhr1w",
+    "id": "acc-0004c",
+    "requestId": "req_jmhr1v",
     "at": "2026-09-13T07:16:00.000Z",
     "tenantId": "ten-mu",
     "userId": "usr-mu-admin",
@@ -2197,8 +2197,8 @@
     "latencyMs": 11
   },
   {
-    "id": "acc-00076",
-    "requestId": "req_jiel4p",
+    "id": "acc-00075",
+    "requestId": "req_jiel4o",
     "at": "2026-09-13T06:57:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-admin",
@@ -2210,8 +2210,8 @@
     "latencyMs": 33
   },
   {
-    "id": "acc-0006h",
-    "requestId": "req_95rt40",
+    "id": "acc-0006g",
+    "requestId": "req_95rt3z",
     "at": "2026-09-13T06:56:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-admin",
@@ -2223,8 +2223,8 @@
     "latencyMs": 17
   },
   {
-    "id": "acc-00035",
-    "requestId": "req_l843o",
+    "id": "acc-00034",
+    "requestId": "req_l843n",
     "at": "2026-09-13T06:52:00.000Z",
     "tenantId": "ten-eta",
     "userId": "usr-eta-admin",
@@ -2236,8 +2236,8 @@
     "latencyMs": 42
   },
   {
-    "id": "acc-0003h",
-    "requestId": "req_870q10",
+    "id": "acc-0003g",
+    "requestId": "req_870qz",
     "at": "2026-09-13T06:44:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-operator",
@@ -2249,8 +2249,8 @@
     "latencyMs": 52
   },
   {
-    "id": "acc-00092",
-    "requestId": "req_antv6l",
+    "id": "acc-00091",
+    "requestId": "req_antv6k",
     "at": "2026-09-13T06:39:00.000Z",
     "tenantId": "ten-alpha",
     "userId": "usr-alpha-admin",
@@ -2262,8 +2262,8 @@
     "latencyMs": 40
   },
   {
-    "id": "acc-00044",
-    "requestId": "req_8l8c1n",
+    "id": "acc-00043",
+    "requestId": "req_8l8c1m",
     "at": "2026-09-13T06:35:00.000Z",
     "tenantId": "ten-epsilon",
     "userId": "usr-epsilon-admin",
@@ -2275,8 +2275,8 @@
     "latencyMs": 8
   },
   {
-    "id": "acc-0008s",
-    "requestId": "req_83wd6b",
+    "id": "acc-0008r",
+    "requestId": "req_83wd6a",
     "at": "2026-09-13T06:32:00.000Z",
     "tenantId": "ten-alpha",
     "userId": "usr-alpha-admin",
@@ -2288,8 +2288,8 @@
     "latencyMs": 46
   },
   {
-    "id": "acc-0005v",
-    "requestId": "req_gpuw3e",
+    "id": "acc-0005u",
+    "requestId": "req_gpuw3d",
     "at": "2026-09-13T06:29:00.000Z",
     "tenantId": "ten-mu",
     "userId": "usr-mu-admin",
@@ -2301,8 +2301,8 @@
     "latencyMs": 32
   },
   {
-    "id": "acc-0005e",
-    "requestId": "req_kjl02x",
+    "id": "acc-0005d",
+    "requestId": "req_kjl02w",
     "at": "2026-09-13T06:27:00.000Z",
     "tenantId": "ten-lambda",
     "userId": "usr-lambda-operator",
@@ -2314,8 +2314,8 @@
     "latencyMs": 55
   },
   {
-    "id": "acc-0008c",
-    "requestId": "req_6dl45v",
+    "id": "acc-0008b",
+    "requestId": "req_6dl45u",
     "at": "2026-09-13T06:14:00.000Z",
     "tenantId": "ten-theta",
     "userId": "usr-theta-admin",
@@ -2327,8 +2327,8 @@
     "latencyMs": 54
   },
   {
-    "id": "acc-0002n",
-    "requestId": "req_l5yy6",
+    "id": "acc-0002m",
+    "requestId": "req_l5yy5",
     "at": "2026-09-13T06:12:00.000Z",
     "tenantId": "ten-mu",
     "userId": "usr-mu-admin",
@@ -2340,8 +2340,8 @@
     "latencyMs": 18
   },
   {
-    "id": "acc-0002q",
-    "requestId": "req_e7q69",
+    "id": "acc-0002p",
+    "requestId": "req_e7q68",
     "at": "2026-09-13T06:10:00.000Z",
     "tenantId": "ten-theta",
     "userId": "usr-theta-admin",
@@ -2353,8 +2353,8 @@
     "latencyMs": 10
   },
   {
-    "id": "acc-0002x",
-    "requestId": "req_d786g",
+    "id": "acc-0002w",
+    "requestId": "req_d786f",
     "at": "2026-09-13T06:08:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-admin",
@@ -2366,8 +2366,8 @@
     "latencyMs": 49
   },
   {
-    "id": "acc-0003z",
-    "requestId": "req_jgmf1i",
+    "id": "acc-0003y",
+    "requestId": "req_jgmf1h",
     "at": "2026-09-13T06:08:00.000Z",
     "tenantId": "ten-alpha",
     "userId": "usr-alpha-operator",
@@ -2379,8 +2379,8 @@
     "latencyMs": 27
   },
   {
-    "id": "acc-0007i",
-    "requestId": "req_h6by51",
+    "id": "acc-0007h",
+    "requestId": "req_h6by50",
     "at": "2026-09-13T05:59:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-operator",
@@ -2392,8 +2392,8 @@
     "latencyMs": 38
   },
   {
-    "id": "acc-00031",
-    "requestId": "req_hzgok",
+    "id": "acc-00030",
+    "requestId": "req_hzgoj",
     "at": "2026-09-13T05:51:00.000Z",
     "tenantId": "ten-lambda",
     "userId": "usr-lambda-operator",
@@ -2405,8 +2405,8 @@
     "latencyMs": 15
   },
   {
-    "id": "acc-00057",
-    "requestId": "req_33hm2q",
+    "id": "acc-00056",
+    "requestId": "req_33hm2p",
     "at": "2026-09-13T05:44:00.000Z",
     "tenantId": "ten-lambda",
     "userId": "usr-lambda-admin",
@@ -2418,8 +2418,8 @@
     "latencyMs": 43
   },
   {
-    "id": "acc-0004k",
-    "requestId": "req_h4wv23",
+    "id": "acc-0004j",
+    "requestId": "req_h4wv22",
     "at": "2026-09-13T05:43:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-operator",
@@ -2431,8 +2431,8 @@
     "latencyMs": 8
   },
   {
-    "id": "acc-00082",
-    "requestId": "req_5nsp5l",
+    "id": "acc-00081",
+    "requestId": "req_5nsp5k",
     "at": "2026-09-13T05:31:00.000Z",
     "tenantId": "ten-alpha",
     "userId": "usr-alpha-admin",
@@ -2444,8 +2444,8 @@
     "latencyMs": 28
   },
   {
-    "id": "acc-0004z",
-    "requestId": "req_joye2i",
+    "id": "acc-0004y",
+    "requestId": "req_joye2h",
     "at": "2026-09-13T05:21:00.000Z",
     "tenantId": "ten-lambda",
     "userId": "usr-lambda-admin",
@@ -2457,8 +2457,8 @@
     "latencyMs": 38
   },
   {
-    "id": "acc-0008r",
-    "requestId": "req_fxgn6a",
+    "id": "acc-0008q",
+    "requestId": "req_fxgn69",
     "at": "2026-09-13T05:05:00.000Z",
     "tenantId": "ten-mu",
     "userId": "usr-mu-admin",
@@ -2470,8 +2470,8 @@
     "latencyMs": 46
   },
   {
-    "id": "acc-0002w",
-    "requestId": "req_39haf",
+    "id": "acc-0002v",
+    "requestId": "req_39hae",
     "at": "2026-09-13T04:59:00.000Z",
     "tenantId": "ten-alpha",
     "userId": "usr-alpha-operator",
@@ -2483,8 +2483,8 @@
     "latencyMs": 14
   },
   {
-    "id": "acc-0007b",
-    "requestId": "req_b4u94u",
+    "id": "acc-0007a",
+    "requestId": "req_b4u94t",
     "at": "2026-09-13T04:46:00.000Z",
     "tenantId": "ten-alpha",
     "userId": "usr-alpha-operator",
@@ -2496,8 +2496,8 @@
     "latencyMs": 42
   },
   {
-    "id": "acc-00056",
-    "requestId": "req_hdxb2p",
+    "id": "acc-00055",
+    "requestId": "req_hdxb2o",
     "at": "2026-09-13T04:42:00.000Z",
     "tenantId": "ten-mu",
     "userId": "usr-mu-admin",
@@ -2509,8 +2509,8 @@
     "latencyMs": 45
   },
   {
-    "id": "acc-0007m",
-    "requestId": "req_fclm55",
+    "id": "acc-0007l",
+    "requestId": "req_fclm54",
     "at": "2026-09-13T04:40:00.000Z",
     "tenantId": "ten-lambda",
     "userId": "usr-lambda-admin",
@@ -2522,8 +2522,8 @@
     "latencyMs": 25
   },
   {
-    "id": "acc-0006c",
-    "requestId": "req_bdjd3v",
+    "id": "acc-0006b",
+    "requestId": "req_bdjd3u",
     "at": "2026-09-13T04:39:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-admin",
@@ -2535,8 +2535,8 @@
     "latencyMs": 14
   },
   {
-    "id": "acc-0004g",
-    "requestId": "req_la231z",
+    "id": "acc-0004f",
+    "requestId": "req_la231y",
     "at": "2026-09-13T04:21:00.000Z",
     "tenantId": "ten-lambda",
     "userId": "usr-lambda-admin",
@@ -2548,8 +2548,8 @@
     "latencyMs": 64
   },
   {
-    "id": "acc-00071",
-    "requestId": "req_gee64k",
+    "id": "acc-00070",
+    "requestId": "req_gee64j",
     "at": "2026-09-13T04:07:00.000Z",
     "tenantId": "ten-lambda",
     "userId": "usr-lambda-admin",
@@ -2561,8 +2561,8 @@
     "latencyMs": 8
   },
   {
-    "id": "acc-0009j",
-    "requestId": "req_7evq72",
+    "id": "acc-0009i",
+    "requestId": "req_7evq71",
     "at": "2026-09-13T03:42:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-operator",
@@ -2574,8 +2574,8 @@
     "latencyMs": 18
   },
   {
-    "id": "acc-0006o",
-    "requestId": "req_76s547",
+    "id": "acc-0006n",
+    "requestId": "req_76s546",
     "at": "2026-09-13T03:34:00.000Z",
     "tenantId": "ten-kappa",
     "userId": "usr-kappa-admin",
@@ -2587,8 +2587,8 @@
     "latencyMs": 55
   },
   {
-    "id": "acc-00043",
-    "requestId": "req_klk21m",
+    "id": "acc-00042",
+    "requestId": "req_klk21l",
     "at": "2026-09-13T03:32:00.000Z",
     "tenantId": "ten-kappa",
     "userId": "usr-kappa-admin",
@@ -2600,8 +2600,8 @@
     "latencyMs": 56
   },
   {
-    "id": "acc-0007v",
-    "requestId": "req_9f2i5e",
+    "id": "acc-0007u",
+    "requestId": "req_9f2i5d",
     "at": "2026-09-13T03:19:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-admin",
@@ -2613,8 +2613,8 @@
     "latencyMs": 44
   },
   {
-    "id": "acc-0002j",
-    "requestId": "req_5zgw2",
+    "id": "acc-0002i",
+    "requestId": "req_5zgw1",
     "at": "2026-09-13T03:17:00.000Z",
     "tenantId": "ten-alpha",
     "userId": "usr-alpha-admin",
@@ -2626,8 +2626,8 @@
     "latencyMs": 41
   },
   {
-    "id": "acc-0007l",
-    "requestId": "req_ihi154",
+    "id": "acc-0007k",
+    "requestId": "req_ihi153",
     "at": "2026-09-13T03:16:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-admin",
@@ -2639,8 +2639,8 @@
     "latencyMs": 21
   },
   {
-    "id": "acc-0008l",
-    "requestId": "req_8l7c64",
+    "id": "acc-0008k",
+    "requestId": "req_8l7c63",
     "at": "2026-09-13T03:16:00.000Z",
     "tenantId": "ten-delta",
     "userId": "usr-delta-admin",
@@ -2652,8 +2652,8 @@
     "latencyMs": 46
   },
   {
-    "id": "acc-00036",
-    "requestId": "req_9btfp",
+    "id": "acc-00035",
+    "requestId": "req_9btfo",
     "at": "2026-09-13T03:12:00.000Z",
     "tenantId": "ten-epsilon",
     "userId": "usr-epsilon-admin",
@@ -2665,8 +2665,8 @@
     "latencyMs": 44
   },
   {
-    "id": "acc-00070",
-    "requestId": "req_2hpp4j",
+    "id": "acc-0006z",
+    "requestId": "req_2hpp4i",
     "at": "2026-09-13T02:55:00.000Z",
     "tenantId": "ten-alpha",
     "userId": "usr-alpha-admin",
@@ -2678,8 +2678,8 @@
     "latencyMs": 61
   },
   {
-    "id": "acc-0009m",
-    "requestId": "req_3rtd75",
+    "id": "acc-0009l",
+    "requestId": "req_3rtd74",
     "at": "2026-09-13T02:53:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-operator",
@@ -2691,8 +2691,8 @@
     "latencyMs": 10
   },
   {
-    "id": "acc-0004a",
-    "requestId": "req_k5ns1t",
+    "id": "acc-00049",
+    "requestId": "req_k5ns1s",
     "at": "2026-09-13T02:48:00.000Z",
     "tenantId": "ten-alpha",
     "userId": "usr-alpha-admin",
@@ -2704,8 +2704,8 @@
     "latencyMs": 62
   },
   {
-    "id": "acc-0002s",
-    "requestId": "req_jgjsb",
+    "id": "acc-0002r",
+    "requestId": "req_jgjsa",
     "at": "2026-09-13T02:44:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-operator",
@@ -2717,8 +2717,8 @@
     "latencyMs": 52
   },
   {
-    "id": "acc-0009o",
-    "requestId": "req_dnds77",
+    "id": "acc-0009n",
+    "requestId": "req_dnds76",
     "at": "2026-09-13T02:40:00.000Z",
     "tenantId": "ten-epsilon",
     "userId": "usr-epsilon-admin",
@@ -2730,8 +2730,8 @@
     "latencyMs": 26
   },
   {
-    "id": "acc-0008e",
-    "requestId": "req_7dm75x",
+    "id": "acc-0008d",
+    "requestId": "req_7dm75w",
     "at": "2026-09-13T02:35:00.000Z",
     "tenantId": "ten-kappa",
     "userId": "usr-kappa-admin",
@@ -2743,8 +2743,8 @@
     "latencyMs": 62
   },
   {
-    "id": "acc-0005h",
-    "requestId": "req_4bzh30",
+    "id": "acc-0005g",
+    "requestId": "req_4bzh2z",
     "at": "2026-09-13T02:31:00.000Z",
     "tenantId": "ten-lambda",
     "userId": "usr-lambda-admin",
@@ -2756,8 +2756,8 @@
     "latencyMs": 20
   },
   {
-    "id": "acc-00037",
-    "requestId": "req_e8ljq",
+    "id": "acc-00036",
+    "requestId": "req_e8ljp",
     "at": "2026-09-13T02:24:00.000Z",
     "tenantId": "ten-zeta",
     "userId": "usr-zeta-admin",
@@ -2769,8 +2769,8 @@
     "latencyMs": 55
   },
   {
-    "id": "acc-0003r",
-    "requestId": "req_hk7t1a",
+    "id": "acc-0003q",
+    "requestId": "req_hk7t19",
     "at": "2026-09-13T02:24:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-admin",
@@ -2782,8 +2782,8 @@
     "latencyMs": 14
   },
   {
-    "id": "acc-0005q",
-    "requestId": "req_jbo039",
+    "id": "acc-0005p",
+    "requestId": "req_jbo038",
     "at": "2026-09-13T02:20:00.000Z",
     "tenantId": "ten-epsilon",
     "userId": "usr-epsilon-admin",
@@ -2795,8 +2795,8 @@
     "latencyMs": 45
   },
   {
-    "id": "acc-0004u",
-    "requestId": "req_hc512d",
+    "id": "acc-0004t",
+    "requestId": "req_hc512c",
     "at": "2026-09-13T02:19:00.000Z",
     "tenantId": "ten-eta",
     "userId": "usr-eta-admin",
@@ -2808,8 +2808,8 @@
     "latencyMs": 23
   },
   {
-    "id": "acc-0005z",
-    "requestId": "req_c88x3i",
+    "id": "acc-0005y",
+    "requestId": "req_c88x3h",
     "at": "2026-09-13T02:16:00.000Z",
     "tenantId": "ten-lambda",
     "userId": "usr-lambda-admin",
@@ -2821,8 +2821,8 @@
     "latencyMs": 30
   },
   {
-    "id": "acc-00074",
-    "requestId": "req_etdr4n",
+    "id": "acc-00073",
+    "requestId": "req_etdr4m",
     "at": "2026-09-13T02:15:00.000Z",
     "tenantId": "ten-alpha",
     "userId": "usr-alpha-admin",
@@ -2834,8 +2834,8 @@
     "latencyMs": 36
   },
   {
-    "id": "acc-0003g",
-    "requestId": "req_ictuz",
+    "id": "acc-0003f",
+    "requestId": "req_ictuy",
     "at": "2026-09-13T02:05:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-admin",
@@ -2847,8 +2847,8 @@
     "latencyMs": 10
   },
   {
-    "id": "acc-00093",
-    "requestId": "req_dxfb6m",
+    "id": "acc-00092",
+    "requestId": "req_dxfb6l",
     "at": "2026-09-13T02:02:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-admin",
@@ -2860,8 +2860,8 @@
     "latencyMs": 55
   },
   {
-    "id": "acc-0005f",
-    "requestId": "req_66s82y",
+    "id": "acc-0005e",
+    "requestId": "req_66s82x",
     "at": "2026-09-13T01:59:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-operator",
@@ -2873,8 +2873,8 @@
     "latencyMs": 46
   },
   {
-    "id": "acc-00047",
-    "requestId": "req_aidx1q",
+    "id": "acc-00046",
+    "requestId": "req_aidx1p",
     "at": "2026-09-13T01:57:00.000Z",
     "tenantId": "ten-zeta",
     "userId": "usr-zeta-admin",
@@ -2886,8 +2886,8 @@
     "latencyMs": 25
   },
   {
-    "id": "acc-00046",
-    "requestId": "req_gc0o1p",
+    "id": "acc-00045",
+    "requestId": "req_gc0o1o",
     "at": "2026-09-13T01:48:00.000Z",
     "tenantId": "ten-kappa",
     "userId": "usr-kappa-admin",
@@ -2899,8 +2899,8 @@
     "latencyMs": 25
   },
   {
-    "id": "acc-00053",
-    "requestId": "req_5dnv2m",
+    "id": "acc-00052",
+    "requestId": "req_5dnv2l",
     "at": "2026-09-13T01:44:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-operator",
@@ -2912,8 +2912,8 @@
     "latencyMs": 54
   },
   {
-    "id": "acc-0008u",
-    "requestId": "req_9h3o6d",
+    "id": "acc-0008t",
+    "requestId": "req_9h3o6c",
     "at": "2026-09-13T01:28:00.000Z",
     "tenantId": "ten-zeta",
     "userId": "usr-zeta-admin",
@@ -2925,8 +2925,8 @@
     "latencyMs": 36
   },
   {
-    "id": "acc-00055",
-    "requestId": "req_576z2o",
+    "id": "acc-00054",
+    "requestId": "req_576z2n",
     "at": "2026-09-13T01:12:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-admin",
@@ -2938,8 +2938,8 @@
     "latencyMs": 57
   },
   {
-    "id": "acc-0008g",
-    "requestId": "req_83i65z",
+    "id": "acc-0008f",
+    "requestId": "req_83i65y",
     "at": "2026-09-13T00:56:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-admin",
@@ -2951,8 +2951,8 @@
     "latencyMs": 47
   },
   {
-    "id": "acc-0008v",
-    "requestId": "req_gxuv6e",
+    "id": "acc-0008u",
+    "requestId": "req_gxuv6d",
     "at": "2026-09-13T00:31:00.000Z",
     "tenantId": "ten-eta",
     "userId": "usr-eta-admin",
@@ -2964,8 +2964,8 @@
     "latencyMs": 10
   },
   {
-    "id": "acc-0005y",
-    "requestId": "req_iell3h",
+    "id": "acc-0005x",
+    "requestId": "req_iell3g",
     "at": "2026-09-13T00:25:00.000Z",
     "tenantId": "ten-zeta",
     "userId": "usr-zeta-admin",
@@ -2977,8 +2977,8 @@
     "latencyMs": 49
   },
   {
-    "id": "acc-00067",
-    "requestId": "req_csrh3q",
+    "id": "acc-00066",
+    "requestId": "req_csrh3p",
     "at": "2026-09-13T00:20:00.000Z",
     "tenantId": "ten-theta",
     "userId": "usr-theta-admin",
@@ -2990,8 +2990,8 @@
     "latencyMs": 19
   },
   {
-    "id": "acc-00033",
-    "requestId": "req_7kjhm",
+    "id": "acc-00032",
+    "requestId": "req_7kjhl",
     "at": "2026-09-13T00:13:00.000Z",
     "tenantId": "ten-delta",
     "userId": "usr-delta-admin",
@@ -3003,8 +3003,8 @@
     "latencyMs": 61
   },
   {
-    "id": "acc-0002r",
-    "requestId": "req_jhrla",
+    "id": "acc-0002q",
+    "requestId": "req_jhrl9",
     "at": "2026-09-13T00:12:00.000Z",
     "tenantId": "ten-epsilon",
     "userId": "usr-epsilon-admin",
@@ -3016,8 +3016,8 @@
     "latencyMs": 21
   },
   {
-    "id": "acc-0005d",
-    "requestId": "req_e6kq2w",
+    "id": "acc-0005c",
+    "requestId": "req_e6kq2v",
     "at": "2026-09-12T23:57:00.000Z",
     "tenantId": "ten-lambda",
     "userId": "usr-lambda-admin",
@@ -3029,8 +3029,8 @@
     "latencyMs": 15
   },
   {
-    "id": "acc-0007h",
-    "requestId": "req_l3c350",
+    "id": "acc-0007g",
+    "requestId": "req_l3c34z",
     "at": "2026-09-12T23:56:00.000Z",
     "tenantId": "ten-lambda",
     "userId": "usr-lambda-operator",
@@ -3042,8 +3042,8 @@
     "latencyMs": 28
   },
   {
-    "id": "acc-0004i",
-    "requestId": "req_k8ku21",
+    "id": "acc-0004h",
+    "requestId": "req_k8ku20",
     "at": "2026-09-12T23:52:00.000Z",
     "tenantId": "ten-lambda",
     "userId": "usr-lambda-operator",
@@ -3055,8 +3055,8 @@
     "latencyMs": 28
   },
   {
-    "id": "acc-00048",
-    "requestId": "req_klmh1r",
+    "id": "acc-00047",
+    "requestId": "req_klmh1q",
     "at": "2026-09-12T23:50:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-admin",
@@ -3068,8 +3068,8 @@
     "latencyMs": 43
   },
   {
-    "id": "acc-00089",
-    "requestId": "req_7sdf5s",
+    "id": "acc-00088",
+    "requestId": "req_7sdf5r",
     "at": "2026-09-12T23:47:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-admin",
@@ -3081,8 +3081,8 @@
     "latencyMs": 53
   },
   {
-    "id": "acc-0002t",
-    "requestId": "req_5dtkc",
+    "id": "acc-0002s",
+    "requestId": "req_5dtkb",
     "at": "2026-09-12T23:40:00.000Z",
     "tenantId": "ten-mu",
     "userId": "usr-mu-admin",
@@ -3094,8 +3094,8 @@
     "latencyMs": 18
   },
   {
-    "id": "acc-0008t",
-    "requestId": "req_80rj6c",
+    "id": "acc-0008s",
+    "requestId": "req_80rj6b",
     "at": "2026-09-12T23:35:00.000Z",
     "tenantId": "ten-zeta",
     "userId": "usr-zeta-admin",
@@ -3107,8 +3107,8 @@
     "latencyMs": 9
   },
   {
-    "id": "acc-0008w",
-    "requestId": "req_d1k26f",
+    "id": "acc-0008v",
+    "requestId": "req_d1k26e",
     "at": "2026-09-12T23:33:00.000Z",
     "tenantId": "ten-kappa",
     "userId": "usr-kappa-admin",
@@ -3120,8 +3120,8 @@
     "latencyMs": 33
   },
   {
-    "id": "acc-0006f",
-    "requestId": "req_2pex3y",
+    "id": "acc-0006e",
+    "requestId": "req_2pex3x",
     "at": "2026-09-12T23:26:00.000Z",
     "tenantId": "ten-lambda",
     "userId": "usr-lambda-admin",
@@ -3133,8 +3133,8 @@
     "latencyMs": 26
   },
   {
-    "id": "acc-00073",
-    "requestId": "req_hj6y4m",
+    "id": "acc-00072",
+    "requestId": "req_hj6y4l",
     "at": "2026-09-12T23:23:00.000Z",
     "tenantId": "ten-alpha",
     "userId": "usr-alpha-admin",
@@ -3146,8 +3146,8 @@
     "latencyMs": 13
   },
   {
-    "id": "acc-00038",
-    "requestId": "req_5x56r",
+    "id": "acc-00037",
+    "requestId": "req_5x56q",
     "at": "2026-09-12T23:10:00.000Z",
     "tenantId": "ten-alpha",
     "userId": "usr-alpha-admin",
@@ -3159,8 +3159,8 @@
     "latencyMs": 50
   },
   {
-    "id": "acc-00096",
-    "requestId": "req_5ijk6p",
+    "id": "acc-00095",
+    "requestId": "req_5ijk6o",
     "at": "2026-09-12T23:06:00.000Z",
     "tenantId": "ten-kappa",
     "userId": "usr-kappa-admin",
@@ -3172,8 +3172,8 @@
     "latencyMs": 48
   },
   {
-    "id": "acc-0007g",
-    "requestId": "req_cwkr4z",
+    "id": "acc-0007f",
+    "requestId": "req_cwkr4y",
     "at": "2026-09-12T22:32:00.000Z",
     "tenantId": "ten-lambda",
     "userId": "usr-lambda-operator",
@@ -3185,8 +3185,8 @@
     "latencyMs": 47
   },
   {
-    "id": "acc-0004p",
-    "requestId": "req_5dgl28",
+    "id": "acc-0004o",
+    "requestId": "req_5dgl27",
     "at": "2026-09-12T22:29:00.000Z",
     "tenantId": "ten-epsilon",
     "userId": "usr-epsilon-admin",
@@ -3198,8 +3198,8 @@
     "latencyMs": 49
   },
   {
-    "id": "acc-0005o",
-    "requestId": "req_egyy37",
+    "id": "acc-0005n",
+    "requestId": "req_egyy36",
     "at": "2026-09-12T21:54:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-operator",
@@ -3211,8 +3211,8 @@
     "latencyMs": 56
   },
   {
-    "id": "acc-00084",
-    "requestId": "req_74rx5n",
+    "id": "acc-00083",
+    "requestId": "req_74rx5m",
     "at": "2026-09-12T21:51:00.000Z",
     "tenantId": "ten-eta",
     "userId": "usr-eta-admin",
@@ -3224,8 +3224,8 @@
     "latencyMs": 33
   },
   {
-    "id": "acc-00052",
-    "requestId": "req_31tx2l",
+    "id": "acc-00051",
+    "requestId": "req_31tx2k",
     "at": "2026-09-12T21:47:00.000Z",
     "tenantId": "ten-zeta",
     "userId": "usr-zeta-admin",
@@ -3237,8 +3237,8 @@
     "latencyMs": 17
   },
   {
-    "id": "acc-0008i",
-    "requestId": "req_6kg661",
+    "id": "acc-0008h",
+    "requestId": "req_6kg660",
     "at": "2026-09-12T21:47:00.000Z",
     "tenantId": "ten-epsilon",
     "userId": "usr-epsilon-admin",
@@ -3250,8 +3250,8 @@
     "latencyMs": 63
   },
   {
-    "id": "acc-0005m",
-    "requestId": "req_fim935",
+    "id": "acc-0005l",
+    "requestId": "req_fim934",
     "at": "2026-09-12T21:32:00.000Z",
     "tenantId": "ten-lambda",
     "userId": "usr-lambda-admin",
@@ -3263,8 +3263,8 @@
     "latencyMs": 41
   },
   {
-    "id": "acc-0004t",
-    "requestId": "req_84pd2c",
+    "id": "acc-0004s",
+    "requestId": "req_84pd2b",
     "at": "2026-09-12T21:16:00.000Z",
     "tenantId": "ten-epsilon",
     "userId": "usr-epsilon-admin",
@@ -3276,8 +3276,8 @@
     "latencyMs": 46
   },
   {
-    "id": "acc-0009g",
-    "requestId": "req_38mv6z",
+    "id": "acc-0009f",
+    "requestId": "req_38mv6y",
     "at": "2026-09-12T21:15:00.000Z",
     "tenantId": "ten-zeta",
     "userId": "usr-zeta-admin",
@@ -3289,8 +3289,8 @@
     "latencyMs": 57
   },
   {
-    "id": "acc-0009n",
-    "requestId": "req_ge8676",
+    "id": "acc-0009m",
+    "requestId": "req_ge8675",
     "at": "2026-09-12T21:13:00.000Z",
     "tenantId": "ten-lambda",
     "userId": "usr-lambda-admin",
@@ -3302,8 +3302,8 @@
     "latencyMs": 23
   },
   {
-    "id": "acc-00030",
-    "requestId": "req_6s0bj",
+    "id": "acc-0002z",
+    "requestId": "req_6s0bi",
     "at": "2026-09-12T21:01:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-operator",
@@ -3315,8 +3315,8 @@
     "latencyMs": 47
   },
   {
-    "id": "acc-0008p",
-    "requestId": "req_evr468",
+    "id": "acc-0008o",
+    "requestId": "req_evr467",
     "at": "2026-09-12T20:59:00.000Z",
     "tenantId": "ten-zeta",
     "userId": "usr-zeta-admin",
@@ -3328,8 +3328,8 @@
     "latencyMs": 62
   },
   {
-    "id": "acc-0002m",
-    "requestId": "req_69cv5",
+    "id": "acc-0002l",
+    "requestId": "req_69cv4",
     "at": "2026-09-12T20:49:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-operator",
@@ -3341,8 +3341,8 @@
     "latencyMs": 29
   },
   {
-    "id": "acc-0006s",
-    "requestId": "req_eos14b",
+    "id": "acc-0006r",
+    "requestId": "req_eos14a",
     "at": "2026-09-12T20:48:00.000Z",
     "tenantId": "ten-eta",
     "userId": "usr-eta-admin",
@@ -3354,8 +3354,8 @@
     "latencyMs": 46
   },
   {
-    "id": "acc-0009b",
-    "requestId": "req_260y6u",
+    "id": "acc-0009a",
+    "requestId": "req_260y6t",
     "at": "2026-09-12T20:21:00.000Z",
     "tenantId": "ten-beta",
     "userId": "usr-beta-admin",
@@ -3367,8 +3367,8 @@
     "latencyMs": 29
   },
   {
-    "id": "acc-0004v",
-    "requestId": "req_hqcv2e",
+    "id": "acc-0004u",
+    "requestId": "req_hqcv2d",
     "at": "2026-09-12T20:18:00.000Z",
     "tenantId": "ten-gamma",
     "userId": "usr-gamma-operator",
