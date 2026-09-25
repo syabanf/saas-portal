@@ -1,6 +1,7 @@
 import { ChevronLeft, ChevronRight, ChevronsUpDown, ChevronUp, ChevronDown } from 'lucide-react'
 import * as React from 'react'
 import { cn } from '../lib/cn'
+import { useUiLabels } from './ui-labels'
 import { Button } from './button'
 import { EmptyState, type EmptyStateProps } from './empty-state'
 import { Checkbox } from './input'
@@ -14,6 +15,25 @@ export interface Column<T> {
   align?: 'left' | 'right'
 }
 
+export type TableDensity = 'comfortable' | 'compact'
+
+const DensityContext = React.createContext<TableDensity>('comfortable')
+
+/** Lets a layout apply the user's table density preference to every DataTable below it. */
+export function TableDensityProvider({
+  density,
+  children,
+}: {
+  density: TableDensity
+  children: React.ReactNode
+}) {
+  return <DensityContext.Provider value={density}>{children}</DensityContext.Provider>
+}
+
+export function useTableDensity(): TableDensity {
+  return React.useContext(DensityContext)
+}
+
 export interface DataTableProps<T> {
   rows: T[]
   columns: Column<T>[]
@@ -21,6 +41,8 @@ export interface DataTableProps<T> {
   onRowClick?: (row: T) => void
   rowActions?: (row: T) => React.ReactNode
   pageSize?: number
+  /** Overrides the density from TableDensityProvider. */
+  density?: TableDensity
   empty?: EmptyStateProps
   className?: string
   selectedKeys?: Set<string>
@@ -35,12 +57,17 @@ export function DataTable<T>({
   onRowClick,
   rowActions,
   pageSize = 10,
+  density: densityProp,
   empty,
   className,
   selectedKeys,
   onSelectionChange,
   selectionLabel = 'Select row',
 }: DataTableProps<T>) {
+  const inherited = useTableDensity()
+  const labels = useUiLabels()
+  const density = densityProp ?? inherited
+  const cell = density === 'compact' ? 'px-3 py-1.5 align-middle' : 'px-4 py-3 align-middle'
   const [page, setPage] = React.useState(0)
   const [sort, setSort] = React.useState<{ key: string; dir: 'asc' | 'desc' } | null>(null)
 
@@ -96,7 +123,7 @@ export function DataTable<T>({
                 <th className="h-10 w-12 px-4">
                   <Checkbox
                     checked={allVisibleSelected}
-                    aria-label="Select visible rows"
+                    aria-label={labels.selectVisibleRows}
                     onChange={(event) => toggleAll(event.target.checked)}
                   />
                 </th>
@@ -176,11 +203,7 @@ export function DataTable<T>({
                   {columns.map((c, index) => (
                     <td
                       key={c.key}
-                      className={cn(
-                        'px-4 py-3 align-middle',
-                        c.align === 'right' && 'text-right',
-                        c.className,
-                      )}
+                      className={cn(cell, c.align === 'right' && 'text-right', c.className)}
                     >
                       {index === 0 && onRowClick ? (
                         <button
@@ -199,7 +222,7 @@ export function DataTable<T>({
                     </td>
                   ))}
                   {rowActions ? (
-                    <td className="px-4 py-3 align-middle">
+                    <td className={cell}>
                       <div
                         className="flex justify-end gap-1 opacity-60 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100"
                         onClick={(e) => e.stopPropagation()}
@@ -297,20 +320,18 @@ export function DataTable<T>({
               className="rounded-full"
               onClick={() => setPage((p) => Math.max(0, p - 1))}
               disabled={current === 0}
-              aria-label="Previous page"
+              aria-label={labels.previousPage}
             >
               <ChevronLeft />
             </Button>
-            <span className="tabular-nums">
-              Page {current + 1} / {pages}
-            </span>
+            <span className="tabular-nums">{labels.pageOf(current + 1, pages)}</span>
             <Button
               variant="outline"
               size="icon-sm"
               className="rounded-full"
               onClick={() => setPage((p) => Math.min(pages - 1, p + 1))}
               disabled={current >= pages - 1}
-              aria-label="Next page"
+              aria-label={labels.nextPage}
             >
               <ChevronRight />
             </Button>

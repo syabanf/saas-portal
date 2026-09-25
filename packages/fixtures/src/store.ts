@@ -9,6 +9,7 @@ import type {
   Payment,
   PaymentChannel,
   PaymentStatus,
+  PlatformSettings,
   Session,
   Subscription,
   SubscriptionEvent,
@@ -41,6 +42,8 @@ export interface AppState {
   accessLogs: AccessLog[]
   auditLogs: AuditLog[]
   sessions: Session[]
+  /** Optional while stores written before this field existed are still around. */
+  platform?: PlatformSettings
 }
 
 export interface Actor {
@@ -93,9 +96,24 @@ export type AppAction =
   | { type: 'store/replace'; state: AppState }
   | { type: 'invitations/accept'; token: string; at?: string }
   | { type: 'store/tick'; at?: string }
+  | ({ type: 'platform/update'; platform: PlatformSettings } & Meta)
   | ({ type: 'subscriptions/cancelChange'; id: string } & Meta)
 
 const nowIso = () => new Date().toISOString()
+
+export const DEFAULT_PLATFORM: PlatformSettings = {
+  brandName: 'SaaS Gate Platform',
+  legalName: 'PT WIT Teknologi Indonesia',
+  addressLines: ['Jl. Contoh No. 1, Jakarta 12345'],
+  billingEmail: 'billing@saasgate.example',
+  taxId: '00.000.000.0-000.000',
+  taxRate: 0.11,
+}
+
+/** Issuer details with defaults, so older persisted stores keep working. */
+export function platformOf(state: Pick<AppState, 'platform'>): PlatformSettings {
+  return state.platform ?? DEFAULT_PLATFORM
+}
 
 function upsert<T extends { id: string }>(list: T[], item: T): T[] {
   const idx = list.findIndex((x) => x.id === item.id)
@@ -348,6 +366,22 @@ function settlePayment(state: AppState, payment: Payment, meta: Meta, at: string
 
 export function reducer(state: AppState, action: AppAction): AppState {
   switch (action.type) {
+    case 'platform/update': {
+      const before = platformOf(state)
+      const s: AppState = { ...state, platform: action.platform }
+      return withAudit(
+        s,
+        auditEntry(
+          action,
+          'platform.updated',
+          'platform',
+          'platform',
+          null,
+          { ...before },
+          { ...action.platform },
+        ),
+      )
+    }
     case 'store/tick': {
       const at = action.at ?? nowIso()
       let next = state

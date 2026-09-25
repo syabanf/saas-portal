@@ -51,32 +51,7 @@ import { useAuth, useCurrentUser } from '../../auth/auth'
 import { Mono, UserBadge } from '../../components/badges'
 import { SESSION_STATE_LABEL, SESSION_STATE_TONE, sessionState } from '../../lib/sessions'
 import { actorOf, useScoped } from '../../state/app-state'
-
-const PREFS_KEY = 'scp.admin.prefs'
-
-interface Prefs {
-  compactTables: boolean
-  emailFailedWebhooks: boolean
-  demoHints: boolean
-}
-const DEFAULT_PREFS: Prefs = { compactTables: false, emailFailedWebhooks: true, demoHints: true }
-
-function readPrefs(): Prefs {
-  try {
-    const raw = localStorage.getItem(PREFS_KEY)
-    return raw ? { ...DEFAULT_PREFS, ...(JSON.parse(raw) as Partial<Prefs>) } : DEFAULT_PREFS
-  } catch {
-    return DEFAULT_PREFS
-  }
-}
-
-function writePrefs(prefs: Prefs) {
-  try {
-    localStorage.setItem(PREFS_KEY, JSON.stringify(prefs))
-  } catch {
-    /* storage unavailable; the toggles still work for this visit */
-  }
-}
+import { useAdminPrefs } from '../../state/prefs'
 
 const ACCESS_AREAS: { to: string; title: string; subtitle: string; icon: LucideIcon }[] = [
   {
@@ -206,7 +181,7 @@ export function ProfilePage() {
   const now = Date.now()
   const [editing, setEditing] = React.useState(false)
   const [revoking, setRevoking] = React.useState<Session | null>(null)
-  const [prefs, setPrefs] = React.useState<Prefs>(readPrefs)
+  const [prefs, setPref] = useAdminPrefs()
 
   const sessions = React.useMemo(
     () =>
@@ -215,14 +190,6 @@ export function ProfilePage() {
         .sort((a, b) => b.createdAt.localeCompare(a.createdAt)),
     [state.sessions, user.id],
   )
-
-  function setPref<K extends keyof Prefs>(key: K, value: Prefs[K]) {
-    setPrefs((p) => {
-      const next = { ...p, [key]: value }
-      writePrefs(next)
-      return next
-    })
-  }
 
   return (
     <div className="space-y-4">
@@ -326,12 +293,17 @@ export function ProfilePage() {
                 checked={prefs.compactTables}
                 onCheckedChange={(v) => setPref('compactTables', v)}
               />
-              <ToggleRow
-                title="Email me about failed webhooks"
-                description="One digest per day when a delivery keeps failing."
-                checked={prefs.emailFailedWebhooks}
-                onCheckedChange={(v) => setPref('emailFailedWebhooks', v)}
-              />
+              <div>
+                <ToggleRow
+                  title="Email me about failed webhooks"
+                  description="One digest per day when a delivery keeps failing."
+                  checked={prefs.emailFailedWebhooks}
+                  onCheckedChange={(v) => setPref('emailFailedWebhooks', v)}
+                />
+                <p className="text-muted px-3 pt-1.5 text-xs">
+                  Notifications are sent once the backend is connected.
+                </p>
+              </div>
               <ToggleRow
                 title="Show demo hints"
                 description="Callouts that explain the seeded data."

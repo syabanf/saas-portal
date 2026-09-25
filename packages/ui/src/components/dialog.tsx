@@ -2,6 +2,7 @@ import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { X } from 'lucide-react'
 import * as React from 'react'
 import { cn } from '../lib/cn'
+import { useUiLabels } from './ui-labels'
 
 const DialogFocusContext = React.createContext<React.MutableRefObject<HTMLElement | null> | null>(
   null,
@@ -46,6 +47,7 @@ export const DialogContent = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & { size?: keyof typeof SIZE }
 >(({ className, children, size = 'md', onCloseAutoFocus, ...props }, ref) => {
   const returnFocus = React.useContext(DialogFocusContext)
+  const labels = useUiLabels()
   return (
     <DialogPrimitive.Portal>
       <DialogPrimitive.Overlay className="bg-ink/50 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0 fixed inset-0 z-50 backdrop-blur-[2px]" />
@@ -74,7 +76,7 @@ export const DialogContent = React.forwardRef<
         {children}
         <DialogPrimitive.Close className="text-muted hover:bg-surface hover:text-foreground focus-visible:ring-accent absolute top-3 right-3 flex size-11 items-center justify-center rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none sm:top-4 sm:right-4 sm:size-8">
           <X className="size-4" />
-          <span className="sr-only">Close</span>
+          <span className="sr-only">{labels.close}</span>
         </DialogPrimitive.Close>
       </DialogPrimitive.Content>
     </DialogPrimitive.Portal>

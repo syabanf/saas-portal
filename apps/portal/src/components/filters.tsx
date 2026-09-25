@@ -1,3 +1,4 @@
+import { useT } from '@scp/i18n'
 import { Button, Combobox, type ComboboxOption, type EmptyStateProps } from '@scp/ui'
 import { FilterX, SearchX } from 'lucide-react'
 import { useSearchParams } from 'react-router'
@@ -27,21 +28,19 @@ export function useFilterParams<K extends string>(keys: readonly K[]) {
   return { values, set, clear, active: keys.some((k) => params.has(k)) }
 }
 
-/** Options from a label record, in declaration order. */
-export function labelOptions<T extends string>(
-  labels: Record<T, string>,
-  keys: readonly T[] = Object.keys(labels) as T[],
+/** Options for a fixed enum, labelled through the dictionary. */
+export function enumOptions<T extends string>(
+  values: readonly T[],
+  label: (value: T) => string,
 ): ComboboxOption[] {
-  return keys.map((value) => ({ value, label: labels[value] }))
+  return values.map((value) => ({ value, label: label(value) }))
 }
 
 /** Application picker options with the organization's pricing as the hint line. */
-export function applicationOptions(items: PortalApplication[]): ComboboxOption[] {
-  return items.map((item) => ({
-    value: item.app.id,
-    label: item.app.name,
-    hint: pricingLine(item),
-  }))
+export function useApplicationOptions(): (items: PortalApplication[]) => ComboboxOption[] {
+  const t = useT()
+  return (items) =>
+    items.map((item) => ({ value: item.app.id, label: item.app.name, hint: pricingLine(t, item) }))
 }
 
 /** Inline pill filter: '' or 'all' shows the "All …" option. */
@@ -58,6 +57,7 @@ export function FilterCombobox({
   allLabel: string
   searchPlaceholder: string
 }) {
+  const t = useT()
   return (
     <Combobox
       tone="ghost"
@@ -65,6 +65,7 @@ export function FilterCombobox({
       onChange={onChange}
       options={[{ value: ALL, label: allLabel }, ...options]}
       searchPlaceholder={searchPlaceholder}
+      emptyText={t('common.noMatches')}
     />
   )
 }
@@ -76,19 +77,21 @@ export function ClearFiltersButton({
   onClick: () => void
   variant?: 'ghost' | 'outline'
 }) {
+  const t = useT()
   return (
     <Button variant={variant} size="sm" onClick={onClick}>
-      <FilterX /> Clear filters
+      <FilterX /> {t('common.clearFilters')}
     </Button>
   )
 }
 
 /** Empty state for a list that has rows but none pass the current filters. */
-export function noMatches(onClear: () => void): EmptyStateProps {
-  return {
+export function useNoMatches(): (onClear: () => void) => EmptyStateProps {
+  const t = useT()
+  return (onClear) => ({
     icon: <SearchX />,
-    title: 'No matches',
-    description: 'Nothing passes the current filters.',
+    title: t('common.noMatches'),
+    description: t('common.noMatchesDescription'),
     action: <ClearFiltersButton variant="outline" onClick={onClear} />,
-  }
+  })
 }

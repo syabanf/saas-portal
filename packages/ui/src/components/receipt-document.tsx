@@ -1,5 +1,6 @@
 import { CheckCircle2 } from 'lucide-react'
 import { cn } from '../lib/cn'
+import { useUiLabels } from './ui-labels'
 import type { InvoiceParty } from './invoice-document'
 
 export interface ReceiptRow {
@@ -51,6 +52,7 @@ export function ReceiptDocument({
   notes = [],
   className,
 }: ReceiptDocumentProps) {
+  const l = useUiLabels().receipt
   return (
     <article
       className={cn(
@@ -60,16 +62,14 @@ export function ReceiptDocument({
     >
       <header className="flex flex-wrap items-start justify-between gap-6">
         <div>
-          <p className="text-muted text-[11px] font-semibold tracking-wider uppercase">
-            Payment receipt
-          </p>
+          <p className="text-muted text-[11px] font-semibold tracking-wider uppercase">{l.title}</p>
           <h1 className="mt-1 font-mono text-2xl font-bold tracking-tight">{number}</h1>
-          <p className="text-muted mt-2 text-sm">Paid {paidAt}</p>
+          <p className="text-muted mt-2 text-sm">{l.paidOn(paidAt)}</p>
         </div>
         <div className="bg-success-soft text-success print:border-success flex items-center gap-3 rounded-2xl px-4 py-3 print:border print:bg-transparent">
           <CheckCircle2 className="size-6" />
           <div>
-            <p className="text-[11px] font-semibold tracking-wider uppercase">Paid</p>
+            <p className="text-[11px] font-semibold tracking-wider uppercase">{l.paid}</p>
             <p className="text-xl font-extrabold tabular-nums">{total}</p>
           </div>
         </div>
@@ -78,7 +78,7 @@ export function ReceiptDocument({
       <section className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div>
           <p className="text-muted text-[11px] font-semibold tracking-wider uppercase">
-            Received by
+            {l.receivedBy}
           </p>
           <p className="mt-1 text-sm font-bold">{payee.name}</p>
           {payee.lines.map((l) => (
@@ -89,7 +89,7 @@ export function ReceiptDocument({
         </div>
         <div>
           <p className="text-muted text-[11px] font-semibold tracking-wider uppercase">
-            Received from
+            {l.receivedFrom}
           </p>
           <p className="mt-1 text-sm font-bold">{payer.name}</p>
           {payer.lines.map((l) => (
@@ -101,18 +101,22 @@ export function ReceiptDocument({
       </section>
 
       <section className="mt-10">
-        <p className="text-muted text-[11px] font-semibold tracking-wider uppercase">Payment for</p>
+        <p className="text-muted text-[11px] font-semibold tracking-wider uppercase">
+          {l.paymentFor}
+        </p>
         <Rows rows={items} />
       </section>
 
       <section className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2">
         <div>
-          <p className="text-muted text-[11px] font-semibold tracking-wider uppercase">Amount</p>
+          <p className="text-muted text-[11px] font-semibold tracking-wider uppercase">
+            {l.amount}
+          </p>
           <Rows rows={amounts} />
         </div>
         <div>
           <p className="text-muted text-[11px] font-semibold tracking-wider uppercase">
-            Payment details
+            {l.paymentDetails}
           </p>
           <Rows rows={paymentRows} />
         </div>

@@ -1,6 +1,7 @@
-import { fmtDate, fmtIdr } from '@scp/fixtures'
+import { fmtIdr } from '@scp/fixtures'
+import { useFormat, useT, type Translate } from '@scp/i18n'
 import type { PaymentChannel, PaymentChannelOption, PaymentMethod } from '@scp/types'
-import { BILLING_PERIOD_LABEL, PAYMENT_CHANNELS, PAYMENT_METHOD_LABEL } from '@scp/types'
+import { PAYMENT_CHANNELS } from '@scp/types'
 import {
   Button,
   Card,
@@ -21,9 +22,11 @@ import { actorOf, useScoped } from '../../state/app-state'
 
 const METHOD_ORDER: PaymentMethod[] = ['virtual_account', 'ewallet', 'qris', 'card', 'retail']
 
-function validFor(minutes: number | null): string {
-  if (minutes === null) return 'No expiry'
-  return minutes >= 60 ? `Valid ${minutes / 60} hours` : `Valid ${minutes} minutes`
+function validFor(t: Translate, minutes: number | null): string {
+  if (minutes === null) return t('common.noExpiry')
+  return minutes >= 60
+    ? t('pay.validHours', { count: minutes / 60 })
+    : t('pay.validMinutes', { count: minutes })
 }
 
 function monogram({ channel, method }: PaymentChannelOption): string {
@@ -34,6 +37,8 @@ function monogram({ channel, method }: PaymentChannelOption): string {
 
 /** Xendit-style checkout: pick a channel, then the status page shows the instructions. */
 export function PaymentPage() {
+  const t = useT()
+  const { formatDate } = useFormat()
   const { id = '' } = useParams()
   const navigate = useNavigate()
   const user = useCurrentUser()
@@ -56,15 +61,11 @@ export function PaymentPage() {
       <Card>
         <EmptyState
           icon={<FileText />}
-          title={invoice ? 'Nothing to pay' : 'Invoice not found'}
-          description={
-            invoice
-              ? 'This invoice is already settled or no longer open.'
-              : 'It may belong to another organization or has been removed.'
-          }
+          title={invoice ? t('pay.nothingToPay') : t('common.invoiceNotFound')}
+          description={invoice ? t('pay.nothingToPayDescription') : t('common.notFoundDescription')}
           action={
             <Button variant="outline" asChild>
-              <Link to="/billing">Back to billing</Link>
+              <Link to="/billing">{t('common.backToBilling')}</Link>
             </Button>
           }
         />
@@ -85,7 +86,7 @@ export function PaymentPage() {
     <div className="space-y-4">
       <div className="flex items-center gap-3">
         <div className="min-w-0">
-          <h1 className="text-2xl font-bold tracking-tight">Pay invoice</h1>
+          <h1 className="text-2xl font-bold tracking-tight">{t('pay.title')}</h1>
           <p className="text-muted text-sm">
             <Mono>{invoice.number}</Mono>
           </p>
@@ -95,12 +96,12 @@ export function PaymentPage() {
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_360px]">
         <Card>
           <CardHeader>
-            <CardTitle>Choose how to pay</CardTitle>
+            <CardTitle>{t('pay.chooseHow')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             {METHOD_ORDER.map((method) => (
               <section key={method} className="space-y-2">
-                <SectionTitle>{PAYMENT_METHOD_LABEL[method]}</SectionTitle>
+                <SectionTitle>{t(`method.${method}`)}</SectionTitle>
                 {PAYMENT_CHANNELS.filter((c) => c.method === method).map((option) => {
                   const selected = option.channel === channel
                   return (
@@ -119,7 +120,7 @@ export function PaymentPage() {
                       <span className="min-w-0 flex-1">
                         <span className="block text-sm font-semibold">{option.label}</span>
                         <span className="text-muted block text-xs">
-                          {validFor(option.expiresInMinutes)}
+                          {validFor(t, option.expiresInMinutes)}
                         </span>
                       </span>
                       <span
@@ -140,32 +141,30 @@ export function PaymentPage() {
 
         <Card className="self-start lg:sticky lg:top-0">
           <CardHeader>
-            <Kicker>Summary</Kicker>
+            <Kicker>{t('pay.summary')}</Kicker>
             <CardTitle>
-              {app?.name ?? sub?.applicationId ?? 'Subscription'}
-              {sub ? ` · ${BILLING_PERIOD_LABEL[invoice.billingPeriod ?? sub.billingPeriod]}` : ''}
+              {app?.name ?? sub?.applicationId ?? t('common.subscription')}
+              {sub ? ` · ${t(`period.${invoice.billingPeriod ?? sub.billingPeriod}`)}` : ''}
             </CardTitle>
             <Mono>{invoice.number}</Mono>
           </CardHeader>
           <CardContent className="space-y-4">
             <dl className="divide-border divide-y text-sm">
               <div className="flex items-center justify-between gap-3 py-2.5">
-                <dt className="text-muted">Total</dt>
+                <dt className="text-muted">{t('common.total')}</dt>
                 <dd className="text-2xl font-bold tabular-nums">
                   {fmtIdr(invoice.total, invoice.currency)}
                 </dd>
               </div>
               <div className="flex items-center justify-between gap-3 py-2.5">
-                <dt className="text-muted">Due</dt>
-                <dd>{fmtDate(invoice.dueDate)}</dd>
+                <dt className="text-muted">{t('common.due')}</dt>
+                <dd>{formatDate(invoice.dueDate)}</dd>
               </div>
             </dl>
             <Button className="w-full" size="lg" disabled={!channel} onClick={pay}>
-              Pay {fmtIdr(invoice.total, invoice.currency)}
+              {t('pay.button', { amount: fmtIdr(invoice.total, invoice.currency) })}
             </Button>
-            <p className="text-muted text-xs">
-              Payments are processed by Xendit. You will get instructions on the next screen.
-            </p>
+            <p className="text-muted text-xs">{t('pay.processedBy')}</p>
           </CardContent>
         </Card>
       </div>

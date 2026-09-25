@@ -1,6 +1,7 @@
 import { AlertTriangle, CheckCircle2, Info, X } from 'lucide-react'
 import * as React from 'react'
 import { cn } from '../lib/cn'
+import { useUiLabels } from './ui-labels'
 import { Button } from './button'
 
 export type ToastTone = 'success' | 'info' | 'warning' | 'danger'
@@ -24,6 +25,7 @@ export function pushToast(options: ToastOptions) {
 }
 
 export function ToastProvider() {
+  const labels = useUiLabels()
   const [items, setItems] = React.useState<ToastItem[]>([])
 
   React.useEffect(() => {
@@ -90,7 +92,7 @@ export function ToastProvider() {
             <Button
               variant="ghost"
               size="icon-sm"
-              aria-label="Dismiss"
+              aria-label={labels.dismiss}
               onClick={() => dismiss(item.id)}
             >
               <X />

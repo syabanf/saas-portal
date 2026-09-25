@@ -1,6 +1,6 @@
-import { avatarColor, fmtAgo, fmtDate, fmtDateTime, initials } from '@scp/fixtures'
+import { avatarColor, initials } from '@scp/fixtures'
+import { useFormat, useT } from '@scp/i18n'
 import type { Session, User } from '@scp/types'
-import { USER_STATUS_LABEL, WORKSPACE_ROLE_LABEL } from '@scp/types'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -36,15 +36,11 @@ import { ArrowLeftRight, Building2, LogOut, MonitorSmartphone, Pencil } from 'lu
 import * as React from 'react'
 import { useAuth, useCurrentUser } from '../../auth/auth'
 import { Mono, UserBadge } from '../../components/badges'
+import { LanguageCombobox } from '../../components/LanguageCombobox'
 import { actorOf, useScoped } from '../../state/app-state'
-import { applyPrefs, readPrefs, writePrefs, type Prefs } from '../../state/prefs'
+import { usePrefs } from '../../state/prefs'
 
 type SessionState = 'active' | 'expired' | 'revoked'
-const SESSION_STATE_LABEL: Record<SessionState, string> = {
-  active: 'Active',
-  revoked: 'Revoked',
-  expired: 'Expired',
-}
 const SESSION_STATE_TONE: Record<SessionState, BadgeTone> = {
   active: 'success',
   revoked: 'muted',
@@ -57,6 +53,7 @@ function sessionState(s: Session, now: number): SessionState {
 
 /** Mounted only while the dialog is open, so every open starts from the saved profile. */
 function EditProfileForm({ user, onDone }: { user: User; onDone: () => void }) {
+  const t = useT()
   const { state, dispatch } = useScoped()
   const [name, setName] = React.useState(user.name)
   const [email, setEmail] = React.useState(user.email)
@@ -66,7 +63,7 @@ function EditProfileForm({ user, onDone }: { user: User; onDone: () => void }) {
     e.preventDefault()
     const nextEmail = email.trim().toLowerCase()
     if (state.users.some((u) => u.id !== user.id && u.email.toLowerCase() === nextEmail)) {
-      setEmailError('Another user already signs in with this email.')
+      setEmailError(t('profile.emailTaken'))
       return
     }
     dispatch({
@@ -79,11 +76,11 @@ function EditProfileForm({ user, onDone }: { user: User; onDone: () => void }) {
   return (
     <form onSubmit={submit}>
       <DialogHeader>
-        <DialogTitle>Edit profile</DialogTitle>
-        <DialogDescription>Shown to the other members of your organizations.</DialogDescription>
+        <DialogTitle>{t('profile.edit')}</DialogTitle>
+        <DialogDescription>{t('profile.editDescription')}</DialogDescription>
       </DialogHeader>
       <div className="grid grid-cols-1 gap-4">
-        <FormField label="Name" htmlFor="profile-name">
+        <FormField label={t('common.name')} htmlFor="profile-name">
           <Input
             id="profile-name"
             value={name}
@@ -91,7 +88,11 @@ function EditProfileForm({ user, onDone }: { user: User; onDone: () => void }) {
             required
           />
         </FormField>
-        <FormField label="Email" htmlFor="profile-email" error={emailError ?? undefined}>
+        <FormField
+          label={t('common.email')}
+          htmlFor="profile-email"
+          error={emailError ?? undefined}
+        >
           <Input
             id="profile-email"
             type="email"
@@ -107,9 +108,9 @@ function EditProfileForm({ user, onDone }: { user: User; onDone: () => void }) {
       </div>
       <DialogFooter>
         <Button type="button" variant="outline" onClick={onDone}>
-          Cancel
+          {t('common.cancel')}
         </Button>
-        <Button type="submit">Save changes</Button>
+        <Button type="submit">{t('common.saveChanges')}</Button>
       </DialogFooter>
     </form>
   )
@@ -126,24 +127,29 @@ function SessionRow({
   current: boolean
   onRevoke: () => void
 }) {
+  const t = useT()
+  const { formatDateTime, formatAgo } = useFormat()
   const st = sessionState(session, now)
   return (
     <li className="flex flex-wrap items-start gap-3 py-3">
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-semibold">{session.userAgent}</p>
         <p className="text-muted text-xs">
-          <Mono>{session.ip}</Mono> · Created {fmtDateTime(session.createdAt)} · Last seen{' '}
-          {fmtAgo(session.lastSeenAt, now)}
+          <Mono>{session.ip}</Mono> ·{' '}
+          {t('profile.sessionMeta', {
+            created: formatDateTime(session.createdAt),
+            seen: formatAgo(session.lastSeenAt, now),
+          })}
         </p>
       </div>
       <div className="flex items-center gap-2">
-        <Badge variant={SESSION_STATE_TONE[st]}>{SESSION_STATE_LABEL[st]}</Badge>
+        <Badge variant={SESSION_STATE_TONE[st]}>{t(`status.session.${st}`)}</Badge>
         {st === 'active' ? (
           current ? (
-            <span className="text-muted text-xs">Current session</span>
+            <span className="text-muted text-xs">{t('profile.currentSession')}</span>
           ) : (
             <Button variant="ghost" size="sm" onClick={onRevoke}>
-              Revoke
+              {t('profile.revoke')}
             </Button>
           )
         ) : null}
@@ -153,20 +159,22 @@ function SessionRow({
 }
 
 export function ProfilePage() {
+  const t = useT()
+  const { formatDate, formatDateTime } = useFormat()
   const user = useCurrentUser()
   const { member, tenant, session, liveSession, switchTenant, logout } = useAuth()
   const { state, applicationsById, dispatch } = useScoped()
+  const { prefs, setPref } = usePrefs()
   const now = Date.now()
   const [editing, setEditing] = React.useState(false)
   const [revoking, setRevoking] = React.useState<Session | null>(null)
-  const [prefs, setPrefs] = React.useState<Prefs>(readPrefs)
 
   const memberships = React.useMemo(
     () =>
       state.members
         .filter((m) => m.userId === user.id)
         .flatMap((m) => {
-          const org = state.tenants.find((t) => t.id === m.tenantId)
+          const org = state.tenants.find((item) => item.id === m.tenantId)
           return org ? [{ member: m, org }] : []
         }),
     [state.members, state.tenants, user.id],
@@ -179,18 +187,9 @@ export function ProfilePage() {
     [state.sessions, user.id],
   )
 
-  function setPref<K extends keyof Prefs>(key: K, value: Prefs[K]) {
-    setPrefs((p) => {
-      const next = { ...p, [key]: value }
-      writePrefs(next)
-      applyPrefs(next)
-      return next
-    })
-  }
-
   return (
     <div className="space-y-4">
-      <PageHeader title="Profile" description="Your account, organizations and active sessions." />
+      <PageHeader title={t('nav.profile')} description={t('profile.description')} />
 
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-[360px_1fr]">
         <Card className="self-start">
@@ -203,18 +202,20 @@ export function ProfilePage() {
             <div className="flex flex-wrap justify-center gap-2">
               {member && tenant ? (
                 <Badge variant="ink">
-                  {WORKSPACE_ROLE_LABEL[member.workspaceRole]} · {tenant.name}
+                  {t(`role.${member.workspaceRole}`)} · {tenant.name}
                 </Badge>
               ) : null}
               <UserBadge status={user.status} />
             </div>
-            <p className="text-muted text-xs">Member since {fmtDate(user.createdAt)}</p>
+            <p className="text-muted text-xs">
+              {t('profile.memberSince', { date: formatDate(user.createdAt) })}
+            </p>
             <div className="flex w-full flex-col gap-2 sm:flex-row sm:justify-center">
               <Button onClick={() => setEditing(true)}>
-                <Pencil /> Edit profile
+                <Pencil /> {t('profile.edit')}
               </Button>
               <Button variant="outline" onClick={() => void logout()}>
-                <LogOut /> Sign out
+                <LogOut /> {t('common.signOut')}
               </Button>
             </div>
           </CardContent>
@@ -223,24 +224,30 @@ export function ProfilePage() {
         <div className="min-w-0 space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Account</CardTitle>
+              <CardTitle>{t('profile.account')}</CardTitle>
             </CardHeader>
             <CardContent>
               <KeyValue
                 dense
                 rows={[
-                  { label: 'User id', value: <Mono>{user.id}</Mono> },
-                  { label: 'Email', value: user.email },
-                  { label: 'Status', value: USER_STATUS_LABEL[user.status] },
-                  { label: 'Created', value: fmtDateTime(user.createdAt) },
-                  { label: 'Updated', value: fmtDateTime(user.updatedAt) },
-                  { label: 'Organization', value: tenant?.name ?? '—' },
+                  { label: t('profile.userId'), value: <Mono>{user.id}</Mono> },
+                  { label: t('common.email'), value: user.email },
+                  { label: t('common.status'), value: t(`status.user.${user.status}`) },
+                  { label: t('common.created'), value: formatDateTime(user.createdAt) },
+                  { label: t('profile.updated'), value: formatDateTime(user.updatedAt) },
+                  { label: t('nav.organization'), value: tenant?.name ?? '—' },
                   {
-                    label: 'Role',
-                    value: member ? WORKSPACE_ROLE_LABEL[member.workspaceRole] : '—',
+                    label: t('common.role'),
+                    value: member ? t(`role.${member.workspaceRole}`) : '—',
                   },
-                  { label: 'Session id', value: <Mono>{session?.sessionId ?? '—'}</Mono> },
-                  { label: 'Session expires', value: fmtDateTime(liveSession?.expiresAt) },
+                  {
+                    label: t('profile.sessionId'),
+                    value: <Mono>{session?.sessionId ?? '—'}</Mono>,
+                  },
+                  {
+                    label: t('profile.sessionExpires'),
+                    value: formatDateTime(liveSession?.expiresAt),
+                  },
                 ]}
               />
             </CardContent>
@@ -248,17 +255,15 @@ export function ProfilePage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Organizations</CardTitle>
-              <CardDescription>
-                Every workspace you belong to and the applications you may open.
-              </CardDescription>
+              <CardTitle>{t('profile.organizations')}</CardTitle>
+              <CardDescription>{t('profile.organizationsDescription')}</CardDescription>
             </CardHeader>
             <CardContent>
               {memberships.length === 0 ? (
                 <EmptyState
                   icon={<Building2 />}
-                  title="No organizations"
-                  description="Accept an invitation to join a workspace."
+                  title={t('profile.noOrganizations')}
+                  description={t('profile.noOrganizationsDescription')}
                 />
               ) : (
                 <ul className="divide-border divide-y">
@@ -275,12 +280,14 @@ export function ProfilePage() {
                             {org.name}
                             <span className="text-muted font-normal">
                               {' '}
-                              · {WORKSPACE_ROLE_LABEL[m.workspaceRole]}
+                              · {t(`role.${m.workspaceRole}`)}
                             </span>
                           </p>
                           <div className="flex flex-wrap gap-1.5">
                             {apps.length === 0 ? (
-                              <span className="text-muted text-xs">No application access</span>
+                              <span className="text-muted text-xs">
+                                {t('profile.noApplicationAccess')}
+                              </span>
                             ) : (
                               apps.map((app) => (
                                 <Badge key={app.id} variant="default">
@@ -292,11 +299,11 @@ export function ProfilePage() {
                         </div>
                         {isCurrent ? (
                           <Badge variant="success" dot>
-                            Current
+                            {t('common.current')}
                           </Badge>
                         ) : m.status === 'active' ? (
                           <Button variant="ghost" size="sm" onClick={() => switchTenant(org.id)}>
-                            <ArrowLeftRight /> Switch
+                            <ArrowLeftRight /> {t('profile.switch')}
                           </Button>
                         ) : (
                           <UserBadge status={m.status} />
@@ -311,17 +318,15 @@ export function ProfilePage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Active sessions</CardTitle>
-              <CardDescription>
-                Devices signed in as you. Revoking one signs that device out.
-              </CardDescription>
+              <CardTitle>{t('profile.sessions')}</CardTitle>
+              <CardDescription>{t('profile.sessionsDescription')}</CardDescription>
             </CardHeader>
             <CardContent>
               {sessions.length === 0 ? (
                 <EmptyState
                   icon={<MonitorSmartphone />}
-                  title="No sessions"
-                  description="Sessions appear here after you sign in."
+                  title={t('profile.noSessions')}
+                  description={t('profile.noSessionsDescription')}
                 />
               ) : (
                 <ul className="divide-border divide-y">
@@ -341,25 +346,28 @@ export function ProfilePage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Preferences</CardTitle>
-              <CardDescription>Stored in this browser only.</CardDescription>
+              <CardTitle>{t('profile.preferences')}</CardTitle>
+              <CardDescription>{t('profile.preferencesDescription')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
+              <FormField label={t('common.language')} htmlFor="profile-language">
+                <LanguageCombobox id="profile-language" />
+              </FormField>
               <ToggleRow
-                title="Compact tables"
-                description="Tighter rows on list pages."
+                title={t('profile.compactTables')}
+                description={t('profile.compactTablesDescription')}
                 checked={prefs.compactTables}
                 onCheckedChange={(v) => setPref('compactTables', v)}
               />
               <ToggleRow
-                title="Email me about failed payments"
-                description="A message when a payment request expires or fails."
+                title={t('profile.emailFailed')}
+                description={t('profile.emailFailedDescription')}
                 checked={prefs.emailFailedPayments}
                 onCheckedChange={(v) => setPref('emailFailedPayments', v)}
               />
               <ToggleRow
-                title="Show demo hints"
-                description="Callouts that explain the seeded data."
+                title={t('profile.demoHints')}
+                description={t('profile.demoHintsDescription')}
                 checked={prefs.demoHints}
                 onCheckedChange={(v) => setPref('demoHints', v)}
               />
@@ -377,13 +385,13 @@ export function ProfilePage() {
       <AlertDialog open={revoking !== null} onOpenChange={(open) => !open && setRevoking(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Revoke this session?</AlertDialogTitle>
+            <AlertDialogTitle>{t('profile.revokeTitle')}</AlertDialogTitle>
             <AlertDialogDescription>
-              The device on {revoking?.ip ?? 'this address'} is signed out of the portal.
+              {t('profile.revokeDescription', { ip: revoking?.ip ?? t('profile.thisAddress') })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {
                 if (revoking)
@@ -391,7 +399,7 @@ export function ProfilePage() {
                 setRevoking(null)
               }}
             >
-              Revoke
+              {t('profile.revoke')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

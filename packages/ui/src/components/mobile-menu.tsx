@@ -1,6 +1,7 @@
 import { X } from 'lucide-react'
 import * as React from 'react'
 import { cn } from '../lib/cn'
+import { useUiLabels } from './ui-labels'
 import { Sheet, SheetContent, SheetTitle } from './sheet'
 
 export interface MobileMenuProps {
@@ -14,6 +15,7 @@ export interface MobileMenuProps {
 
 /** Phone navigation: a dark bottom sheet with a drag handle and a grid of tiles. */
 export function MobileMenu({ open, onOpenChange, header, children, footer }: MobileMenuProps) {
+  const labels = useUiLabels()
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
@@ -21,14 +23,14 @@ export function MobileMenu({ open, onOpenChange, header, children, footer }: Mob
         hideClose
         className="safe-b bg-ink text-on-ink max-h-[85dvh] px-5 pt-3 pb-5"
       >
-        <SheetTitle className="sr-only">Menu</SheetTitle>
+        <SheetTitle className="sr-only">{labels.menu}</SheetTitle>
         <div className="mx-auto mb-3 h-1.5 w-10 shrink-0 rounded-full bg-white/20" />
         <div className="mb-4 flex shrink-0 items-center justify-between gap-3">
           {header}
           <button
             type="button"
             onClick={() => onOpenChange(false)}
-            aria-label="Close menu"
+            aria-label={labels.closeMenu}
             className="flex size-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
           >
             <X className="size-4" />

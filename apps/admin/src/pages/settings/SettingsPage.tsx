@@ -1,5 +1,6 @@
-import { avatarColor, fmtNumber, initials } from '@scp/fixtures'
+import { avatarColor, fmtNumber, initials, platformOf } from '@scp/fixtures'
 import type { IntegrationConfig } from '@scp/integration'
+import type { PlatformSettings } from '@scp/types'
 import { BILLING_PERIODS, BILLING_PERIOD_LABEL } from '@scp/types'
 import {
   AlertDialog,
@@ -25,14 +26,16 @@ import {
   KeyValue,
   Kicker,
   PageHeader,
+  Textarea,
 } from '@scp/ui'
-import { Database, Download, RotateCcw, Save, Server, UserRound } from 'lucide-react'
+import { Database, Download, FileText, RotateCcw, Save, Server, UserRound } from 'lucide-react'
 import * as React from 'react'
 import { Link } from 'react-router'
 import { useCurrentUser } from '../../auth/auth'
 import { Mono } from '../../components/badges'
+import { issuerParty } from '../../lib/issuer'
 import { useApi } from '../../state/api'
-import { useAppState } from '../../state/app-state'
+import { actorOf, useAppState } from '../../state/app-state'
 import { downloadJson } from '../audit/downloadJson'
 
 const MODE_LABEL: Record<IntegrationConfig['mode'], string> = {
@@ -65,6 +68,170 @@ JWT_PUBLIC_KEY=
 SAAS_ISSUER=http://localhost:3200
 SAAS_PORTAL_URL=http://localhost:3000
 ACCESS_BROKER_URL=http://localhost:3300`
+
+interface IssuerDraft {
+  brandName: string
+  legalName: string
+  /** One address line per row of the textarea. */
+  address: string
+  billingEmail: string
+  taxId: string
+  /** Percent as typed, so a half-written number is not rounded away. */
+  taxPercent: string
+}
+
+function draftOf(platform: PlatformSettings): IssuerDraft {
+  return {
+    brandName: platform.brandName,
+    legalName: platform.legalName,
+    address: platform.addressLines.join('\n'),
+    billingEmail: platform.billingEmail,
+    taxId: platform.taxId,
+    taxPercent: String(Math.round(platform.taxRate * 10000) / 100),
+  }
+}
+
+function platformFrom(draft: IssuerDraft): PlatformSettings {
+  return {
+    brandName: draft.brandName.trim(),
+    legalName: draft.legalName.trim(),
+    addressLines: draft.address
+      .split('\n')
+      .map((line) => line.trim())
+      .filter((line) => line !== ''),
+    billingEmail: draft.billingEmail.trim(),
+    taxId: draft.taxId.trim(),
+    taxRate: Math.max(0, Number(draft.taxPercent) || 0) / 100,
+  }
+}
+
+/** Who issues invoices and receipts: the block printed at the top of every document. */
+function IssuerCard() {
+  const { state, dispatch } = useAppState()
+  const user = useCurrentUser()
+  const platform = platformOf(state)
+  const [draft, setDraft] = React.useState<IssuerDraft>(() => draftOf(platform))
+  const [saved, setSaved] = React.useState(false)
+  React.useEffect(() => setDraft(draftOf(platform)), [platform])
+
+  const next = platformFrom(draft)
+  const taxPercent = Number(draft.taxPercent)
+  const taxError =
+    draft.taxPercent.trim() === '' || Number.isNaN(taxPercent) || taxPercent < 0 || taxPercent > 100
+      ? 'Enter a rate between 0 and 100.'
+      : null
+  const dirty = taxError === null && JSON.stringify(next) !== JSON.stringify(platform)
+  const preview = issuerParty(next)
+
+  function set<K extends keyof IssuerDraft>(key: K, value: IssuerDraft[K]) {
+    setDraft((d) => ({ ...d, [key]: value }))
+    setSaved(false)
+  }
+
+  function save(e: React.FormEvent) {
+    e.preventDefault()
+    dispatch({ type: 'platform/update', platform: next, actor: actorOf(user) })
+    setSaved(true)
+  }
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <FileText className="text-muted size-4" />
+          Invoice issuer
+        </CardTitle>
+        <CardDescription>
+          Printed on every invoice and receipt. The tax rate is the default for new invoices.
+        </CardDescription>
+      </CardHeader>
+      <form onSubmit={save}>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <FormField label="Brand name" htmlFor="issuer-brand">
+              <Input
+                id="issuer-brand"
+                value={draft.brandName}
+                onChange={(e) => set('brandName', e.target.value)}
+                tone="nested"
+                required
+              />
+            </FormField>
+            <FormField label="Legal name" htmlFor="issuer-legal">
+              <Input
+                id="issuer-legal"
+                value={draft.legalName}
+                onChange={(e) => set('legalName', e.target.value)}
+                tone="nested"
+              />
+            </FormField>
+            <FormField
+              label="Address"
+              htmlFor="issuer-address"
+              hint="One line per row."
+              className="sm:col-span-2"
+            >
+              <Textarea
+                id="issuer-address"
+                value={draft.address}
+                onChange={(e) => set('address', e.target.value)}
+                tone="nested"
+                className="min-h-20"
+              />
+            </FormField>
+            <FormField label="Billing email" htmlFor="issuer-email">
+              <Input
+                id="issuer-email"
+                type="email"
+                value={draft.billingEmail}
+                onChange={(e) => set('billingEmail', e.target.value)}
+                tone="nested"
+              />
+            </FormField>
+            <FormField label="Tax id (NPWP)" htmlFor="issuer-tax-id">
+              <Input
+                id="issuer-tax-id"
+                value={draft.taxId}
+                onChange={(e) => set('taxId', e.target.value)}
+                tone="nested"
+                className="[&_input]:font-mono [&_input]:text-xs"
+              />
+            </FormField>
+            <FormField
+              label="Default tax rate (%)"
+              htmlFor="issuer-tax-rate"
+              error={taxError ?? undefined}
+            >
+              <Input
+                id="issuer-tax-rate"
+                type="number"
+                min={0}
+                max={100}
+                step={0.5}
+                value={draft.taxPercent}
+                onChange={(e) => set('taxPercent', e.target.value)}
+                tone="nested"
+              />
+            </FormField>
+          </div>
+          <p className="text-muted text-xs">
+            On documents: <span className="text-foreground font-semibold">{preview.name}</span>
+            {preview.lines.length > 0 ? ` · ${preview.lines.join(' · ')}` : null}
+          </p>
+          <div className="flex flex-wrap items-center gap-2">
+            <Button type="submit" disabled={!dirty}>
+              <Save />
+              Save
+            </Button>
+            {saved && !dirty ? (
+              <span className="text-success text-xs">Saved. New documents use this issuer.</span>
+            ) : null}
+          </div>
+        </CardContent>
+      </form>
+    </Card>
+  )
+}
 
 export function SettingsPage() {
   const { config, setConfig } = useApi()
@@ -113,7 +280,7 @@ export function SettingsPage() {
     <div className="space-y-4">
       <PageHeader
         title="Settings"
-        description="Integration mode, demo data and the local development layout."
+        description="Integration mode, invoice issuer, demo data and the local development layout."
       />
 
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
@@ -223,6 +390,8 @@ export function SettingsPage() {
             </div>
           </CardContent>
         </Card>
+
+        <IssuerCard />
 
         <Card>
           <CardHeader>

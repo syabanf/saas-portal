@@ -1,4 +1,5 @@
 import { cn } from '../lib/cn'
+import { useUiLabels } from './ui-labels'
 
 export interface InvoiceParty {
   name: string
@@ -61,6 +62,7 @@ export function InvoiceDocument({
   notes = [],
   className,
 }: InvoiceDocumentProps) {
+  const l = useUiLabels().invoice
   return (
     <article
       className={cn(
@@ -70,16 +72,16 @@ export function InvoiceDocument({
     >
       <header className="flex flex-wrap items-start justify-between gap-6">
         <div>
-          <p className="text-muted text-[11px] font-semibold tracking-wider uppercase">Invoice</p>
+          <p className="text-muted text-[11px] font-semibold tracking-wider uppercase">{l.title}</p>
           <h1 className="mt-1 font-mono text-2xl font-bold tracking-tight">{number}</h1>
           <dl className="mt-4 grid grid-cols-[88px_1fr] gap-x-3 gap-y-1 text-sm">
-            <dt className="text-muted">Issued</dt>
+            <dt className="text-muted">{l.issued}</dt>
             <dd>{issuedAt}</dd>
-            <dt className="text-muted">Due</dt>
+            <dt className="text-muted">{l.due}</dt>
             <dd>{dueDate}</dd>
             {paidAt ? (
               <>
-                <dt className="text-muted">Paid</dt>
+                <dt className="text-muted">{l.paid}</dt>
                 <dd>{paidAt}</dd>
               </>
             ) : null}
@@ -97,7 +99,7 @@ export function InvoiceDocument({
 
       <section className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div>
-          <p className="text-muted text-[11px] font-semibold tracking-wider uppercase">From</p>
+          <p className="text-muted text-[11px] font-semibold tracking-wider uppercase">{l.from}</p>
           <p className="mt-1 text-sm font-bold">{seller.name}</p>
           {seller.lines.map((l) => (
             <p key={l} className="text-body text-sm">
@@ -106,7 +108,9 @@ export function InvoiceDocument({
           ))}
         </div>
         <div>
-          <p className="text-muted text-[11px] font-semibold tracking-wider uppercase">Bill to</p>
+          <p className="text-muted text-[11px] font-semibold tracking-wider uppercase">
+            {l.billTo}
+          </p>
           <p className="mt-1 text-sm font-bold">{buyer.name}</p>
           {buyer.lines.map((l) => (
             <p key={l} className="text-body text-sm">
@@ -119,9 +123,9 @@ export function InvoiceDocument({
       <table className="mt-10 w-full text-sm">
         <thead>
           <tr className="border-border text-muted border-b text-left text-[11px] font-semibold tracking-wider uppercase">
-            <th className="py-2 pr-4">Description</th>
-            <th className="py-2 pr-4">Period</th>
-            <th className="py-2 text-right">Amount</th>
+            <th className="py-2 pr-4">{l.description}</th>
+            <th className="py-2 pr-4">{l.period}</th>
+            <th className="py-2 text-right">{l.amount}</th>
           </tr>
         </thead>
         <tbody>
@@ -138,7 +142,7 @@ export function InvoiceDocument({
       <div className="mt-6 flex justify-end">
         <dl className="w-full max-w-xs space-y-1.5 text-sm">
           <div className="flex justify-between">
-            <dt className="text-muted">Subtotal</dt>
+            <dt className="text-muted">{l.subtotal}</dt>
             <dd className="tabular-nums">{subtotal}</dd>
           </div>
           <div className="flex justify-between">
@@ -146,7 +150,7 @@ export function InvoiceDocument({
             <dd className="tabular-nums">{tax}</dd>
           </div>
           <div className="border-border flex justify-between border-t pt-2 text-base font-bold">
-            <dt>Total</dt>
+            <dt>{l.total}</dt>
             <dd className="tabular-nums">{total}</dd>
           </div>
         </dl>
@@ -154,7 +158,9 @@ export function InvoiceDocument({
 
       {paymentRows.length > 0 ? (
         <section className="bg-surface print:border-border mt-10 rounded-2xl p-5 print:border print:bg-transparent">
-          <p className="text-muted text-[11px] font-semibold tracking-wider uppercase">Payment</p>
+          <p className="text-muted text-[11px] font-semibold tracking-wider uppercase">
+            {l.payment}
+          </p>
           <dl className="mt-2 grid grid-cols-[140px_1fr] gap-x-3 gap-y-1 text-sm">
             {paymentRows.map((r) => (
               <div key={r.label} className="contents">

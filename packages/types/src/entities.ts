@@ -264,3 +264,14 @@ export interface Session {
   userAgent: string
   revoked: boolean
 }
+
+/** Who issues invoices and receipts. Editable by platform admins (Settings). */
+export interface PlatformSettings {
+  brandName: string
+  legalName: string
+  addressLines: string[]
+  billingEmail: string
+  taxId: string
+  /** Default VAT rate for new invoices, 0.11 = PPN 11%. */
+  taxRate: number
+}

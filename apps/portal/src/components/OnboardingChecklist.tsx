@@ -1,3 +1,4 @@
+import { useT } from '@scp/i18n'
 import { Button, Card, CardContent, CardHeader, CardTitle, ProgressBar } from '@scp/ui'
 import { Check, ChevronRight, Circle, Rocket, X } from 'lucide-react'
 import * as React from 'react'
@@ -8,6 +9,7 @@ import { useScoped } from '../state/app-state'
 const DISMISSED_KEY = 'scp.portal.onboarding-dismissed.v1'
 
 export function OnboardingChecklist() {
+  const t = useT()
   const { member } = useAuth()
   const { state, tenant, tenantId, members, applications } = useScoped()
   const [dismissed, setDismissed] = React.useState(
@@ -16,18 +18,18 @@ export function OnboardingChecklist() {
   if (member?.workspaceRole !== 'workspace_admin' || dismissed) return null
 
   const items = [
-    { label: 'Accept your workspace invitation', done: member.status === 'active', to: '/' },
+    { label: t('onboarding.acceptInvitation'), done: member.status === 'active', to: '/' },
     {
-      label: 'Confirm application access',
+      label: t('onboarding.confirmAccess'),
       done: applications.some(
         (item) => item.access.state === 'active' || item.access.state === 'trial',
       ),
       to: '/applications',
     },
-    { label: 'Invite your team', done: members.length > 1, to: '/users' },
-    { label: 'Review billing details', done: Boolean(tenant?.billingEmail), to: '/billing' },
+    { label: t('onboarding.inviteTeam'), done: members.length > 1, to: '/users' },
+    { label: t('onboarding.reviewBilling'), done: Boolean(tenant?.billingEmail), to: '/billing' },
     {
-      label: 'Open your first application',
+      label: t('onboarding.openFirst'),
       done: state.accessLogs.some((log) => log.tenantId === tenantId && log.decision === 'allow'),
       to: '/applications',
     },
@@ -41,9 +43,9 @@ export function OnboardingChecklist() {
           <Rocket className="size-4" />
         </span>
         <div className="min-w-0 flex-1">
-          <CardTitle>Finish workspace setup</CardTitle>
+          <CardTitle>{t('onboarding.title')}</CardTitle>
           <p className="text-muted mt-1 text-sm">
-            {completed} of {items.length} steps complete
+            {t('onboarding.progress', { completed, total: items.length })}
           </p>
           <ProgressBar value={completed} max={items.length} className="mt-3" />
         </div>
@@ -51,7 +53,7 @@ export function OnboardingChecklist() {
           <Button
             variant="ghost"
             size="icon-sm"
-            aria-label="Dismiss checklist"
+            aria-label={t('onboarding.dismiss')}
             onClick={() => {
               localStorage.setItem(DISMISSED_KEY, tenantId)
               setDismissed(true)

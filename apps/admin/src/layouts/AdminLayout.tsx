@@ -17,6 +17,7 @@ import {
   RailGroup,
   RailItem,
   RailWorkspace,
+  TableDensityProvider,
   MobileMenu,
   MobileMenuGroup,
   MobileMenuItem,
@@ -38,6 +39,7 @@ import * as React from 'react'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router'
 import { useAuth, useCurrentUser } from '../auth/auth'
 import { useAppState } from '../state/app-state'
+import { useAdminPrefs } from '../state/prefs'
 import { AdminActionCenter } from '../components/AdminActionCenter'
 import { AdminCommandPalette } from '../components/AdminCommandPalette'
 import { BOTTOM_BAR_ITEMS, NAV_SECTIONS, isActive, pageTitle } from './nav-items'
@@ -150,6 +152,7 @@ export function AdminLayout() {
   const navigate = useNavigate()
   const user = useCurrentUser()
   const { state } = useAppState()
+  const [prefs] = useAdminPrefs()
   const { title, section } = pageTitle(pathname)
   const kpis = dashboardKpis(state)
   const attention = kpis.pastDueAccounts + kpis.failedWebhooks + kpis.integrationsOffline
@@ -345,7 +348,9 @@ export function AdminLayout() {
           tabIndex={-1}
           className="min-h-0 flex-1 overflow-y-auto pr-0.5 pb-24 focus:outline-none md:pb-2"
         >
-          <Outlet />
+          <TableDensityProvider density={prefs.compactTables ? 'compact' : 'comfortable'}>
+            <Outlet />
+          </TableDensityProvider>
         </main>
       </div>
 

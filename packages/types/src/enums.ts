@@ -364,6 +364,7 @@ export type AuditAction =
   | 'subscription.reactivated'
   | 'payment.status_changed'
   | 'invoice.generated'
+  | 'platform.updated'
   | 'api_client.created'
   | 'api_client.rotated'
   | 'api_client.revoked'
@@ -387,6 +388,7 @@ export const AUDIT_ACTION_LABEL: Record<AuditAction, string> = {
   'subscription.reactivated': 'Subscription reactivated',
   'payment.status_changed': 'Payment status changed',
   'invoice.generated': 'Invoice generated',
+  'platform.updated': 'Platform settings updated',
   'api_client.created': 'API client created',
   'api_client.rotated': 'API client rotated',
   'api_client.revoked': 'API client revoked',

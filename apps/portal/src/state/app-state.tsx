@@ -9,6 +9,7 @@ import {
   type AppState,
   isUserFacing,
 } from '@scp/fixtures'
+import { useT, type DictKey } from '@scp/i18n'
 import type {
   Application,
   Invoice,
@@ -30,7 +31,31 @@ interface AppStateContextValue {
 
 const AppStateContext = React.createContext<AppStateContextValue | null>(null)
 
+const FEEDBACK: Partial<Record<AppAction['type'], DictKey>> = {
+  'members/upsert': 'toast.memberSaved',
+  'members/remove': 'toast.memberRemoved',
+  'subscriptions/upsert': 'toast.subscriptionSaved',
+  'subscriptions/cancel': 'toast.subscriptionCancelScheduled',
+  'subscriptions/reactivate': 'toast.subscriptionReactivated',
+  'subscriptions/changePeriod': 'toast.billingChangeScheduled',
+  'subscriptions/cancelChange': 'toast.scheduledChangeCancelled',
+  'payments/create': 'toast.paymentCreated',
+  'payments/simulate': 'toast.paymentCompleted',
+  'sessions/revoke': 'toast.sessionRevoked',
+  'invitations/accept': 'toast.invitationAccepted',
+}
+const UNDOABLE = new Set<AppAction['type']>([
+  'members/upsert',
+  'members/remove',
+  'subscriptions/cancel',
+  'subscriptions/reactivate',
+  'subscriptions/changePeriod',
+  'subscriptions/cancelChange',
+  'sessions/revoke',
+])
+
 export function AppStateProvider({ children }: { children: React.ReactNode }) {
+  const t = useT()
   const {
     state,
     dispatch: storeDispatch,
@@ -51,44 +76,22 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
     (action) => {
       const before = stateRef.current
       storeDispatch(action)
-      const feedback: Partial<Record<AppAction['type'], string>> = {
-        'members/upsert': 'Member access saved',
-        'members/remove': 'Member removed',
-        'subscriptions/upsert': 'Subscription saved',
-        'subscriptions/cancel': 'Subscription cancellation scheduled',
-        'subscriptions/reactivate': 'Subscription reactivated',
-        'subscriptions/changePeriod': 'Billing change scheduled',
-        'subscriptions/cancelChange': 'Scheduled change cancelled',
-        'payments/create': 'Payment request created',
-        'payments/simulate': 'Payment completed',
-        'sessions/revoke': 'Session revoked',
-        'invitations/accept': 'Invitation accepted',
-      }
-      const undoable = new Set<AppAction['type']>([
-        'members/upsert',
-        'members/remove',
-        'subscriptions/cancel',
-        'subscriptions/reactivate',
-        'subscriptions/changePeriod',
-        'subscriptions/cancelChange',
-        'sessions/revoke',
-      ])
-      const title = feedback[action.type]
-      if (title)
+      const titleKey = FEEDBACK[action.type]
+      if (titleKey)
         pushToast({
-          title,
-          action: undoable.has(action.type)
+          title: t(titleKey),
+          action: UNDOABLE.has(action.type)
             ? {
-                label: 'Undo',
+                label: t('common.undo'),
                 onClick: () => {
                   storeDispatch({ type: 'store/replace', state: before })
-                  pushToast({ title: 'Change undone', tone: 'info' })
+                  pushToast({ title: t('common.changeUndone'), tone: 'info' })
                 },
               }
             : undefined,
         })
     },
-    [storeDispatch],
+    [storeDispatch, t],
   )
 
   React.useEffect(() => {
@@ -107,7 +110,7 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
         <div role="alert" className="bg-danger-soft p-3 text-sm">
           {error}{' '}
           <button className="underline" onClick={() => void retry()}>
-            Retry
+            {t('common.retry')}
           </button>
         </div>
       )}
@@ -118,10 +121,10 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
           aria-atomic="true"
           className="bg-surface-2 px-3 text-xs"
         >
-          Saving changes…
+          {t('common.savingChanges')}
         </div>
       )}
-      {ready ? children : <div className="p-8">Loading shared workspace…</div>}
+      {ready ? children : <div className="p-8">{t('common.loadingWorkspace')}</div>}
     </AppStateContext.Provider>
   )
 }

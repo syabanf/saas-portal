@@ -440,47 +440,188 @@
     ]
   },
   {
-    "id": "pay-hist-1",
-    "tenantId": "ten-eta",
-    "subscriptionId": "sub-eta-iot",
-    "invoiceId": "inv-hist-1",
+    "id": "pay-lambda-crm-1",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-crm",
+    "invoiceId": "inv-lambda-crm-1",
     "provider": "xendit",
-    "providerReference": "xnd_hist-150598344",
-    "externalId": "INV-2026-1101",
-    "method": "ewallet",
-    "channel": "DANA",
-    "amount": 1665000,
-    "fee": 24975,
+    "providerReference": "xnd_lambda-crm-176839275",
+    "externalId": "INV-2026-1100",
+    "method": "retail",
+    "channel": "ALFAMART",
+    "amount": 9990000,
+    "fee": 5000,
     "currency": "IDR",
     "status": "success",
     "instructions": {
       "accountNumber": null,
       "qrString": null,
-      "paymentCode": null,
-      "checkoutUrl": "https://checkout.xendit.co/dana/xnd_hist-150598344",
+      "paymentCode": "3479 7288 8605",
+      "checkoutUrl": null,
       "cardLast4": null
     },
-    "expiresAt": "2026-08-03T02:15:00.000Z",
-    "paidAt": "2026-08-04T02:00:00.000Z",
-    "createdAt": "2026-08-03T02:00:00.000Z",
+    "expiresAt": "2026-08-13T02:00:00.000Z",
+    "paidAt": "2026-08-12T02:00:00.000Z",
+    "createdAt": "2026-08-11T02:00:00.000Z",
     "events": [
       {
-        "at": "2026-08-03T02:00:00.000Z",
+        "at": "2026-08-11T02:00:00.000Z",
         "type": "created",
-        "note": "DANA · xnd_hist-150598344"
+        "note": "Alfamart · xnd_lambda-crm-176839275"
       },
       {
-        "at": "2026-08-03T02:00:00.000Z",
+        "at": "2026-08-11T02:00:00.000Z",
         "type": "pending",
-        "note": "Expires in 15 minutes"
+        "note": "Expires in 48 hours"
       },
       {
-        "at": "2026-08-04T02:00:00.000Z",
+        "at": "2026-08-12T02:00:00.000Z",
         "type": "callback",
         "note": "status PAID"
       },
       {
-        "at": "2026-08-04T02:00:00.000Z",
+        "at": "2026-08-12T02:00:00.000Z",
+        "type": "paid",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-hist-4",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-erp",
+    "invoiceId": "inv-hist-4",
+    "provider": "xendit",
+    "providerReference": "xnd_hist-410879155",
+    "externalId": "INV-2026-1116",
+    "method": "virtual_account",
+    "channel": "MANDIRI",
+    "amount": 22200000,
+    "fee": 4000,
+    "currency": "IDR",
+    "status": "refunded",
+    "instructions": {
+      "accountNumber": "8860808175158042",
+      "qrString": null,
+      "paymentCode": null,
+      "checkoutUrl": null,
+      "cardLast4": null
+    },
+    "expiresAt": "2026-08-09T02:00:00.000Z",
+    "paidAt": "2026-08-09T02:00:00.000Z",
+    "createdAt": "2026-08-08T02:00:00.000Z",
+    "events": [
+      {
+        "at": "2026-08-08T02:00:00.000Z",
+        "type": "created",
+        "note": "Mandiri Virtual Account · xnd_hist-410879155"
+      },
+      {
+        "at": "2026-08-08T02:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 24 hours"
+      },
+      {
+        "at": "2026-08-09T02:00:00.000Z",
+        "type": "callback",
+        "note": "status REFUNDED"
+      },
+      {
+        "at": "2026-08-09T02:00:00.000Z",
+        "type": "refunded",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-lambda-crm-2",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-crm",
+    "invoiceId": "inv-lambda-crm-2",
+    "provider": "xendit",
+    "providerReference": "xnd_lambda-crm-226135536",
+    "externalId": "INV-2026-1101",
+    "method": "retail",
+    "channel": "ALFAMART",
+    "amount": 9990000,
+    "fee": 5000,
+    "currency": "IDR",
+    "status": "success",
+    "instructions": {
+      "accountNumber": null,
+      "qrString": null,
+      "paymentCode": "6203 7463 1255",
+      "checkoutUrl": null,
+      "cardLast4": null
+    },
+    "expiresAt": "2026-07-14T02:00:00.000Z",
+    "paidAt": "2026-07-13T02:00:00.000Z",
+    "createdAt": "2026-07-12T02:00:00.000Z",
+    "events": [
+      {
+        "at": "2026-07-12T02:00:00.000Z",
+        "type": "created",
+        "note": "Alfamart · xnd_lambda-crm-226135536"
+      },
+      {
+        "at": "2026-07-12T02:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 48 hours"
+      },
+      {
+        "at": "2026-07-13T02:00:00.000Z",
+        "type": "callback",
+        "note": "status PAID"
+      },
+      {
+        "at": "2026-07-13T02:00:00.000Z",
+        "type": "paid",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-hist-5",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-iot",
+    "invoiceId": "inv-hist-5",
+    "provider": "xendit",
+    "providerReference": "xnd_hist-506828170",
+    "externalId": "INV-2026-1117",
+    "method": "qris",
+    "channel": "QRIS",
+    "amount": 16650000,
+    "fee": 116550,
+    "currency": "IDR",
+    "status": "success",
+    "instructions": {
+      "accountNumber": null,
+      "qrString": "0002010102122621797023192953924490104570755884387103215802ID",
+      "paymentCode": null,
+      "checkoutUrl": null,
+      "cardLast4": null
+    },
+    "expiresAt": "2026-06-25T02:30:00.000Z",
+    "paidAt": "2026-06-26T02:00:00.000Z",
+    "createdAt": "2026-06-25T02:00:00.000Z",
+    "events": [
+      {
+        "at": "2026-06-25T02:00:00.000Z",
+        "type": "created",
+        "note": "QRIS · xnd_hist-506828170"
+      },
+      {
+        "at": "2026-06-25T02:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 30 minutes"
+      },
+      {
+        "at": "2026-06-26T02:00:00.000Z",
+        "type": "callback",
+        "note": "status PAID"
+      },
+      {
+        "at": "2026-06-26T02:00:00.000Z",
         "type": "paid",
         "note": null
       }
@@ -534,6 +675,53 @@
     ]
   },
   {
+    "id": "pay-lambda-crm-3",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-crm",
+    "invoiceId": "inv-lambda-crm-3",
+    "provider": "xendit",
+    "providerReference": "xnd_lambda-crm-384864891",
+    "externalId": "INV-2026-1102",
+    "method": "virtual_account",
+    "channel": "BCA",
+    "amount": 9990000,
+    "fee": 4000,
+    "currency": "IDR",
+    "status": "success",
+    "instructions": {
+      "accountNumber": "1076644177089028",
+      "qrString": null,
+      "paymentCode": null,
+      "checkoutUrl": null,
+      "cardLast4": null
+    },
+    "expiresAt": "2026-06-13T02:00:00.000Z",
+    "paidAt": "2026-06-13T02:00:00.000Z",
+    "createdAt": "2026-06-12T02:00:00.000Z",
+    "events": [
+      {
+        "at": "2026-06-12T02:00:00.000Z",
+        "type": "created",
+        "note": "BCA Virtual Account · xnd_lambda-crm-384864891"
+      },
+      {
+        "at": "2026-06-12T02:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 24 hours"
+      },
+      {
+        "at": "2026-06-13T02:00:00.000Z",
+        "type": "callback",
+        "note": "status PAID"
+      },
+      {
+        "at": "2026-06-13T02:00:00.000Z",
+        "type": "paid",
+        "note": null
+      }
+    ]
+  },
+  {
     "id": "pay-lambda-erp",
     "tenantId": "ten-lambda",
     "subscriptionId": "sub-lambda-erp",
@@ -581,13 +769,60 @@
     ]
   },
   {
-    "id": "pay-hist-5",
+    "id": "pay-hist-3",
+    "tenantId": "ten-beta",
+    "subscriptionId": "sub-beta-crm",
+    "invoiceId": "inv-hist-3",
+    "provider": "xendit",
+    "providerReference": "xnd_hist-398362555",
+    "externalId": "INV-2026-1115",
+    "method": "virtual_account",
+    "channel": "BCA",
+    "amount": 999000,
+    "fee": 4000,
+    "currency": "IDR",
+    "status": "success",
+    "instructions": {
+      "accountNumber": "1076663810846093",
+      "qrString": null,
+      "paymentCode": null,
+      "checkoutUrl": null,
+      "cardLast4": null
+    },
+    "expiresAt": "2026-06-08T02:00:00.000Z",
+    "paidAt": "2026-06-08T02:00:00.000Z",
+    "createdAt": "2026-06-07T02:00:00.000Z",
+    "events": [
+      {
+        "at": "2026-06-07T02:00:00.000Z",
+        "type": "created",
+        "note": "BCA Virtual Account · xnd_hist-398362555"
+      },
+      {
+        "at": "2026-06-07T02:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 24 hours"
+      },
+      {
+        "at": "2026-06-08T02:00:00.000Z",
+        "type": "callback",
+        "note": "status PAID"
+      },
+      {
+        "at": "2026-06-08T02:00:00.000Z",
+        "type": "paid",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-hist-1",
     "tenantId": "ten-alpha",
     "subscriptionId": "sub-alpha-iot",
-    "invoiceId": "inv-hist-5",
+    "invoiceId": "inv-hist-1",
     "provider": "xendit",
-    "providerReference": "xnd_hist-524645298",
-    "externalId": "INV-2026-1105",
+    "providerReference": "xnd_hist-125447670",
+    "externalId": "INV-2026-1113",
     "method": "virtual_account",
     "channel": "MANDIRI",
     "amount": 16650000,
@@ -595,7 +830,7 @@
     "currency": "IDR",
     "status": "success",
     "instructions": {
-      "accountNumber": "8860886557848115",
+      "accountNumber": "8860817474556142",
       "qrString": null,
       "paymentCode": null,
       "checkoutUrl": null,
@@ -608,7 +843,7 @@
       {
         "at": "2026-06-01T02:00:00.000Z",
         "type": "created",
-        "note": "Mandiri Virtual Account · xnd_hist-524645298"
+        "note": "Mandiri Virtual Account · xnd_hist-125447670"
       },
       {
         "at": "2026-06-01T02:00:00.000Z",
@@ -675,47 +910,94 @@
     ]
   },
   {
-    "id": "pay-hist-2",
-    "tenantId": "ten-alpha",
-    "subscriptionId": "sub-alpha-iot",
-    "invoiceId": "inv-hist-2",
+    "id": "pay-lambda-crm-4",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-crm",
+    "invoiceId": "inv-lambda-crm-4",
     "provider": "xendit",
-    "providerReference": "xnd_hist-280742641",
-    "externalId": "INV-2026-1102",
+    "providerReference": "xnd_lambda-crm-470294252",
+    "externalId": "INV-2026-1103",
     "method": "ewallet",
-    "channel": "DANA",
-    "amount": 16650000,
-    "fee": 249750,
+    "channel": "OVO",
+    "amount": 9990000,
+    "fee": 149850,
     "currency": "IDR",
     "status": "success",
     "instructions": {
       "accountNumber": null,
       "qrString": null,
       "paymentCode": null,
-      "checkoutUrl": "https://checkout.xendit.co/dana/xnd_hist-280742641",
+      "checkoutUrl": "https://checkout.xendit.co/ovo/xnd_lambda-crm-470294252",
       "cardLast4": null
     },
-    "expiresAt": "2026-04-06T02:15:00.000Z",
-    "paidAt": "2026-04-07T02:00:00.000Z",
-    "createdAt": "2026-04-06T02:00:00.000Z",
+    "expiresAt": "2026-05-13T02:15:00.000Z",
+    "paidAt": "2026-05-14T02:00:00.000Z",
+    "createdAt": "2026-05-13T02:00:00.000Z",
     "events": [
       {
-        "at": "2026-04-06T02:00:00.000Z",
+        "at": "2026-05-13T02:00:00.000Z",
         "type": "created",
-        "note": "DANA · xnd_hist-280742641"
+        "note": "OVO · xnd_lambda-crm-470294252"
       },
       {
-        "at": "2026-04-06T02:00:00.000Z",
+        "at": "2026-05-13T02:00:00.000Z",
         "type": "pending",
         "note": "Expires in 15 minutes"
       },
       {
-        "at": "2026-04-07T02:00:00.000Z",
+        "at": "2026-05-14T02:00:00.000Z",
         "type": "callback",
         "note": "status PAID"
       },
       {
-        "at": "2026-04-07T02:00:00.000Z",
+        "at": "2026-05-14T02:00:00.000Z",
+        "type": "paid",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-lambda-crm-5",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-crm",
+    "invoiceId": "inv-lambda-crm-5",
+    "provider": "xendit",
+    "providerReference": "xnd_lambda-crm-596702276",
+    "externalId": "INV-2026-1104",
+    "method": "virtual_account",
+    "channel": "BCA",
+    "amount": 9990000,
+    "fee": 4000,
+    "currency": "IDR",
+    "status": "success",
+    "instructions": {
+      "accountNumber": "1076641664344894",
+      "qrString": null,
+      "paymentCode": null,
+      "checkoutUrl": null,
+      "cardLast4": null
+    },
+    "expiresAt": "2026-04-14T02:00:00.000Z",
+    "paidAt": "2026-04-14T02:00:00.000Z",
+    "createdAt": "2026-04-13T02:00:00.000Z",
+    "events": [
+      {
+        "at": "2026-04-13T02:00:00.000Z",
+        "type": "created",
+        "note": "BCA Virtual Account · xnd_lambda-crm-596702276"
+      },
+      {
+        "at": "2026-04-13T02:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 24 hours"
+      },
+      {
+        "at": "2026-04-14T02:00:00.000Z",
+        "type": "callback",
+        "note": "status PAID"
+      },
+      {
+        "at": "2026-04-14T02:00:00.000Z",
         "type": "paid",
         "note": null
       }
@@ -763,6 +1045,53 @@
       },
       {
         "at": "2026-04-05T02:00:00.000Z",
+        "type": "paid",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-lambda-crm-6",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-crm",
+    "invoiceId": "inv-lambda-crm-6",
+    "provider": "xendit",
+    "providerReference": "xnd_lambda-crm-653323209",
+    "externalId": "INV-2026-1105",
+    "method": "ewallet",
+    "channel": "DANA",
+    "amount": 9990000,
+    "fee": 149850,
+    "currency": "IDR",
+    "status": "success",
+    "instructions": {
+      "accountNumber": null,
+      "qrString": null,
+      "paymentCode": null,
+      "checkoutUrl": "https://checkout.xendit.co/dana/xnd_lambda-crm-653323209",
+      "cardLast4": null
+    },
+    "expiresAt": "2026-03-14T02:15:00.000Z",
+    "paidAt": "2026-03-15T02:00:00.000Z",
+    "createdAt": "2026-03-14T02:00:00.000Z",
+    "events": [
+      {
+        "at": "2026-03-14T02:00:00.000Z",
+        "type": "created",
+        "note": "DANA · xnd_lambda-crm-653323209"
+      },
+      {
+        "at": "2026-03-14T02:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 15 minutes"
+      },
+      {
+        "at": "2026-03-15T02:00:00.000Z",
+        "type": "callback",
+        "note": "status PAID"
+      },
+      {
+        "at": "2026-03-15T02:00:00.000Z",
         "type": "paid",
         "note": null
       }
@@ -863,23 +1192,70 @@
     ]
   },
   {
-    "id": "pay-hist-4",
+    "id": "pay-lambda-crm-7",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-crm",
+    "invoiceId": "inv-lambda-crm-7",
+    "provider": "xendit",
+    "providerReference": "xnd_lambda-crm-733427875",
+    "externalId": "INV-2026-1106",
+    "method": "virtual_account",
+    "channel": "BCA",
+    "amount": 9990000,
+    "fee": 4000,
+    "currency": "IDR",
+    "status": "refunded",
+    "instructions": {
+      "accountNumber": "1076680464265055",
+      "qrString": null,
+      "paymentCode": null,
+      "checkoutUrl": null,
+      "cardLast4": null
+    },
+    "expiresAt": "2026-02-13T02:00:00.000Z",
+    "paidAt": "2026-02-13T02:00:00.000Z",
+    "createdAt": "2026-02-12T02:00:00.000Z",
+    "events": [
+      {
+        "at": "2026-02-12T02:00:00.000Z",
+        "type": "created",
+        "note": "BCA Virtual Account · xnd_lambda-crm-733427875"
+      },
+      {
+        "at": "2026-02-12T02:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 24 hours"
+      },
+      {
+        "at": "2026-02-13T02:00:00.000Z",
+        "type": "callback",
+        "note": "status REFUNDED"
+      },
+      {
+        "at": "2026-02-13T02:00:00.000Z",
+        "type": "refunded",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-hist-0",
     "tenantId": "ten-lambda",
     "subscriptionId": "sub-lambda-erp",
-    "invoiceId": "inv-hist-4",
+    "invoiceId": "inv-hist-0",
     "provider": "xendit",
-    "providerReference": "xnd_hist-486236648",
-    "externalId": "INV-2026-1104",
+    "providerReference": "xnd_hist-038773218",
+    "externalId": "INV-2026-1112",
     "method": "retail",
     "channel": "ALFAMART",
     "amount": 22200000,
     "fee": 5000,
     "currency": "IDR",
-    "status": "refunded",
+    "status": "success",
     "instructions": {
       "accountNumber": null,
       "qrString": null,
-      "paymentCode": "1199 3414 2307",
+      "paymentCode": "6137 8989 1993",
       "checkoutUrl": null,
       "cardLast4": null
     },
@@ -890,7 +1266,7 @@
       {
         "at": "2026-01-16T02:00:00.000Z",
         "type": "created",
-        "note": "Alfamart · xnd_hist-486236648"
+        "note": "Alfamart · xnd_hist-038773218"
       },
       {
         "at": "2026-01-16T02:00:00.000Z",
@@ -900,11 +1276,105 @@
       {
         "at": "2026-01-17T02:00:00.000Z",
         "type": "callback",
-        "note": "status REFUNDED"
+        "note": "status PAID"
       },
       {
         "at": "2026-01-17T02:00:00.000Z",
-        "type": "refunded",
+        "type": "paid",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-lambda-crm-8",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-crm",
+    "invoiceId": "inv-lambda-crm-8",
+    "provider": "xendit",
+    "providerReference": "xnd_lambda-crm-824397518",
+    "externalId": "INV-2026-1107",
+    "method": "ewallet",
+    "channel": "OVO",
+    "amount": 9990000,
+    "fee": 149850,
+    "currency": "IDR",
+    "status": "success",
+    "instructions": {
+      "accountNumber": null,
+      "qrString": null,
+      "paymentCode": null,
+      "checkoutUrl": "https://checkout.xendit.co/ovo/xnd_lambda-crm-824397518",
+      "cardLast4": null
+    },
+    "expiresAt": "2026-01-13T02:15:00.000Z",
+    "paidAt": "2026-01-14T02:00:00.000Z",
+    "createdAt": "2026-01-13T02:00:00.000Z",
+    "events": [
+      {
+        "at": "2026-01-13T02:00:00.000Z",
+        "type": "created",
+        "note": "OVO · xnd_lambda-crm-824397518"
+      },
+      {
+        "at": "2026-01-13T02:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 15 minutes"
+      },
+      {
+        "at": "2026-01-14T02:00:00.000Z",
+        "type": "callback",
+        "note": "status PAID"
+      },
+      {
+        "at": "2026-01-14T02:00:00.000Z",
+        "type": "paid",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-hist-2",
+    "tenantId": "ten-gamma",
+    "subscriptionId": "sub-gamma-erp",
+    "invoiceId": "inv-hist-2",
+    "provider": "xendit",
+    "providerReference": "xnd_hist-233069997",
+    "externalId": "INV-2026-1114",
+    "method": "virtual_account",
+    "channel": "BCA",
+    "amount": 22200000,
+    "fee": 4000,
+    "currency": "IDR",
+    "status": "success",
+    "instructions": {
+      "accountNumber": "1076620090980261",
+      "qrString": null,
+      "paymentCode": null,
+      "checkoutUrl": null,
+      "cardLast4": null
+    },
+    "expiresAt": "2026-01-07T02:00:00.000Z",
+    "paidAt": "2026-01-07T02:00:00.000Z",
+    "createdAt": "2026-01-06T02:00:00.000Z",
+    "events": [
+      {
+        "at": "2026-01-06T02:00:00.000Z",
+        "type": "created",
+        "note": "BCA Virtual Account · xnd_hist-233069997"
+      },
+      {
+        "at": "2026-01-06T02:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 24 hours"
+      },
+      {
+        "at": "2026-01-07T02:00:00.000Z",
+        "type": "callback",
+        "note": "status PAID"
+      },
+      {
+        "at": "2026-01-07T02:00:00.000Z",
+        "type": "paid",
         "note": null
       }
     ]
@@ -957,94 +1427,47 @@
     ]
   },
   {
-    "id": "pay-hist-3",
-    "tenantId": "ten-delta",
-    "subscriptionId": "sub-delta-iot",
-    "invoiceId": "inv-hist-3",
+    "id": "pay-lambda-crm-9",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-crm",
+    "invoiceId": "inv-lambda-crm-9",
     "provider": "xendit",
-    "providerReference": "xnd_hist-357357553",
-    "externalId": "INV-2026-1103",
-    "method": "retail",
-    "channel": "ALFAMART",
-    "amount": 16650000,
-    "fee": 5000,
+    "providerReference": "xnd_lambda-crm-917632586",
+    "externalId": "INV-2025-1108",
+    "method": "ewallet",
+    "channel": "DANA",
+    "amount": 9990000,
+    "fee": 149850,
     "currency": "IDR",
     "status": "success",
     "instructions": {
       "accountNumber": null,
       "qrString": null,
-      "paymentCode": "9632 6943 4055",
-      "checkoutUrl": null,
-      "cardLast4": null
-    },
-    "expiresAt": "2026-01-07T02:00:00.000Z",
-    "paidAt": "2026-01-06T02:00:00.000Z",
-    "createdAt": "2026-01-05T02:00:00.000Z",
-    "events": [
-      {
-        "at": "2026-01-05T02:00:00.000Z",
-        "type": "created",
-        "note": "Alfamart · xnd_hist-357357553"
-      },
-      {
-        "at": "2026-01-05T02:00:00.000Z",
-        "type": "pending",
-        "note": "Expires in 48 hours"
-      },
-      {
-        "at": "2026-01-06T02:00:00.000Z",
-        "type": "callback",
-        "note": "status PAID"
-      },
-      {
-        "at": "2026-01-06T02:00:00.000Z",
-        "type": "paid",
-        "note": null
-      }
-    ]
-  },
-  {
-    "id": "pay-hist-0",
-    "tenantId": "ten-lambda",
-    "subscriptionId": "sub-lambda-crm",
-    "invoiceId": "inv-hist-0",
-    "provider": "xendit",
-    "providerReference": "xnd_hist-095496111",
-    "externalId": "INV-2025-1100",
-    "method": "virtual_account",
-    "channel": "BCA",
-    "amount": 9990000,
-    "fee": 4000,
-    "currency": "IDR",
-    "status": "success",
-    "instructions": {
-      "accountNumber": "1076621193157911",
-      "qrString": null,
       "paymentCode": null,
-      "checkoutUrl": null,
+      "checkoutUrl": "https://checkout.xendit.co/dana/xnd_lambda-crm-917632586",
       "cardLast4": null
     },
-    "expiresAt": "2025-12-06T02:00:00.000Z",
-    "paidAt": "2025-12-06T02:00:00.000Z",
-    "createdAt": "2025-12-05T02:00:00.000Z",
+    "expiresAt": "2025-12-14T02:15:00.000Z",
+    "paidAt": "2025-12-15T02:00:00.000Z",
+    "createdAt": "2025-12-14T02:00:00.000Z",
     "events": [
       {
-        "at": "2025-12-05T02:00:00.000Z",
+        "at": "2025-12-14T02:00:00.000Z",
         "type": "created",
-        "note": "BCA Virtual Account · xnd_hist-095496111"
+        "note": "DANA · xnd_lambda-crm-917632586"
       },
       {
-        "at": "2025-12-05T02:00:00.000Z",
+        "at": "2025-12-14T02:00:00.000Z",
         "type": "pending",
-        "note": "Expires in 24 hours"
+        "note": "Expires in 15 minutes"
       },
       {
-        "at": "2025-12-06T02:00:00.000Z",
+        "at": "2025-12-15T02:00:00.000Z",
         "type": "callback",
         "note": "status PAID"
       },
       {
-        "at": "2025-12-06T02:00:00.000Z",
+        "at": "2025-12-15T02:00:00.000Z",
         "type": "paid",
         "note": null
       }
@@ -1092,6 +1515,147 @@
       },
       {
         "at": "2025-11-24T02:00:00.000Z",
+        "type": "paid",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-lambda-crm-10",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-crm",
+    "invoiceId": "inv-lambda-crm-10",
+    "provider": "xendit",
+    "providerReference": "xnd_lambda-crm-1001264754",
+    "externalId": "INV-2025-1109",
+    "method": "ewallet",
+    "channel": "OVO",
+    "amount": 9990000,
+    "fee": 149850,
+    "currency": "IDR",
+    "status": "success",
+    "instructions": {
+      "accountNumber": null,
+      "qrString": null,
+      "paymentCode": null,
+      "checkoutUrl": "https://checkout.xendit.co/ovo/xnd_lambda-crm-1001264754",
+      "cardLast4": null
+    },
+    "expiresAt": "2025-11-14T02:15:00.000Z",
+    "paidAt": "2025-11-15T02:00:00.000Z",
+    "createdAt": "2025-11-14T02:00:00.000Z",
+    "events": [
+      {
+        "at": "2025-11-14T02:00:00.000Z",
+        "type": "created",
+        "note": "OVO · xnd_lambda-crm-1001264754"
+      },
+      {
+        "at": "2025-11-14T02:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 15 minutes"
+      },
+      {
+        "at": "2025-11-15T02:00:00.000Z",
+        "type": "callback",
+        "note": "status PAID"
+      },
+      {
+        "at": "2025-11-15T02:00:00.000Z",
+        "type": "paid",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-lambda-crm-11",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-crm",
+    "invoiceId": "inv-lambda-crm-11",
+    "provider": "xendit",
+    "providerReference": "xnd_lambda-crm-1125105638",
+    "externalId": "INV-2025-1110",
+    "method": "card",
+    "channel": "CARD",
+    "amount": 9990000,
+    "fee": 291710,
+    "currency": "IDR",
+    "status": "success",
+    "instructions": {
+      "accountNumber": null,
+      "qrString": null,
+      "paymentCode": null,
+      "checkoutUrl": null,
+      "cardLast4": "3050"
+    },
+    "expiresAt": null,
+    "paidAt": "2025-10-16T02:00:00.000Z",
+    "createdAt": "2025-10-15T02:00:00.000Z",
+    "events": [
+      {
+        "at": "2025-10-15T02:00:00.000Z",
+        "type": "created",
+        "note": "Visa, Mastercard, JCB · xnd_lambda-crm-1125105638"
+      },
+      {
+        "at": "2025-10-15T02:00:00.000Z",
+        "type": "pending",
+        "note": null
+      },
+      {
+        "at": "2025-10-16T02:00:00.000Z",
+        "type": "callback",
+        "note": "status PAID"
+      },
+      {
+        "at": "2025-10-16T02:00:00.000Z",
+        "type": "paid",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "pay-lambda-crm-12",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-crm",
+    "invoiceId": "inv-lambda-crm-12",
+    "provider": "xendit",
+    "providerReference": "xnd_lambda-crm-1281345031",
+    "externalId": "INV-2025-1111",
+    "method": "retail",
+    "channel": "ALFAMART",
+    "amount": 9990000,
+    "fee": 5000,
+    "currency": "IDR",
+    "status": "success",
+    "instructions": {
+      "accountNumber": null,
+      "qrString": null,
+      "paymentCode": "0228 6561 6178",
+      "checkoutUrl": null,
+      "cardLast4": null
+    },
+    "expiresAt": "2025-09-17T02:00:00.000Z",
+    "paidAt": "2025-09-16T02:00:00.000Z",
+    "createdAt": "2025-09-15T02:00:00.000Z",
+    "events": [
+      {
+        "at": "2025-09-15T02:00:00.000Z",
+        "type": "created",
+        "note": "Alfamart · xnd_lambda-crm-1281345031"
+      },
+      {
+        "at": "2025-09-15T02:00:00.000Z",
+        "type": "pending",
+        "note": "Expires in 48 hours"
+      },
+      {
+        "at": "2025-09-16T02:00:00.000Z",
+        "type": "callback",
+        "note": "status PAID"
+      },
+      {
+        "at": "2025-09-16T02:00:00.000Z",
         "type": "paid",
         "note": null
       }

@@ -1,6 +1,5 @@
 import {
   buildInvoice,
-  fmtDate,
   fmtIdr,
   fmtNumber,
   monthlyValue,
@@ -8,8 +7,9 @@ import {
   nextInvoiceNumber,
   priceFor,
 } from '@scp/fixtures'
+import { useFormat, useT, type Formatters, type Translate } from '@scp/i18n'
 import type { BillingPeriod, Subscription, SubscriptionStatus } from '@scp/types'
-import { BILLING_PERIODS, BILLING_PERIOD_LABEL } from '@scp/types'
+import { BILLING_PERIODS } from '@scp/types'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -41,9 +41,9 @@ import { AppTypeIcon, SubscriptionBadge } from '../../components/badges'
 import {
   ClearFiltersButton,
   FilterCombobox,
-  labelOptions,
-  noMatches,
+  enumOptions,
   useFilterParams,
+  useNoMatches,
 } from '../../components/filters'
 import { actorOf, useScoped, type PortalApplication } from '../../state/app-state'
 import { usePortalSheets } from '../../layouts/portal-sheets'
@@ -51,7 +51,8 @@ import { PaymentHistoryList } from './PaymentHistoryList'
 
 const DAY = 86_400_000
 const PERIOD_DAYS: Record<BillingPeriod, number> = { monthly: 30, annual: 365 }
-const PERIOD_SUFFIX: Record<BillingPeriod, string> = { monthly: '/ month', annual: '/ year' }
+const PERIOD_SUFFIX = { monthly: 'period.perMonth', annual: 'period.perYear' } as const
+const PERIOD_LOWER = { monthly: 'period.monthlyLower', annual: 'period.annualLower' } as const
 
 type Pending =
   | { kind: 'switch'; period: BillingPeriod }
@@ -65,31 +66,38 @@ function annualSaving(priceMonthly: number, priceAnnual: number): number | null 
 }
 
 function describePending(
+  t: Translate,
+  { formatDate }: Formatters,
   pending: Exclude<Pending, null>,
   app: PortalApplication['app'],
   subscription: Subscription | null,
 ): { title: string; description: string } {
   if (pending.kind === 'cancel') {
     return {
-      title: `Cancel ${app.name}?`,
-      description: `Access continues until ${fmtDate(subscription?.currentPeriodEnd)}. Nothing renews after that.`,
+      title: t('subscription.confirmCancel', { app: app.name }),
+      description: t('subscription.confirmCancelDescription', {
+        date: formatDate(subscription?.currentPeriodEnd),
+      }),
     }
   }
-  const price = `${fmtIdr(priceFor(app, pending.period), app.currency)} ${PERIOD_SUFFIX[pending.period]}`
+  const price = `${fmtIdr(priceFor(app, pending.period), app.currency)} ${t(PERIOD_SUFFIX[pending.period])}`
   if (pending.kind === 'switch') {
     return {
-      title: `Switch ${app.name} to ${BILLING_PERIOD_LABEL[pending.period].toLowerCase()} billing?`,
-      description: `New price ${price} from the next renewal.`,
+      title: t('subscription.confirmSwitch', {
+        app: app.name,
+        period: t(PERIOD_LOWER[pending.period]),
+      }),
+      description: t('subscription.confirmSwitchDescription', { price }),
     }
   }
   if (!subscription && app.trialDays > 0)
     return {
-      title: `Start a trial of ${app.name}?`,
-      description: `${app.trialDays} days free, then ${price}.`,
+      title: t('subscription.confirmTrial', { app: app.name }),
+      description: t('subscription.confirmTrialDescription', { days: app.trialDays, price }),
     }
   return {
-    title: `Subscribe to ${app.name}?`,
-    description: `${price}. An invoice is issued today and due in 14 days.`,
+    title: t('subscription.confirmSubscribe', { app: app.name }),
+    description: t('subscription.confirmSubscribeDescription', { price }),
   }
 }
 
@@ -102,6 +110,9 @@ function ApplicationSection({
   highlighted: boolean
   sectionRef: (el: HTMLDivElement | null) => void
 }) {
+  const t = useT()
+  const format = useFormat()
+  const { formatDate } = format
   const { app, subscription } = item
   const { openSupport } = usePortalSheets()
   const user = useCurrentUser()
@@ -131,7 +142,7 @@ function ApplicationSection({
   )
   const cancelled = subscription?.status === 'cancelled' || subscription?.cancelAtPeriodEnd === true
   const saving = annualSaving(app.priceMonthly, app.priceAnnual)
-  const confirm = pending ? describePending(pending, app, subscription) : null
+  const confirm = pending ? describePending(t, format, pending, app, subscription) : null
 
   function start(period: BillingPeriod) {
     const now = Date.now()
@@ -197,17 +208,17 @@ function ApplicationSection({
           onClick={() => setPending({ kind: 'start', period })}
         >
           {ended
-            ? 'Renew subscription'
+            ? t('subscription.renew')
             : app.trialDays > 0
-              ? `Start ${app.trialDays}-day trial`
-              : 'Subscribe'}
+              ? t('subscription.startTrial', { days: app.trialDays })
+              : t('subscription.subscribe')}
         </Button>
       )
     }
     if (subscription.billingPeriod === period) {
       return (
         <Button variant="outline" size="sm" className="w-full" disabled>
-          Current
+          {t('common.current')}
         </Button>
       )
     }
@@ -220,7 +231,7 @@ function ApplicationSection({
         }
         onClick={() => setPending({ kind: 'switch', period })}
       >
-        Switch to {BILLING_PERIOD_LABEL[period].toLowerCase()}
+        {t('subscription.switchTo', { period: t(PERIOD_LOWER[period]) })}
       </Button>
     )
   }
@@ -241,16 +252,18 @@ function ApplicationSection({
               <>
                 <SubscriptionBadge status={subscription.status} />
                 <span className="text-muted text-xs">
-                  {BILLING_PERIOD_LABEL[subscription.billingPeriod]} ·{' '}
+                  {t(`period.${subscription.billingPeriod}`)} ·{' '}
                   {fmtIdr(subscription.price, subscription.currency)}{' '}
-                  {PERIOD_SUFFIX[subscription.billingPeriod]}
+                  {t(PERIOD_SUFFIX[subscription.billingPeriod])}
                 </span>
               </>
             ) : (
               <>
-                <Badge variant="muted">Not subscribed</Badge>
+                <Badge variant="muted">{t('common.notSubscribed')}</Badge>
                 {app.trialDays > 0 ? (
-                  <span className="text-muted text-xs">{app.trialDays}-day free trial</span>
+                  <span className="text-muted text-xs">
+                    {t('subscription.trialDays', { days: app.trialDays })}
+                  </span>
                 ) : null}
               </>
             )}
@@ -262,23 +275,23 @@ function ApplicationSection({
           <Banner
             icon={<Receipt />}
             tone="success"
-            title="Subscription ready"
-            description="Assign access to the people who will use this application."
+            title={t('subscription.ready')}
+            description={t('subscription.readyDescription')}
             action={
               <div className="flex flex-wrap gap-2">
                 <Button size="sm" asChild>
-                  <Link to={`/users?app=${app.id}`}>Assign users</Link>
+                  <Link to={`/users?app=${app.id}`}>{t('subscription.assignUsers')}</Link>
                 </Button>
                 {item.access.state === 'active' || item.access.state === 'trial' ? (
                   <Button size="sm" asChild>
                     <a href={app.baseUrl} target="_blank" rel="noreferrer">
-                      Open application
+                      {t('subscription.openApplication')}
                     </a>
                   </Button>
                 ) : null}
                 {outstanding && (
                   <Button size="sm" variant="outline" asChild>
-                    <Link to={`/billing/${outstanding.id}`}>View invoice</Link>
+                    <Link to={`/billing/${outstanding.id}`}>{t('common.viewInvoice')}</Link>
                   </Button>
                 )}
               </div>
@@ -289,11 +302,11 @@ function ApplicationSection({
           <Banner
             icon={<Receipt />}
             tone="warning"
-            title="Access suspended"
-            description="There is no outstanding invoice. Support can review why access was suspended."
+            title={t('subscription.accessSuspended')}
+            description={t('subscription.accessSuspendedDescription')}
             action={
               <Button size="sm" variant="outline" onClick={openSupport}>
-                Contact support
+                {t('common.contactSupport')}
               </Button>
             }
           />
@@ -302,26 +315,28 @@ function ApplicationSection({
           <Banner
             icon={<Receipt />}
             tone="warning"
-            title="Outstanding invoice"
-            description="Review and pay this invoice before starting another subscription period."
+            title={t('subscription.outstandingInvoice')}
+            description={t('subscription.outstandingInvoiceDescription')}
             action={
               <Button size="sm" asChild>
-                <Link to={`/billing/${outstanding.id}/pay`}>Pay invoice</Link>
+                <Link to={`/billing/${outstanding.id}/pay`}>{t('common.payInvoice')}</Link>
               </Button>
             }
           />
         )}
         {renewalInvoiced && (
-          <p className="text-muted text-sm">
-            The next period has already been invoiced. Contact support to change its billing period.
-          </p>
+          <p className="text-muted text-sm">{t('subscription.renewalInvoiced')}</p>
         )}
         {subscription?.scheduledChange && (
           <Banner
             icon={<Receipt />}
             tone="info"
-            title="Billing change scheduled"
-            description={`${BILLING_PERIOD_LABEL[subscription.scheduledChange.billingPeriod]} · ${fmtIdr(subscription.scheduledChange.price, subscription.currency)} from ${fmtDate(subscription.scheduledChange.effectiveAt)}. Your current price remains unchanged until then.`}
+            title={t('subscription.changeScheduled')}
+            description={t('subscription.changeScheduledDescription', {
+              period: t(`period.${subscription.scheduledChange.billingPeriod}`),
+              price: fmtIdr(subscription.scheduledChange.price, subscription.currency),
+              date: formatDate(subscription.scheduledChange.effectiveAt),
+            })}
             action={
               <Button
                 size="sm"
@@ -331,7 +346,7 @@ function ApplicationSection({
                   dispatch({ type: 'subscriptions/cancelChange', id: subscription.id, actor })
                 }
               >
-                Keep current billing
+                {t('subscription.keepCurrent')}
               </Button>
             }
           />
@@ -345,25 +360,25 @@ function ApplicationSection({
               <div key={period} className="bg-surface-2 flex flex-col overflow-hidden rounded-2xl">
                 {current ? (
                   <p className="bg-ink text-on-ink px-4 py-1.5 text-[11px] font-semibold tracking-wider uppercase">
-                    Current billing period
+                    {t('subscription.currentPeriod')}
                   </p>
                 ) : null}
                 <div className="flex flex-1 flex-col gap-3 p-4">
                   <div>
-                    <p className="text-sm font-semibold">{BILLING_PERIOD_LABEL[period]}</p>
+                    <p className="text-sm font-semibold">{t(`period.${period}`)}</p>
                     {price > 0 ? (
                       <p className="mt-1 flex items-baseline gap-1.5">
                         <span className="text-2xl font-bold tracking-tight tabular-nums">
                           {fmtIdr(price, app.currency)}
                         </span>
-                        <span className="text-muted text-xs">{PERIOD_SUFFIX[period]}</span>
+                        <span className="text-muted text-xs">{t(PERIOD_SUFFIX[period])}</span>
                       </p>
                     ) : (
-                      <p className="text-muted mt-1 text-sm">Not offered</p>
+                      <p className="text-muted mt-1 text-sm">{t('subscription.notOffered')}</p>
                     )}
                     {period === 'annual' && saving !== null ? (
                       <p className="text-muted mt-1 text-xs">
-                        Save {saving}% against monthly billing
+                        {t('subscription.saving', { percent: saving })}
                       </p>
                     ) : null}
                   </div>
@@ -377,7 +392,9 @@ function ApplicationSection({
           <>
             <div className="border-border flex flex-wrap items-center justify-between gap-2 border-t pt-4 text-sm">
               <span className="text-muted">
-                {cancelled ? 'Ends' : 'Renews'} {fmtDate(subscription.currentPeriodEnd)}
+                {t(cancelled ? 'subscription.ends' : 'subscription.renews', {
+                  date: formatDate(subscription.currentPeriodEnd),
+                })}
               </span>
               {subscription.status === 'cancelled' && !ended ? (
                 <Button
@@ -388,7 +405,7 @@ function ApplicationSection({
                     dispatch({ type: 'subscriptions/reactivate', id: subscription.id, actor })
                   }
                 >
-                  Reactivate
+                  {t('subscription.reactivate')}
                 </Button>
               ) : cancelled || ended ? null : (
                 <Button
@@ -397,18 +414,14 @@ function ApplicationSection({
                   disabled={!isAdmin}
                   onClick={() => setPending({ kind: 'cancel' })}
                 >
-                  Cancel at period end
+                  {t('subscription.cancelAtPeriodEnd')}
                 </Button>
               )}
             </div>
             <PaymentHistoryList subscription={subscription} />
           </>
         ) : null}
-        {!isAdmin ? (
-          <p className="text-muted text-xs">
-            Workspace admins manage the subscription for the organization.
-          </p>
-        ) : null}
+        {!isAdmin ? <p className="text-muted text-xs">{t('subscription.adminsManage')}</p> : null}
       </CardContent>
 
       <AlertDialog open={pending !== null} onOpenChange={(open) => !open && setPending(null)}>
@@ -418,9 +431,11 @@ function ApplicationSection({
             <AlertDialogDescription>{confirm?.description}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Keep as is</AlertDialogCancel>
+            <AlertDialogCancel>{t('subscription.keepAsIs')}</AlertDialogCancel>
             <AlertDialogAction onClick={confirmPending}>
-              {pending?.kind === 'cancel' ? 'Cancel subscription' : 'Confirm'}
+              {pending?.kind === 'cancel'
+                ? t('subscription.cancelSubscription')
+                : t('common.confirm')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -430,12 +445,7 @@ function ApplicationSection({
 }
 
 type View = 'all' | 'subscribed' | 'attention' | 'not_subscribed'
-const VIEW_LABEL: Record<View, string> = {
-  all: 'All',
-  subscribed: 'Subscribed',
-  attention: 'Needs attention',
-  not_subscribed: 'Not subscribed',
-}
+const VIEWS: View[] = ['all', 'subscribed', 'attention', 'not_subscribed']
 const VIEW_STATUSES: Record<View, SubscriptionStatus[] | null> = {
   all: null,
   subscribed: ['active', 'trial', 'cancelled'],
@@ -445,7 +455,7 @@ const VIEW_STATUSES: Record<View, SubscriptionStatus[] | null> = {
 const SPENDING: SubscriptionStatus[] = ['active', 'past_due', 'grace_period']
 
 function isView(value: string): value is View {
-  return value in VIEW_LABEL
+  return value in VIEW_STATUSES
 }
 
 function inView(view: View, subscription: Subscription | null): boolean {
@@ -457,6 +467,9 @@ function inView(view: View, subscription: Subscription | null): boolean {
 
 /** Blueprint §37: one subscription per application, owned by the organization rather than a single user. */
 export function SubscriptionPage() {
+  const t = useT()
+  const { formatDate } = useFormat()
+  const noMatches = useNoMatches()
   const [params] = useSearchParams()
   const focus = params.get('app')
   const { values, set, clear, active } = useFilterParams(['view', 'period'])
@@ -491,56 +504,53 @@ export function SubscriptionPage() {
 
   return (
     <div className="space-y-4">
-      <PageHeader
-        title="Subscriptions"
-        description="Subscriptions belong to your organization, never to a single user."
-      />
+      <PageHeader title={t('nav.subscriptions')} description={t('subscription.description')} />
       <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
         <StatCard
-          label="Monthly spend"
+          label={t('subscription.monthlySpend')}
           value={fmtIdr(monthlySpend)}
-          hint="Annual plans spread over 12 months"
+          hint={t('subscription.monthlySpendHint')}
           icon={<Wallet />}
           tone="ink"
         />
         <StatCard
-          label="Active subscriptions"
+          label={t('subscription.activeCount')}
           value={fmtNumber(activeCount)}
-          hint="Paid and in good standing"
+          hint={t('subscription.activeCountHint')}
           icon={<CheckCircle2 />}
           tone="success"
         />
         <StatCard
-          label="Next renewal"
-          value={nextRenewal ? fmtDate(nextRenewal.currentPeriodEnd) : 'None'}
+          label={t('subscription.nextRenewal')}
+          value={nextRenewal ? formatDate(nextRenewal.currentPeriodEnd) : t('common.none')}
           hint={
             nextRenewal
               ? (applicationsById.get(nextRenewal.applicationId)?.name ?? nextRenewal.applicationId)
-              : 'No renewal scheduled'
+              : t('subscription.noRenewal')
           }
           icon={<CalendarClock />}
           tone="info"
         />
         <StatCard
-          label="Outstanding"
+          label={t('subscription.outstanding')}
           value={fmtIdr(outstanding)}
-          hint="Open and overdue invoices"
+          hint={t('subscription.outstandingHint')}
           icon={<AlertTriangle />}
           tone="danger"
         />
       </div>
       <div className="flex flex-wrap items-center gap-2">
-        {(Object.keys(VIEW_LABEL) as View[]).map((v) => (
+        {VIEWS.map((v) => (
           <Chip key={v} active={view === v} activeTone="ink" onClick={() => set('view', v)}>
-            {VIEW_LABEL[v]}
+            {t(`subscription.view.${v}`)}
           </Chip>
         ))}
         <FilterCombobox
           value={values.period}
           onChange={(v) => set('period', v)}
-          options={labelOptions(BILLING_PERIOD_LABEL)}
-          allLabel="All billing periods"
-          searchPlaceholder="Search billing periods"
+          options={enumOptions(BILLING_PERIODS, (p) => t(`period.${p}`))}
+          allLabel={t('subscription.allPeriods')}
+          searchPlaceholder={t('subscription.searchPeriods')}
         />
         {active ? <ClearFiltersButton onClick={clear} /> : null}
       </div>
@@ -548,8 +558,8 @@ export function SubscriptionPage() {
         <Card>
           <EmptyState
             icon={<Receipt />}
-            title="Nothing to subscribe to"
-            description="Every application available to your organization is free for the workspace."
+            title={t('subscription.nothingToSubscribe')}
+            description={t('subscription.nothingToSubscribeDescription')}
           />
         </Card>
       ) : visible.length === 0 ? (

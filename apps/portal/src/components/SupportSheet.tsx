@@ -1,3 +1,4 @@
+import { useT, type DictKey } from '@scp/i18n'
 import {
   Button,
   Combobox,
@@ -12,11 +13,11 @@ import {
 import { CheckCircle2 } from 'lucide-react'
 import * as React from 'react'
 
-const SUBJECTS = [
-  'Billing question',
-  'Restore a suspended organization',
-  'Application access',
-  'Something else',
+const SUBJECTS: DictKey[] = [
+  'support.subject.billing',
+  'support.subject.restore',
+  'support.subject.access',
+  'support.subject.other',
 ]
 
 export function SupportSheet({
@@ -26,7 +27,8 @@ export function SupportSheet({
   open: boolean
   onOpenChange: (open: boolean) => void
 }) {
-  const [subject, setSubject] = React.useState(SUBJECTS[0]!)
+  const t = useT()
+  const [subject, setSubject] = React.useState<DictKey>(SUBJECTS[0]!)
   const [message, setMessage] = React.useState('')
   const [sent, setSent] = React.useState(false)
 
@@ -46,46 +48,50 @@ export function SupportSheet({
   return (
     <Sheet open={open} onOpenChange={handleOpenChange}>
       <SheetContent side="right" className="max-w-md p-6">
-        <SheetTitle className="text-lg font-semibold">Contact support</SheetTitle>
+        <SheetTitle className="text-lg font-semibold">{t('support.title')}</SheetTitle>
         <SheetDescription className="text-muted text-sm">
-          Tell us what you need. Billing and access questions get the fastest answers.
+          {t('support.description')}
         </SheetDescription>
         {sent ? (
           <EmptyState
             icon={<CheckCircle2 />}
-            title="Message sent"
-            description={`We will reply to the organization's billing email about "${subject}".`}
+            title={t('support.sent')}
+            description={t('support.sentDescription', { subject: t(subject) })}
             action={
               <Button variant="outline" onClick={() => handleOpenChange(false)}>
-                Close
+                {t('common.close')}
               </Button>
             }
           />
         ) : (
           <form onSubmit={submit} className="mt-6 space-y-4">
-            <FormField label="Subject" htmlFor="support-subject">
+            <FormField label={t('support.subject')} htmlFor="support-subject">
               <Combobox
                 id="support-subject"
                 value={subject}
-                onChange={setSubject}
-                options={SUBJECTS.map((s) => ({ value: s, label: s }))}
-                searchPlaceholder="Search subjects"
+                onChange={(value) => {
+                  const key = SUBJECTS.find((item) => item === value)
+                  if (key) setSubject(key)
+                }}
+                options={SUBJECTS.map((key) => ({ value: key, label: t(key) }))}
+                searchPlaceholder={t('support.searchSubjects')}
+                emptyText={t('common.noMatches')}
               />
             </FormField>
-            <FormField label="Message" htmlFor="support-message">
+            <FormField label={t('support.message')} htmlFor="support-message">
               <Textarea
                 id="support-message"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                placeholder="What happened, and which application does it concern?"
+                placeholder={t('support.messagePlaceholder')}
                 required
               />
             </FormField>
             <div className="flex justify-end gap-2">
               <Button type="button" variant="outline" onClick={() => handleOpenChange(false)}>
-                Cancel
+                {t('common.cancel')}
               </Button>
-              <Button type="submit">Send</Button>
+              <Button type="submit">{t('support.send')}</Button>
             </div>
           </form>
         )}

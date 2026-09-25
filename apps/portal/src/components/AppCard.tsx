@@ -1,6 +1,6 @@
-import { fmtDaysUntil, fmtIdr } from '@scp/fixtures'
+import { fmtIdr } from '@scp/fixtures'
+import { useT, type Translate } from '@scp/i18n'
 import type { AppAccessState } from '@scp/types'
-import { APP_ACCESS_STATE_LABEL, BILLING_PERIOD_LABEL } from '@scp/types'
 import { Button, IconTile, StatusDot, cn, type BadgeTone } from '@scp/ui'
 import { ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router'
@@ -23,13 +23,22 @@ export const ACCESS_TONE: Record<AppAccessState, BadgeTone> = {
 }
 
 /** Second line of the card: what the organization pays for this application. */
-export function pricingLine({ app, subscription }: PortalApplication): string {
-  if (app.accessPolicy === 'free') return 'Free for workspace'
-  if (!subscription) return 'Not subscribed'
-  return `${BILLING_PERIOD_LABEL[subscription.billingPeriod]} · ${fmtIdr(subscription.price, subscription.currency)}`
+export function pricingLine(t: Translate, { app, subscription }: PortalApplication): string {
+  if (app.accessPolicy === 'free') return t('common.freeForWorkspace')
+  if (!subscription) return t('common.notSubscribed')
+  return `${t(`period.${subscription.billingPeriod}`)} · ${fmtIdr(subscription.price, subscription.currency)}`
+}
+
+function daysUntil(t: Translate, iso: string, now: number): string {
+  const days = Math.ceil((new Date(iso).getTime() - now) / 86_400_000)
+  if (days < 0) return t('common.daysOverdue', { count: Math.abs(days) })
+  if (days === 0) return t('common.today')
+  if (days === 1) return t('common.oneDayRemaining')
+  return t('common.daysRemaining', { count: days })
 }
 
 function Action({ item }: { item: PortalApplication }) {
+  const t = useT()
   const { app, access, subscription } = item
   const { member, tenant } = useAuth()
   const { invoices } = useScoped()
@@ -38,7 +47,7 @@ function Action({ item }: { item: PortalApplication }) {
   if (tenant?.status === 'suspended')
     return isAdmin ? (
       <Button size="sm" variant="outline" onClick={openSupport}>
-        Contact support
+        {t('common.contactSupport')}
       </Button>
     ) : (
       <AdminContact application={app.name} />
@@ -54,7 +63,7 @@ function Action({ item }: { item: PortalApplication }) {
   )
     return (
       <Button size="sm" variant="outline" onClick={openSupport}>
-        Contact support
+        {t('common.contactSupport')}
       </Button>
     )
   switch (access.state) {
@@ -64,7 +73,7 @@ function Action({ item }: { item: PortalApplication }) {
       return (
         <Button size="sm" asChild>
           <a href={app.baseUrl} target="_blank" rel="noreferrer">
-            Open <ArrowUpRight />
+            {t('common.open')} <ArrowUpRight />
           </a>
         </Button>
       )
@@ -73,20 +82,20 @@ function Action({ item }: { item: PortalApplication }) {
       return (
         <Button size="sm" variant="secondary" asChild>
           <Link to={invoice ? `/billing/${invoice.id}/pay` : `/subscription?app=${app.id}`}>
-            {invoice ? 'Pay invoice' : 'Review subscription'}
+            {invoice ? t('common.payInvoice') : t('common.reviewSubscription')}
           </Link>
         </Button>
       )
     case 'not_subscribed':
       return (
         <Button size="sm" variant="outline" asChild>
-          <Link to={`/subscription?app=${app.id}`}>View pricing</Link>
+          <Link to={`/subscription?app=${app.id}`}>{t('appCard.viewPricing')}</Link>
         </Button>
       )
     case 'not_assigned':
       return (
         <Button size="sm" variant="outline" asChild>
-          <Link to={`/users?app=${app.id}`}>Assign access</Link>
+          <Link to={`/users?app=${app.id}`}>{t('appCard.assignAccess')}</Link>
         </Button>
       )
     case 'disabled':
@@ -96,6 +105,7 @@ function Action({ item }: { item: PortalApplication }) {
 
 /** Launcher tile (blueprint §32, §43). Shows the subscription state; the application backend decides on entry. */
 export function AppCard({ item, onDetails }: { item: PortalApplication; onDetails?: () => void }) {
+  const t = useT()
   const { access } = item
   const { member } = useAuth()
   const isAdmin = member?.workspaceRole === 'workspace_admin'
@@ -123,18 +133,15 @@ export function AppCard({ item, onDetails }: { item: PortalApplication; onDetail
         <div className="min-w-0 flex-1">
           <p className="truncate text-base leading-tight font-semibold">{item.app.name}</p>
           <p className="text-muted mt-0.5 truncate text-sm">
-            {isAdmin ? pricingLine(item) : 'Workspace application'}
+            {isAdmin ? pricingLine(t, item) : t('appCard.workspaceApplication')}
           </p>
         </div>
       </div>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="min-w-0">
-          <StatusDot
-            tone={ACCESS_TONE[access.state]}
-            label={APP_ACCESS_STATE_LABEL[access.state]}
-          />
+          <StatusDot tone={ACCESS_TONE[access.state]} label={t(`status.access.${access.state}`)} />
           {access.until ? (
-            <p className="text-muted mt-0.5 text-xs">{fmtDaysUntil(access.until)}</p>
+            <p className="text-muted mt-0.5 text-xs">{daysUntil(t, access.until, Date.now())}</p>
           ) : null}
         </div>
         <div onClick={(e) => e.stopPropagation()} onKeyDown={(e) => e.stopPropagation()}>

@@ -1,6 +1,7 @@
 import { ChevronDown, ChevronLeft, ChevronRight, ChevronsUpDown } from 'lucide-react'
 import * as React from 'react'
 import { cn } from '../lib/cn'
+import { useUiLabels } from './ui-labels'
 import { Tooltip, TooltipContent, TooltipTrigger } from './tooltip'
 
 const RailContext = React.createContext<{ expanded: boolean }>({ expanded: false })
@@ -26,6 +27,7 @@ export function Rail({
   children,
   className,
 }: RailProps) {
+  const labels = useUiLabels()
   return (
     <RailContext.Provider value={{ expanded }}>
       <aside
@@ -57,11 +59,11 @@ export function Rail({
             'text-on-ink-muted mt-3 flex items-center justify-center gap-2 rounded-2xl border border-white/10 text-xs font-semibold transition-colors hover:bg-white/10 hover:text-white',
             expanded ? 'h-10 w-full' : 'size-11',
           )}
-          aria-label={expanded ? 'Collapse menu' : 'Expand menu'}
+          aria-label={expanded ? labels.collapseMenu : labels.expandMenu}
         >
           {expanded ? (
             <>
-              <ChevronLeft className="size-4" /> Collapse menu
+              <ChevronLeft className="size-4" /> {labels.collapseMenu}
             </>
           ) : (
             <ChevronRight className="size-4" />

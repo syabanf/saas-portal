@@ -1,4 +1,5 @@
-import { fmtDate, fmtIdr } from '@scp/fixtures'
+import { fmtIdr } from '@scp/fixtures'
+import { useFormat, useT } from '@scp/i18n'
 import type { Subscription, SubscriptionStatus } from '@scp/types'
 import { Button, cn } from '@scp/ui'
 import { ChevronDown, ChevronRight } from 'lucide-react'
@@ -13,6 +14,8 @@ const EXPANDED_BY_DEFAULT = new Set<SubscriptionStatus>(['past_due', 'grace_peri
 
 /** Open invoice plus the latest payments of one subscription, folded behind a toggle inside its card. */
 export function PaymentHistoryList({ subscription }: { subscription: Subscription }) {
+  const t = useT()
+  const { formatDate } = useFormat()
   const { payments, invoices } = useScoped()
   const history = payments
     .filter((p) => p.subscriptionId === subscription.id)
@@ -42,7 +45,7 @@ export function PaymentHistoryList({ subscription }: { subscription: Subscriptio
             : 'text-muted hover:text-foreground border-transparent',
         )}
       >
-        Payment history ({history.length})
+        {t('subscription.history', { count: history.length })}
         <ChevronDown className={cn('size-3.5 transition-transform', open && 'rotate-180')} />
       </button>
       {open ? (
@@ -51,19 +54,21 @@ export function PaymentHistoryList({ subscription }: { subscription: Subscriptio
             <div className="bg-surface-2 flex flex-wrap items-center gap-2 rounded-2xl px-3 py-2.5">
               <span className="flex min-w-0 flex-1 basis-40 flex-col">
                 <Mono className="font-semibold">{dueInvoice.number}</Mono>
-                <span className="text-muted text-xs">Due {fmtDate(dueInvoice.dueDate)}</span>
+                <span className="text-muted text-xs">
+                  {t('subscription.dueOn', { date: formatDate(dueInvoice.dueDate) })}
+                </span>
               </span>
               <span className="font-semibold tabular-nums">
                 {fmtIdr(dueInvoice.total, dueInvoice.currency)}
               </span>
               <InvoiceBadge status={dueInvoice.status} />
               <Button size="sm" className="ml-auto" asChild>
-                <Link to={`/billing/${dueInvoice.id}/pay`}>Pay</Link>
+                <Link to={`/billing/${dueInvoice.id}/pay`}>{t('subscription.pay')}</Link>
               </Button>
             </div>
           ) : null}
           {history.length === 0 ? (
-            <p className="text-muted px-3 py-2">No payments yet.</p>
+            <p className="text-muted px-3 py-2">{t('subscription.noPayments')}</p>
           ) : (
             history.slice(0, MAX_ROWS).map((payment) => (
               <Link
@@ -79,10 +84,12 @@ export function PaymentHistoryList({ subscription }: { subscription: Subscriptio
                 <span className="flex w-full items-center gap-2 sm:w-auto">
                   <PaymentBadge status={payment.status} />
                   <span className="text-muted text-xs">
-                    {fmtDate(payment.status === 'success' ? payment.paidAt : payment.createdAt)}
+                    {formatDate(payment.status === 'success' ? payment.paidAt : payment.createdAt)}
                   </span>
                   {payment.status === 'pending' ? (
-                    <span className="text-accent text-xs font-semibold">Continue</span>
+                    <span className="text-accent text-xs font-semibold">
+                      {t('common.continue')}
+                    </span>
                   ) : null}
                 </span>
               </Link>
@@ -90,7 +97,7 @@ export function PaymentHistoryList({ subscription }: { subscription: Subscriptio
           )}
           {history.length > MAX_ROWS ? (
             <Button variant="ghost" size="sm" asChild>
-              <Link to="/billing">View all in Billing</Link>
+              <Link to="/billing">{t('subscription.viewAll')}</Link>
             </Button>
           ) : null}
         </div>

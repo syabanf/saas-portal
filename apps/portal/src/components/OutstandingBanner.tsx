@@ -1,4 +1,5 @@
-import { fmtDate, fmtIdr } from '@scp/fixtures'
+import { fmtIdr } from '@scp/fixtures'
+import { useFormat, useT } from '@scp/i18n'
 import { Banner, Button } from '@scp/ui'
 import { AlertTriangle, Building2 } from 'lucide-react'
 import { Link } from 'react-router'
@@ -9,6 +10,8 @@ import { useScoped } from '../state/app-state'
 
 /** Payment-required callout (blueprint §42) plus the organization-suspended case (§44). */
 export function OutstandingBanner() {
+  const t = useT()
+  const { formatDate } = useFormat()
   const { tenant, subscriptions, invoices, applicationsById } = useScoped()
   const { openSupport } = usePortalSheets()
   const { member } = useAuth()
@@ -19,16 +22,14 @@ export function OutstandingBanner() {
       <Banner
         tone="danger"
         icon={<Building2 />}
-        title="Organization suspended."
+        title={t('banner.organizationSuspended')}
         description={
-          isAdmin
-            ? 'Applications stay closed until the account is restored. Billing and support remain available.'
-            : 'Applications stay closed until your organization is restored. Contact your workspace admin for help.'
+          isAdmin ? t('banner.organizationSuspendedAdmin') : t('banner.organizationSuspendedMember')
         }
         action={
           isAdmin ? (
             <Button size="sm" variant="secondary" onClick={openSupport}>
-              Contact support
+              {t('common.contactSupport')}
             </Button>
           ) : (
             <AdminContact />
@@ -49,21 +50,30 @@ export function OutstandingBanner() {
   const invoice = invoices
     .filter((i) => i.subscriptionId === sub.id && (i.status === 'open' || i.status === 'overdue'))
     .sort((a, b) => b.issuedAt.localeCompare(a.issuedAt))[0]
-  const appName = applicationsById.get(sub.applicationId)?.name ?? 'the application'
-  const until = fmtDate(sub.gracePeriodEnd ?? sub.currentPeriodEnd)
+  const app = applicationsById.get(sub.applicationId)?.name ?? t('common.theApplication')
+  const until = formatDate(sub.gracePeriodEnd ?? sub.currentPeriodEnd)
   const blocked = sub.status === 'suspended' || sub.status === 'expired'
   const description = !isAdmin
-    ? `${appName} ${blocked ? 'is unavailable' : `remains available until ${until}`}. Your workspace admin can restore access.`
+    ? blocked
+      ? t('banner.memberBlocked', { app })
+      : t('banner.memberUntil', { app, until })
     : blocked
-      ? `${appName} is unavailable. ${invoice ? 'Pay the outstanding invoice to restore the subscription.' : 'Review the subscription to restore access.'}`
+      ? invoice
+        ? t('banner.adminBlockedPay', { app })
+        : t('banner.adminBlockedReview', { app })
       : invoice
-        ? `Access to ${appName} remains available until ${until} · Invoice ${invoice.number} · Outstanding ${fmtIdr(invoice.total, invoice.currency)}`
-        : `Access to ${appName} remains available until ${until}.`
+        ? t('banner.adminInvoice', {
+            app,
+            until,
+            number: invoice.number,
+            amount: fmtIdr(invoice.total, invoice.currency),
+          })
+        : t('banner.adminUntil', { app, until })
   return (
     <Banner
       tone="warning"
       icon={<AlertTriangle />}
-      title={blocked ? 'Application access paused' : 'Subscription needs attention'}
+      title={blocked ? t('banner.accessPaused') : t('banner.needsAttention')}
       description={description}
       action={
         isAdmin ? (
@@ -71,11 +81,11 @@ export function OutstandingBanner() {
             <Link
               to={invoice ? `/billing/${invoice.id}/pay` : `/subscription?app=${sub.applicationId}`}
             >
-              {invoice ? 'Pay invoice' : 'Review subscription'}
+              {invoice ? t('common.payInvoice') : t('common.reviewSubscription')}
             </Link>
           </Button>
         ) : (
-          <AdminContact application={appName} />
+          <AdminContact application={app} />
         )
       }
     />

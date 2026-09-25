@@ -1,25 +1,18 @@
-import { fmtDate, fmtDateTime, fmtIdr, receiptNumber } from '@scp/fixtures'
+import { fmtDate, fmtDateTime, fmtIdr, platformOf, receiptNumber } from '@scp/fixtures'
 import { BILLING_PERIOD_LABEL, PAYMENT_CHANNEL_BY_ID, PAYMENT_METHOD_LABEL } from '@scp/types'
-import { Button, Card, EmptyState, ReceiptDocument, type InvoiceParty } from '@scp/ui'
+import { Button, Card, EmptyState, ReceiptDocument } from '@scp/ui'
 import { ArrowLeft, FileText, Printer } from 'lucide-react'
 import { Link, useParams } from 'react-router'
 import { countryLabel } from '../../components/master/TenantDialog'
+import { issuerParty } from '../../lib/issuer'
 import { useScoped } from '../../state/app-state'
-
-const PAYEE: InvoiceParty = {
-  name: 'SaaS Gate Platform',
-  lines: [
-    'PT WIT Teknologi Indonesia',
-    'Jl. Contoh No. 1, Jakarta 12345',
-    'billing@saasgate.example',
-    'NPWP 00.000.000.0-000.000',
-  ],
-}
 
 /** Printable receipt for a settled payment, rendered without the admin shell. */
 export function ReceiptDocumentPage() {
   const { id: paymentId = '' } = useParams()
-  const { payments, invoicesById, subscriptionsById, applicationsById, tenantsById } = useScoped()
+  const { state, payments, invoicesById, subscriptionsById, applicationsById, tenantsById } =
+    useScoped()
+  const platform = platformOf(state)
   const payment = payments.find((p) => p.id === paymentId)
   const tenant = payment ? tenantsById.get(payment.tenantId) : undefined
 
@@ -85,7 +78,7 @@ export function ReceiptDocumentPage() {
         number={receiptNumber(payment)}
         paidAt={fmtDateTime(payment.paidAt)}
         total={money(payment.amount)}
-        payee={PAYEE}
+        payee={issuerParty(platform)}
         payer={{
           name: tenant?.name ?? payment.tenantId,
           lines: tenant ? [tenant.billingEmail, countryLabel(tenant.country)] : [],
@@ -112,7 +105,7 @@ export function ReceiptDocumentPage() {
         amounts={[
           { label: 'Amount paid', value: money(payment.amount) },
           { label: 'Xendit fee, deducted from settlement', value: money(payment.fee) },
-          { label: 'Settled to SaaS Gate', value: money(payment.amount - payment.fee) },
+          { label: `Settled to ${platform.brandName}`, value: money(payment.amount - payment.fee) },
         ]}
         paymentRows={[
           { label: 'Xendit id', value: payment.providerReference },
@@ -121,8 +114,8 @@ export function ReceiptDocumentPage() {
           { label: 'Channel', value: channel.label },
         ]}
         notes={[
-          'This receipt confirms a payment processed by Xendit on behalf of SaaS Gate Platform.',
-          'Questions about this payment: billing@saasgate.example.',
+          `This receipt confirms a payment processed by Xendit on behalf of ${platform.brandName}.`,
+          `Questions about this payment: ${platform.billingEmail}.`,
         ]}
       />
     </div>

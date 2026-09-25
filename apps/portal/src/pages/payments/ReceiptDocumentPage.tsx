@@ -1,49 +1,41 @@
-import {
-  fmtDate,
-  fmtDateTime,
-  fmtIdr,
-  invoiceSubtotal,
-  invoiceTax,
-  receiptNumber,
-} from '@scp/fixtures'
-import { BILLING_PERIOD_LABEL, PAYMENT_CHANNEL_BY_ID, PAYMENT_METHOD_LABEL } from '@scp/types'
-import { Button, Card, EmptyState, ReceiptDocument, type InvoiceParty } from '@scp/ui'
+import { fmtIdr, invoiceSubtotal, invoiceTax, platformOf, receiptNumber } from '@scp/fixtures'
+import { useFormat, useT } from '@scp/i18n'
+import { PAYMENT_CHANNEL_BY_ID } from '@scp/types'
+import { Button, Card, EmptyState, ReceiptDocument } from '@scp/ui'
 import { ArrowLeft, FileText, Printer } from 'lucide-react'
 import { Link, useParams } from 'react-router'
+import { useDocumentTitle } from '../../lib/document-title'
 import { useScoped } from '../../state/app-state'
-
-const PAYEE: InvoiceParty = {
-  name: 'SaaS Gate Platform',
-  lines: [
-    'PT WIT Teknologi Indonesia',
-    'Jl. Contoh No. 1, Jakarta 12345',
-    'billing@saasgate.example',
-    'NPWP 00.000.000.0-000.000',
-  ],
-}
+import { issuerParty } from '../billing/InvoiceDocumentPage'
 
 /** Printable receipt for a settled payment, rendered without the portal shell. */
 export function ReceiptDocumentPage() {
+  const t = useT()
+  const { formatDate, formatDateTime } = useFormat()
   const { paymentId = '' } = useParams()
-  const { payments, invoicesById, subscriptionsById, applicationsById, tenant } = useScoped()
+  const { state, payments, invoicesById, subscriptionsById, applicationsById, tenant } = useScoped()
   const payment = payments.find((p) => p.id === paymentId)
+  const settled = payment?.status === 'success'
+  useDocumentTitle(
+    payment && settled
+      ? t('document.receiptTitle', { number: receiptNumber(payment) })
+      : t('common.paymentNotFound'),
+  )
 
-  if (!payment || payment.status !== 'success') {
+  if (!payment || !settled) {
     return (
       <div className="bg-surface min-h-dvh p-4">
         <Card className="mx-auto max-w-[210mm]">
           <EmptyState
             icon={<FileText />}
-            title={payment ? 'No receipt yet' : 'Payment not found'}
+            title={payment ? t('document.noReceipt') : t('common.paymentNotFound')}
             description={
-              payment
-                ? 'A receipt is issued once the payment is settled.'
-                : 'It may belong to another organization or has been removed.'
+              payment ? t('document.noReceiptDescription') : t('common.notFoundDescription')
             }
             action={
               <Button variant="outline" asChild>
                 <Link to={payment ? `/payments/${payment.id}` : '/billing'}>
-                  {payment ? 'Back to payment' : 'Back to billing'}
+                  {payment ? t('common.backToPayment') : t('common.backToBilling')}
                 </Link>
               </Button>
             }
@@ -53,6 +45,7 @@ export function ReceiptDocumentPage() {
     )
   }
 
+  const platform = platformOf(state)
   const invoice = payment.invoiceId ? invoicesById.get(payment.invoiceId) : undefined
   const sub = subscriptionsById.get(payment.subscriptionId)
   const app = sub ? applicationsById.get(sub.applicationId) : undefined
@@ -66,7 +59,7 @@ export function ReceiptDocumentPage() {
           variant="ghost"
           size="icon"
           className="bg-card shadow-card rounded-full"
-          aria-label="Back to payment"
+          aria-label={t('common.backToPayment')}
           asChild
         >
           <Link to={`/payments/${payment.id}`}>
@@ -74,15 +67,15 @@ export function ReceiptDocumentPage() {
           </Link>
         </Button>
         <h1 className="min-w-[10rem] flex-1 truncate text-lg font-bold tracking-tight">
-          Receipt {receiptNumber(payment)}
+          {t('document.receiptTitle', { number: receiptNumber(payment) })}
         </h1>
         <div className="flex flex-wrap gap-2">
           <Button variant="outline" onClick={() => window.print()}>
-            <Printer /> Download PDF
+            <Printer /> {t('document.downloadPdf')}
           </Button>
           {invoice ? (
             <Button variant="outline" asChild>
-              <Link to={`/billing/${invoice.id}/document`}>View invoice</Link>
+              <Link to={`/billing/${invoice.id}/document`}>{t('common.viewInvoice')}</Link>
             </Button>
           ) : null}
         </div>
@@ -90,28 +83,31 @@ export function ReceiptDocumentPage() {
 
       <ReceiptDocument
         number={receiptNumber(payment)}
-        paidAt={fmtDateTime(payment.paidAt)}
+        paidAt={formatDateTime(payment.paidAt)}
         total={money(payment.amount)}
-        payee={PAYEE}
+        payee={issuerParty(platform)}
         payer={{
-          name: tenant?.name ?? 'Your organization',
+          name: tenant?.name ?? t('common.yourOrganization'),
           lines: tenant ? [tenant.billingEmail, tenant.country] : [],
         }}
         items={[
-          { label: 'Invoice', value: invoice?.number ?? payment.externalId },
+          { label: t('common.invoice'), value: invoice?.number ?? payment.externalId },
           ...(app && sub
             ? [
                 {
-                  label: 'Subscription',
-                  value: `${app.name} · ${BILLING_PERIOD_LABEL[sub.billingPeriod]}`,
+                  label: t('common.subscription'),
+                  value: `${app.name} · ${t(`period.${sub.billingPeriod}`)}`,
                 },
               ]
             : []),
           ...(invoice
             ? [
                 {
-                  label: 'Period',
-                  value: `${fmtDate(invoice.periodStart)} to ${fmtDate(invoice.periodEnd)}`,
+                  label: t('common.period'),
+                  value: t('common.dateRange', {
+                    from: formatDate(invoice.periodStart),
+                    to: formatDate(invoice.periodEnd),
+                  }),
                 },
               ]
             : []),
@@ -119,24 +115,24 @@ export function ReceiptDocumentPage() {
         amounts={
           invoice
             ? [
-                { label: 'Subtotal', value: money(invoiceSubtotal(invoice)) },
+                { label: t('common.subtotal'), value: money(invoiceSubtotal(invoice)) },
                 {
-                  label: `PPN ${Math.round(invoice.taxRate * 100)}%`,
+                  label: t('common.ppn', { rate: Math.round(invoice.taxRate * 100) }),
                   value: money(invoiceTax(invoice)),
                 },
-                { label: 'Amount paid', value: money(payment.amount) },
+                { label: t('document.amountPaid'), value: money(payment.amount) },
               ]
-            : [{ label: 'Amount paid', value: money(payment.amount) }]
+            : [{ label: t('document.amountPaid'), value: money(payment.amount) }]
         }
         paymentRows={[
-          { label: 'Xendit id', value: payment.providerReference },
-          { label: 'External id', value: payment.externalId },
-          { label: 'Method', value: PAYMENT_METHOD_LABEL[payment.method] },
-          { label: 'Channel', value: channel.label },
+          { label: t('common.xenditId'), value: payment.providerReference },
+          { label: t('common.externalId'), value: payment.externalId },
+          { label: t('common.method'), value: t(`method.${payment.method}`) },
+          { label: t('common.channel'), value: channel.label },
         ]}
         notes={[
-          'This receipt confirms a payment processed by Xendit on behalf of SaaS Gate Platform.',
-          'Questions about this payment: billing@saasgate.example.',
+          t('document.receiptNote', { brand: platform.brandName }),
+          t('document.paymentQuestions', { email: platform.billingEmail }),
         ]}
       />
     </div>

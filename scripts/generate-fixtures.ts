@@ -524,6 +524,7 @@ const memberSeeds: [string, string, TenantMember['workspaceRole'], string[]][] =
   ['ten-kappa', 'usr-kappa-admin', 'workspace_admin', ['app-erp', 'app-iot']],
   ['ten-lambda', 'usr-lambda-admin', 'workspace_admin', ['app-iot', 'app-erp', 'app-crm']],
   ['ten-lambda', 'usr-lambda-operator', 'member', ['app-iot', 'app-crm']],
+  ['ten-alpha', 'usr-lambda-operator', 'member', ['app-helpdesk']],
   ['ten-mu', 'usr-mu-admin', 'workspace_admin', ['app-crm']],
 ]
 const members: TenantMember[] = memberSeeds.map(
@@ -813,6 +814,30 @@ for (const s of subscriptions) {
       ),
     )
   }
+}
+const busy = subscriptions.find((x) => x.id === 'sub-lambda-crm')!
+for (let i = 1; i <= 12; i += 1) {
+  const at = daysAgo(30 * i + 5)
+  const app = appById.get(busy.applicationId)!
+  invoices.push(
+    buildInvoice(busy, app, {
+      id: `inv-lambda-crm-${i}`,
+      number: nextInvoiceNo(at),
+      periodStart: at,
+      issuedAt: at,
+      status: 'paid',
+      paidAt: iso(new Date(at).getTime() + 2 * DAY),
+    }),
+  )
+  payments.push(
+    makePayment(
+      invoices[invoices.length - 1]!,
+      `pay-lambda-crm-${i}`,
+      i === 7 ? 'refunded' : 'success',
+      iso(new Date(at).getTime() + DAY),
+      iso(new Date(at).getTime() + 2 * DAY),
+    ),
+  )
 }
 for (let i = 0; i < 6; i += 1) {
   const s = pick(subscriptions.filter((x) => x.status === 'active'))

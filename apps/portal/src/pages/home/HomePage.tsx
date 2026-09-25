@@ -1,5 +1,4 @@
-import { fmtAgo } from '@scp/fixtures'
-import { ACCESS_REASON_LABEL } from '@scp/types'
+import { useFormat, useT } from '@scp/i18n'
 import { Card, CardContent, CardHeader, CardTitle, EmptyState } from '@scp/ui'
 import { Activity } from 'lucide-react'
 import { useAuth, useCurrentUser } from '../../auth/auth'
@@ -9,14 +8,16 @@ import { OutstandingBanner } from '../../components/OutstandingBanner'
 import { OnboardingChecklist } from '../../components/OnboardingChecklist'
 import { useScoped } from '../../state/app-state'
 
-function greeting(hour: number): string {
-  if (hour < 11) return 'Good morning'
-  if (hour < 16) return 'Good afternoon'
-  return 'Good evening'
+function greetingKey(hour: number) {
+  if (hour < 11) return 'home.goodMorning' as const
+  if (hour < 16) return 'home.goodAfternoon' as const
+  return 'home.goodEvening' as const
 }
 
 /** Application launcher (blueprint §32, §43, §44). */
 export function HomePage() {
+  const t = useT()
+  const { formatAgo } = useFormat()
   const user = useCurrentUser()
   const { state, tenant, tenantId, applications, usersById, applicationsById } = useScoped()
   const { member } = useAuth()
@@ -31,10 +32,11 @@ export function HomePage() {
     <div className="space-y-4">
       <div>
         <p className="text-muted text-sm">
-          {greeting(new Date(now).getHours())} · {tenant?.name ?? 'your organization'}
+          {t(greetingKey(new Date(now).getHours()))} ·{' '}
+          {tenant?.name ?? t('common.yourOrganization')}
         </p>
         <h1 className="text-2xl font-bold tracking-tight">
-          Welcome, {firstName}
+          {t('home.welcome', { name: firstName })}
           <span className="text-accent">.</span>
         </h1>
       </div>
@@ -43,13 +45,13 @@ export function HomePage() {
       <OnboardingChecklist />
 
       <section className="space-y-3">
-        <h2 className="text-base font-semibold">Your applications</h2>
+        <h2 className="text-base font-semibold">{t('home.yourApplications')}</h2>
         {applications.length === 0 ? (
           <Card>
             <EmptyState
               icon={<Activity />}
-              title="No applications yet"
-              description="Applications appear here as soon as the platform publishes them."
+              title={t('home.noApplications')}
+              description={t('home.noApplicationsDescription')}
             />
           </Card>
         ) : (
@@ -63,18 +65,14 @@ export function HomePage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>{isAdmin ? 'Organization activity' : 'Your recent activity'}</CardTitle>
+          <CardTitle>{isAdmin ? t('home.organizationActivity') : t('home.yourActivity')}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
           {recent.length === 0 ? (
             <EmptyState
               icon={<Activity />}
-              title="No activity yet"
-              description={
-                isAdmin
-                  ? 'Application access activity across your organization appears here.'
-                  : 'Your application access activity appears here.'
-              }
+              title={t('home.noActivity')}
+              description={isAdmin ? t('home.noActivityOrganization') : t('home.noActivityYou')}
             />
           ) : (
             recent.map((l) => (
@@ -90,8 +88,8 @@ export function HomePage() {
                   </span>
                 </span>
                 <DecisionBadge decision={l.decision} />
-                <span className="text-muted text-xs">{ACCESS_REASON_LABEL[l.reason]}</span>
-                <span className="text-muted text-xs">{fmtAgo(l.at, now)}</span>
+                <span className="text-muted text-xs">{t(`reason.${l.reason}`)}</span>
+                <span className="text-muted text-xs">{formatAgo(l.at, now)}</span>
               </div>
             ))
           )}

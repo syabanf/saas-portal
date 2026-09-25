@@ -1,5 +1,5 @@
 {
   "extends": "@scp/tsconfig/vite-react.json",
-  "compilerOptions": { "types": ["vite/client"] },
+  "compilerOptions": { "types": ["vite/client", "vite-plugin-pwa/client"] },
   "include": ["src", "vite.config.ts"]
 }

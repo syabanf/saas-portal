@@ -1,11 +1,14 @@
-import { fmtDate } from '@scp/fixtures'
+import { useFormat, useT } from '@scp/i18n'
 import { Button, Card, CardContent } from '@scp/ui'
 import * as React from 'react'
 import { Link, useParams } from 'react-router'
+import { useDocumentTitle } from '../../lib/document-title'
 import { useAppState } from '../../state/app-state'
 import { useAuth } from '../../auth/auth'
 
 export function InvitationPage() {
+  const t = useT()
+  const { formatDate } = useFormat()
   const { token = '' } = useParams()
   const { state, dispatch } = useAppState()
   const { user: signedInUser, logout } = useAuth()
@@ -17,79 +20,73 @@ export function InvitationPage() {
   }, [])
   const member = state.members.find((m) => m.invitationToken === token)
   const user = state.users.find((u) => u.id === member?.userId)
-  const tenant = state.tenants.find((t) => t.id === member?.tenantId)
+  const tenant = state.tenants.find((item) => item.id === member?.tenantId)
   const accepted = Boolean(member?.invitationAcceptedAt)
   const disabled = member?.status === 'disabled' || user?.status === 'disabled'
   const expired = Boolean(
     member && (!member.invitationExpiresAt || Date.parse(member.invitationExpiresAt) <= now),
   )
   const valid = member && user && tenant && !disabled
+  const title = !valid
+    ? t('invite.unavailable')
+    : accepted
+      ? t('invite.accepted')
+      : expired
+        ? t('invite.expired')
+        : t('invite.join', { organization: tenant.name })
+  useDocumentTitle(title)
   return (
     <main className="bg-surface flex min-h-dvh items-center justify-center p-6">
       <Card className="w-full max-w-lg">
         <CardContent className="space-y-4 p-8">
-          <h1 className="text-2xl font-bold">
-            {!valid
-              ? 'Invitation unavailable'
-              : accepted
-                ? 'Invitation accepted'
-                : expired
-                  ? 'Invitation expired'
-                  : `Join ${tenant.name}`}
-          </h1>
+          <h1 className="text-2xl font-bold">{title}</h1>
           {!valid ? (
-            <p>
-              This invitation was removed or replaced, or the account is disabled. Ask your
-              workspace admin for a new link.
-            </p>
+            <p>{t('invite.unavailableBody')}</p>
           ) : accepted ? (
             <>
-              <p>
-                {user.email} is a member of {tenant.name}. Sign in with that email to open your
-                assigned applications.
-              </p>
+              <p>{t('invite.acceptedBody', { email: user.email, organization: tenant.name })}</p>
               <Button asChild>
                 <Link
                   to={`/login?email=${encodeURIComponent(user.email)}&tenant=${member.tenantId}`}
                 >
-                  Continue to sign in
+                  {t('invite.continueToSignIn')}
                 </Link>
               </Button>
             </>
           ) : expired ? (
             <>
-              <p>
-                This link expired on {fmtDate(member.invitationExpiresAt)}. Ask your workspace admin
-                to renew the invitation and share the new link.
-              </p>
+              <p>{t('invite.expiredBody', { date: formatDate(member.invitationExpiresAt) })}</p>
               <a
                 className="underline"
-                href={`mailto:${tenant.billingEmail}?subject=${encodeURIComponent(`New invitation for ${user.email}`)}`}
+                href={`mailto:${tenant.billingEmail}?subject=${encodeURIComponent(t('invite.mailSubject', { email: user.email }))}`}
               >
-                Contact {tenant.billingEmail}
+                {t('invite.contact', { email: tenant.billingEmail })}
               </a>
             </>
           ) : (
             <>
               <p>
-                You’re invited as{' '}
-                {member.workspaceRole === 'workspace_admin' ? 'a workspace admin' : 'a member'}{' '}
-                using {user.email}.
+                {t('invite.invitedAs', {
+                  role:
+                    member.workspaceRole === 'workspace_admin'
+                      ? t('invite.asAdmin')
+                      : t('invite.asMember'),
+                  email: user.email,
+                })}
               </p>
               <p>
-                Applications:{' '}
-                {member.applicationIds
-                  .map((id) => state.applications.find((a) => a.id === id)?.name)
-                  .filter(Boolean)
-                  .join(', ') || 'None assigned yet. Your admin can assign access after you join.'}
+                {t('invite.applications', {
+                  list:
+                    member.applicationIds
+                      .map((id) => state.applications.find((a) => a.id === id)?.name)
+                      .filter(Boolean)
+                      .join(', ') || t('invite.noneAssigned'),
+                })}
               </p>
               {signedInUser && signedInUser.id !== user.id ? (
                 <>
-                  <p>
-                    You’re signed in as {signedInUser.email}. Sign out before accepting this
-                    invitation.
-                  </p>
-                  <Button onClick={() => void logout()}>Sign out</Button>
+                  <p>{t('invite.signedInAsOther', { email: signedInUser.email })}</p>
+                  <Button onClick={() => void logout()}>{t('common.signOut')}</Button>
                 </>
               ) : (
                 <Button
@@ -99,17 +96,16 @@ export function InvitationPage() {
                     dispatch({ type: 'invitations/accept', token })
                   }}
                 >
-                  {accepting ? 'Accepting…' : 'Accept invitation'}
+                  {accepting ? t('invite.accepting') : t('invite.accept')}
                 </Button>
               )}
               <p className="text-muted text-sm">
-                Expires {fmtDate(member.invitationExpiresAt)}. This demo link activates the
-                membership; no password is created.
+                {t('invite.expiresNote', { date: formatDate(member.invitationExpiresAt) })}
               </p>
             </>
           )}
           <Link className="block text-sm underline" to="/login">
-            Back to sign in
+            {t('invite.backToSignIn')}
           </Link>
         </CardContent>
       </Card>

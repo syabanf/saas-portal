@@ -36,6 +36,7 @@ import { Link, useNavigate } from 'react-router'
 import { InvoiceBadge, Mono } from '../../components/badges'
 import { InvoiceDialog } from '../../components/master/InvoiceDialog'
 import { useScoped } from '../../state/app-state'
+import { useAdminPrefs } from '../../state/prefs'
 import { isThisMonth } from './dates'
 import {
   PILL_COMBOBOX,
@@ -78,6 +79,7 @@ export function BillingPage() {
     applicationsById,
     dispatch,
   } = useScoped()
+  const [prefs] = useAdminPrefs()
   const filters = useUrlFilters(FILTER_KEYS)
   const tenantId = filters.get('tenant')
   const tenant = tenantsById.get(tenantId)
@@ -242,11 +244,13 @@ export function BillingPage() {
             onDismiss={() => setGenerated(0)}
           />
         ) : null}
-        <Banner
-          icon={<Workflow />}
-          title="Payment is event-driven."
-          description="Provider → webhook → billing → subscription → applications. Simulating a payment runs that whole chain."
-        />
+        {prefs.demoHints ? (
+          <Banner
+            icon={<Workflow />}
+            title="Payment is event-driven."
+            description="Provider → webhook → billing → subscription → applications. Simulating a payment runs that whole chain."
+          />
+        ) : null}
 
         <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
           <StatCard

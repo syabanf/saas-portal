@@ -11,13 +11,15 @@
   },
   "dependencies": {
     "@scp/fixtures": "workspace:*",
+    "@scp/i18n": "workspace:*",
     "@scp/integration": "workspace:*",
     "@scp/types": "workspace:*",
     "@scp/ui": "workspace:*",
     "lucide-react": "^1.46.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
-    "react-router": "^7.18.3"
+    "react-router": "^7.18.3",
+    "workbox-window": "^7"
   },
   "devDependencies": {
     "@scp/tailwind-config": "workspace:*",
@@ -29,6 +31,7 @@
     "tailwindcss": "^4.3.3",
     "tw-animate-css": "^1.4.0",
     "typescript": "^5.9.3",
-    "vite": "^7.3.6"
+    "vite": "^7.3.6",
+    "vite-plugin-pwa": "^1.3.0"
   }
 }

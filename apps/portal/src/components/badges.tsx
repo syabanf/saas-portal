@@ -1,3 +1,4 @@
+import { useT } from '@scp/i18n'
 import type {
   AccessDecision,
   ApplicationType,
@@ -7,14 +8,7 @@ import type {
   SubscriptionStatus,
   UserStatus,
 } from '@scp/types'
-import {
-  INVOICE_STATUS_LABEL,
-  PAYMENT_CHANNEL_BY_ID,
-  PAYMENT_METHOD_LABEL,
-  PAYMENT_STATUS_LABEL,
-  SUBSCRIPTION_STATUS_LABEL,
-  USER_STATUS_LABEL,
-} from '@scp/types'
+import { PAYMENT_CHANNEL_BY_ID } from '@scp/types'
 import { Badge, cn, type BadgeTone } from '@scp/ui'
 import { Cable, Globe, Server, Smartphone } from 'lucide-react'
 import type * as React from 'react'
@@ -37,9 +31,10 @@ export function SubscriptionBadge({
   status: SubscriptionStatus
   dot?: boolean
 }) {
+  const t = useT()
   return (
     <Badge variant={SUBSCRIPTION_TONE[status]} dot={dot}>
-      {SUBSCRIPTION_STATUS_LABEL[status]}
+      {t(`status.subscription.${status}`)}
     </Badge>
   )
 }
@@ -50,7 +45,8 @@ const USER_TONE: Record<UserStatus, BadgeTone> = {
   disabled: 'muted',
 }
 export function UserBadge({ status }: { status: UserStatus }) {
-  return <Badge variant={USER_TONE[status]}>{USER_STATUS_LABEL[status]}</Badge>
+  const t = useT()
+  return <Badge variant={USER_TONE[status]}>{t(`status.user.${status}`)}</Badge>
 }
 
 const INVOICE_TONE: Record<InvoiceStatus, BadgeTone> = {
@@ -61,7 +57,8 @@ const INVOICE_TONE: Record<InvoiceStatus, BadgeTone> = {
   void: 'default',
 }
 export function InvoiceBadge({ status }: { status: InvoiceStatus }) {
-  return <Badge variant={INVOICE_TONE[status]}>{INVOICE_STATUS_LABEL[status]}</Badge>
+  const t = useT()
+  return <Badge variant={INVOICE_TONE[status]}>{t(`status.invoice.${status}`)}</Badge>
 }
 
 const PAYMENT_TONE: Record<PaymentStatus, BadgeTone> = {
@@ -72,7 +69,8 @@ const PAYMENT_TONE: Record<PaymentStatus, BadgeTone> = {
   refunded: 'default',
 }
 export function PaymentBadge({ status }: { status: PaymentStatus }) {
-  return <Badge variant={PAYMENT_TONE[status]}>{PAYMENT_STATUS_LABEL[status]}</Badge>
+  const t = useT()
+  return <Badge variant={PAYMENT_TONE[status]}>{t(`status.payment.${status}`)}</Badge>
 }
 
 /** Channel name over its muted method, the way the billing table and payment lists show a payment. */
@@ -83,18 +81,20 @@ export function PaymentChannelLabel({
   payment: Pick<Payment, 'channel' | 'method'>
   className?: string
 }) {
+  const t = useT()
   return (
     <span className={cn('flex flex-col', className)}>
       <span className="font-semibold">{PAYMENT_CHANNEL_BY_ID[payment.channel].label}</span>
-      <span className="text-muted text-xs">{PAYMENT_METHOD_LABEL[payment.method]}</span>
+      <span className="text-muted text-xs">{t(`method.${payment.method}`)}</span>
     </span>
   )
 }
 
 export function DecisionBadge({ decision }: { decision: AccessDecision }) {
+  const t = useT()
   return (
     <Badge variant={decision === 'allow' ? 'success' : 'danger'} dot>
-      {decision === 'allow' ? 'Allow' : 'Deny'}
+      {t(`decision.${decision}`)}
     </Badge>
   )
 }

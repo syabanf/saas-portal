@@ -1,46 +1,72 @@
+import { LOCALES, useLocale, useT, type DictKey } from '@scp/i18n'
 import { Button, Chip, Input, Label } from '@scp/ui'
-import { ShieldCheck } from 'lucide-react'
+import { Languages, ShieldCheck } from 'lucide-react'
 import * as React from 'react'
 import { Navigate, useLocation, useNavigate, useSearchParams } from 'react-router'
 import { useAuth } from '../../auth/auth'
+import { useDocumentTitle } from '../../lib/document-title'
 
-const DEMO_USERS = [
+const DEMO_USERS: { email: string; name: string; org: string; hint: DictKey }[] = [
   {
     email: 'alpha.admin@example.com',
     name: 'Fahmi Syaban',
     org: 'PT Alpha',
-    hint: 'workspace admin',
+    hint: 'login.hint.workspaceAdmin',
   },
-  { email: 'alpha.operator@example.com', name: 'Reyza Pratama', org: 'PT Alpha', hint: 'member' },
+  {
+    email: 'alpha.operator@example.com',
+    name: 'Reyza Pratama',
+    org: 'PT Alpha',
+    hint: 'login.hint.member',
+  },
   {
     email: 'beta.admin@example.com',
     name: 'Aditiya Nugraha',
     org: 'PT Beta',
-    hint: 'grace period demo',
+    hint: 'login.hint.grace',
   },
   {
     email: 'gamma.admin@example.com',
     name: 'Bima Santoso',
     org: 'PT Gamma',
-    hint: 'suspended demo',
+    hint: 'login.hint.suspended',
   },
   {
     email: 'lambda.admin@example.com',
     name: 'Agus Setiawan',
     org: 'PT Lambda',
-    hint: 'everything active',
+    hint: 'login.hint.allActive',
+  },
+  {
+    email: 'lambda.operator@example.com',
+    name: 'Mega Sari',
+    org: 'PT Lambda',
+    hint: 'login.hint.twoOrganizations',
   },
 ]
 
+/** Ghost pill that flips to the other language; the label names the language you would switch to. */
+function LanguageToggle() {
+  const { locale, setLocale } = useLocale()
+  const other = LOCALES.find((item) => item.value !== locale) ?? LOCALES[0]!
+  return (
+    <Button variant="ghost" size="sm" onClick={() => setLocale(other.value)} lang={other.value}>
+      <Languages /> {other.label}
+    </Button>
+  )
+}
+
 export function LoginPage() {
+  const t = useT()
   const { session, user, login } = useAuth()
   const [params] = useSearchParams()
   const navigate = useNavigate()
   const location = useLocation()
   const [email, setEmail] = React.useState(params.get('email') ?? DEMO_USERS[0]!.email)
   const [password, setPassword] = React.useState('demo')
-  const [error, setError] = React.useState<string | null>(null)
+  const [error, setError] = React.useState<DictKey | null>(null)
   const [busy, setBusy] = React.useState(false)
+  useDocumentTitle(t('login.signIn'))
 
   if (session && user) return <Navigate to="/" replace />
 
@@ -66,16 +92,18 @@ export function LoginPage() {
             <ShieldCheck className="size-5" />
           </span>
           <span className="text-sm font-bold">SaaS Gate</span>
+          <span className="ml-auto">
+            <LanguageToggle />
+          </span>
         </div>
         <h1 className="text-3xl font-bold tracking-tight">
-          SaaS Portal<span className="text-accent">.</span>
+          {t('common.saasPortal')}
+          <span className="text-accent">.</span>
         </h1>
-        <p className="text-muted mt-1 text-sm">
-          One login for every application your organization uses.
-        </p>
+        <p className="text-muted mt-1 text-sm">{t('login.tagline')}</p>
         <form onSubmit={submit} className="rounded-card bg-card shadow-card mt-8 space-y-4 p-6">
           <div>
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">{t('common.email')}</Label>
             <Input
               id="email"
               type="email"
@@ -87,7 +115,7 @@ export function LoginPage() {
             />
           </div>
           <div>
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">{t('login.password')}</Label>
             <Input
               id="password"
               type="password"
@@ -97,11 +125,11 @@ export function LoginPage() {
               autoComplete="current-password"
             />
           </div>
-          {error ? <p className="text-danger text-xs">{error}</p> : null}
+          {error ? <p className="text-danger text-xs">{t(error)}</p> : null}
           <Button type="submit" size="lg" className="w-full" loading={busy}>
-            Sign in
+            {t('login.signIn')}
           </Button>
-          <p className="text-muted text-center text-xs">Demo accounts · any password</p>
+          <p className="text-muted text-center text-xs">{t('login.demoAccounts')}</p>
         </form>
         <div className="mt-4 flex flex-wrap gap-2">
           {DEMO_USERS.map((u) => (
@@ -109,7 +137,7 @@ export function LoginPage() {
               key={u.email}
               active={email === u.email}
               activeTone="ink"
-              title={`${u.org} · ${u.hint}`}
+              title={`${u.org} · ${t(u.hint)}`}
               onClick={() => setEmail(u.email)}
             >
               {u.name}

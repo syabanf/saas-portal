@@ -242,24 +242,46 @@
     ]
   },
   {
-    "id": "inv-hist-1",
-    "billingPeriod": "monthly",
-    "tenantId": "ten-eta",
-    "subscriptionId": "sub-eta-iot",
-    "number": "INV-2026-1101",
+    "id": "inv-lambda-crm-1",
+    "billingPeriod": "annual",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-crm",
+    "number": "INV-2026-1100",
     "status": "paid",
-    "issuedAt": "2026-08-01T02:00:00.000Z",
-    "dueDate": "2026-08-15T02:00:00.000Z",
-    "paidAt": "2026-08-04T02:00:00.000Z",
-    "periodStart": "2026-08-01T02:00:00.000Z",
-    "periodEnd": "2026-08-31T02:00:00.000Z",
+    "issuedAt": "2026-08-10T02:00:00.000Z",
+    "dueDate": "2026-08-24T02:00:00.000Z",
+    "paidAt": "2026-08-12T02:00:00.000Z",
+    "periodStart": "2026-08-10T02:00:00.000Z",
+    "periodEnd": "2027-08-10T02:00:00.000Z",
     "taxRate": 0.11,
-    "total": 1665000,
+    "total": 9990000,
     "currency": "IDR",
     "lines": [
       {
-        "description": "WIT IoT Platform · Monthly subscription",
-        "amount": 1500000
+        "description": "CRM Platform · Annual subscription",
+        "amount": 9000000
+      }
+    ]
+  },
+  {
+    "id": "inv-hist-4",
+    "billingPeriod": "annual",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-erp",
+    "number": "INV-2026-1116",
+    "status": "paid",
+    "issuedAt": "2026-08-06T02:00:00.000Z",
+    "dueDate": "2026-08-20T02:00:00.000Z",
+    "paidAt": "2026-08-09T02:00:00.000Z",
+    "periodStart": "2026-08-06T02:00:00.000Z",
+    "periodEnd": "2027-08-06T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 22200000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "ERP System · Annual subscription",
+        "amount": 20000000
       }
     ]
   },
@@ -286,6 +308,72 @@
     ]
   },
   {
+    "id": "inv-lambda-crm-2",
+    "billingPeriod": "annual",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-crm",
+    "number": "INV-2026-1101",
+    "status": "paid",
+    "issuedAt": "2026-07-11T02:00:00.000Z",
+    "dueDate": "2026-07-25T02:00:00.000Z",
+    "paidAt": "2026-07-13T02:00:00.000Z",
+    "periodStart": "2026-07-11T02:00:00.000Z",
+    "periodEnd": "2027-07-11T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 9990000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "CRM Platform · Annual subscription",
+        "amount": 9000000
+      }
+    ]
+  },
+  {
+    "id": "inv-hist-5",
+    "billingPeriod": "annual",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-iot",
+    "number": "INV-2026-1117",
+    "status": "paid",
+    "issuedAt": "2026-06-23T02:00:00.000Z",
+    "dueDate": "2026-07-07T02:00:00.000Z",
+    "paidAt": "2026-06-26T02:00:00.000Z",
+    "periodStart": "2026-06-23T02:00:00.000Z",
+    "periodEnd": "2027-06-23T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 16650000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "WIT IoT Platform · Annual subscription",
+        "amount": 15000000
+      }
+    ]
+  },
+  {
+    "id": "inv-lambda-crm-3",
+    "billingPeriod": "annual",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-crm",
+    "number": "INV-2026-1102",
+    "status": "paid",
+    "issuedAt": "2026-06-11T02:00:00.000Z",
+    "dueDate": "2026-06-25T02:00:00.000Z",
+    "paidAt": "2026-06-13T02:00:00.000Z",
+    "periodStart": "2026-06-11T02:00:00.000Z",
+    "periodEnd": "2027-06-11T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 9990000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "CRM Platform · Annual subscription",
+        "amount": 9000000
+      }
+    ]
+  },
+  {
     "id": "inv-delta-iot",
     "billingPeriod": "annual",
     "tenantId": "ten-delta",
@@ -304,6 +392,28 @@
       {
         "description": "WIT IoT Platform · Annual subscription",
         "amount": 15000000
+      }
+    ]
+  },
+  {
+    "id": "inv-hist-3",
+    "billingPeriod": "monthly",
+    "tenantId": "ten-beta",
+    "subscriptionId": "sub-beta-crm",
+    "number": "INV-2026-1115",
+    "status": "paid",
+    "issuedAt": "2026-06-05T02:00:00.000Z",
+    "dueDate": "2026-06-19T02:00:00.000Z",
+    "paidAt": "2026-06-08T02:00:00.000Z",
+    "periodStart": "2026-06-05T02:00:00.000Z",
+    "periodEnd": "2026-07-05T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 999000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "CRM Platform · Monthly subscription",
+        "amount": 900000
       }
     ]
   },
@@ -330,11 +440,11 @@
     ]
   },
   {
-    "id": "inv-hist-5",
+    "id": "inv-hist-1",
     "billingPeriod": "annual",
     "tenantId": "ten-alpha",
     "subscriptionId": "sub-alpha-iot",
-    "number": "INV-2026-1105",
+    "number": "INV-2026-1113",
     "status": "paid",
     "issuedAt": "2026-05-30T02:00:00.000Z",
     "dueDate": "2026-06-13T02:00:00.000Z",
@@ -374,24 +484,46 @@
     ]
   },
   {
-    "id": "inv-hist-2",
+    "id": "inv-lambda-crm-4",
     "billingPeriod": "annual",
-    "tenantId": "ten-alpha",
-    "subscriptionId": "sub-alpha-iot",
-    "number": "INV-2026-1102",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-crm",
+    "number": "INV-2026-1103",
     "status": "paid",
-    "issuedAt": "2026-04-04T02:00:00.000Z",
-    "dueDate": "2026-04-18T02:00:00.000Z",
-    "paidAt": "2026-04-07T02:00:00.000Z",
-    "periodStart": "2026-04-04T02:00:00.000Z",
-    "periodEnd": "2027-04-04T02:00:00.000Z",
+    "issuedAt": "2026-05-12T02:00:00.000Z",
+    "dueDate": "2026-05-26T02:00:00.000Z",
+    "paidAt": "2026-05-14T02:00:00.000Z",
+    "periodStart": "2026-05-12T02:00:00.000Z",
+    "periodEnd": "2027-05-12T02:00:00.000Z",
     "taxRate": 0.11,
-    "total": 16650000,
+    "total": 9990000,
     "currency": "IDR",
     "lines": [
       {
-        "description": "WIT IoT Platform · Annual subscription",
-        "amount": 15000000
+        "description": "CRM Platform · Annual subscription",
+        "amount": 9000000
+      }
+    ]
+  },
+  {
+    "id": "inv-lambda-crm-5",
+    "billingPeriod": "annual",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-crm",
+    "number": "INV-2026-1104",
+    "status": "paid",
+    "issuedAt": "2026-04-12T02:00:00.000Z",
+    "dueDate": "2026-04-26T02:00:00.000Z",
+    "paidAt": "2026-04-14T02:00:00.000Z",
+    "periodStart": "2026-04-12T02:00:00.000Z",
+    "periodEnd": "2027-04-12T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 9990000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "CRM Platform · Annual subscription",
+        "amount": 9000000
       }
     ]
   },
@@ -414,6 +546,28 @@
       {
         "description": "ERP System · Annual subscription",
         "amount": 20000000
+      }
+    ]
+  },
+  {
+    "id": "inv-lambda-crm-6",
+    "billingPeriod": "annual",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-crm",
+    "number": "INV-2026-1105",
+    "status": "paid",
+    "issuedAt": "2026-03-13T02:00:00.000Z",
+    "dueDate": "2026-03-27T02:00:00.000Z",
+    "paidAt": "2026-03-15T02:00:00.000Z",
+    "periodStart": "2026-03-13T02:00:00.000Z",
+    "periodEnd": "2027-03-13T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 9990000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "CRM Platform · Annual subscription",
+        "amount": 9000000
       }
     ]
   },
@@ -462,11 +616,33 @@
     ]
   },
   {
-    "id": "inv-hist-4",
+    "id": "inv-lambda-crm-7",
+    "billingPeriod": "annual",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-crm",
+    "number": "INV-2026-1106",
+    "status": "paid",
+    "issuedAt": "2026-02-11T02:00:00.000Z",
+    "dueDate": "2026-02-25T02:00:00.000Z",
+    "paidAt": "2026-02-13T02:00:00.000Z",
+    "periodStart": "2026-02-11T02:00:00.000Z",
+    "periodEnd": "2027-02-11T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 9990000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "CRM Platform · Annual subscription",
+        "amount": 9000000
+      }
+    ]
+  },
+  {
+    "id": "inv-hist-0",
     "billingPeriod": "annual",
     "tenantId": "ten-lambda",
     "subscriptionId": "sub-lambda-erp",
-    "number": "INV-2026-1104",
+    "number": "INV-2026-1112",
     "status": "paid",
     "issuedAt": "2026-01-14T02:00:00.000Z",
     "dueDate": "2026-01-28T02:00:00.000Z",
@@ -484,24 +660,46 @@
     ]
   },
   {
-    "id": "inv-hist-3",
+    "id": "inv-lambda-crm-8",
     "billingPeriod": "annual",
-    "tenantId": "ten-delta",
-    "subscriptionId": "sub-delta-iot",
-    "number": "INV-2026-1103",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-crm",
+    "number": "INV-2026-1107",
     "status": "paid",
-    "issuedAt": "2026-01-03T02:00:00.000Z",
-    "dueDate": "2026-01-17T02:00:00.000Z",
-    "paidAt": "2026-01-06T02:00:00.000Z",
-    "periodStart": "2026-01-03T02:00:00.000Z",
-    "periodEnd": "2027-01-03T02:00:00.000Z",
+    "issuedAt": "2026-01-12T02:00:00.000Z",
+    "dueDate": "2026-01-26T02:00:00.000Z",
+    "paidAt": "2026-01-14T02:00:00.000Z",
+    "periodStart": "2026-01-12T02:00:00.000Z",
+    "periodEnd": "2027-01-12T02:00:00.000Z",
     "taxRate": 0.11,
-    "total": 16650000,
+    "total": 9990000,
     "currency": "IDR",
     "lines": [
       {
-        "description": "WIT IoT Platform · Annual subscription",
-        "amount": 15000000
+        "description": "CRM Platform · Annual subscription",
+        "amount": 9000000
+      }
+    ]
+  },
+  {
+    "id": "inv-hist-2",
+    "billingPeriod": "annual",
+    "tenantId": "ten-gamma",
+    "subscriptionId": "sub-gamma-erp",
+    "number": "INV-2026-1114",
+    "status": "paid",
+    "issuedAt": "2026-01-04T02:00:00.000Z",
+    "dueDate": "2026-01-18T02:00:00.000Z",
+    "paidAt": "2026-01-07T02:00:00.000Z",
+    "periodStart": "2026-01-04T02:00:00.000Z",
+    "periodEnd": "2027-01-04T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 22200000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "ERP System · Annual subscription",
+        "amount": 20000000
       }
     ]
   },
@@ -528,17 +726,17 @@
     ]
   },
   {
-    "id": "inv-hist-0",
+    "id": "inv-lambda-crm-9",
     "billingPeriod": "annual",
     "tenantId": "ten-lambda",
     "subscriptionId": "sub-lambda-crm",
-    "number": "INV-2025-1100",
+    "number": "INV-2025-1108",
     "status": "paid",
-    "issuedAt": "2025-12-03T02:00:00.000Z",
-    "dueDate": "2025-12-17T02:00:00.000Z",
-    "paidAt": "2025-12-06T02:00:00.000Z",
-    "periodStart": "2025-12-03T02:00:00.000Z",
-    "periodEnd": "2026-12-03T02:00:00.000Z",
+    "issuedAt": "2025-12-13T02:00:00.000Z",
+    "dueDate": "2025-12-27T02:00:00.000Z",
+    "paidAt": "2025-12-15T02:00:00.000Z",
+    "periodStart": "2025-12-13T02:00:00.000Z",
+    "periodEnd": "2026-12-13T02:00:00.000Z",
     "taxRate": 0.11,
     "total": 9990000,
     "currency": "IDR",
@@ -568,6 +766,72 @@
       {
         "description": "ERP System · Annual subscription",
         "amount": 20000000
+      }
+    ]
+  },
+  {
+    "id": "inv-lambda-crm-10",
+    "billingPeriod": "annual",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-crm",
+    "number": "INV-2025-1109",
+    "status": "paid",
+    "issuedAt": "2025-11-13T02:00:00.000Z",
+    "dueDate": "2025-11-27T02:00:00.000Z",
+    "paidAt": "2025-11-15T02:00:00.000Z",
+    "periodStart": "2025-11-13T02:00:00.000Z",
+    "periodEnd": "2026-11-13T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 9990000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "CRM Platform · Annual subscription",
+        "amount": 9000000
+      }
+    ]
+  },
+  {
+    "id": "inv-lambda-crm-11",
+    "billingPeriod": "annual",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-crm",
+    "number": "INV-2025-1110",
+    "status": "paid",
+    "issuedAt": "2025-10-14T02:00:00.000Z",
+    "dueDate": "2025-10-28T02:00:00.000Z",
+    "paidAt": "2025-10-16T02:00:00.000Z",
+    "periodStart": "2025-10-14T02:00:00.000Z",
+    "periodEnd": "2026-10-14T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 9990000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "CRM Platform · Annual subscription",
+        "amount": 9000000
+      }
+    ]
+  },
+  {
+    "id": "inv-lambda-crm-12",
+    "billingPeriod": "annual",
+    "tenantId": "ten-lambda",
+    "subscriptionId": "sub-lambda-crm",
+    "number": "INV-2025-1111",
+    "status": "paid",
+    "issuedAt": "2025-09-14T02:00:00.000Z",
+    "dueDate": "2025-09-28T02:00:00.000Z",
+    "paidAt": "2025-09-16T02:00:00.000Z",
+    "periodStart": "2025-09-14T02:00:00.000Z",
+    "periodEnd": "2026-09-14T02:00:00.000Z",
+    "taxRate": 0.11,
+    "total": 9990000,
+    "currency": "IDR",
+    "lines": [
+      {
+        "description": "CRM Platform · Annual subscription",
+        "amount": 9000000
       }
     ]
   }

@@ -1,12 +1,7 @@
-import { fmtAgo, fmtDate, fmtIdr, fmtNumber } from '@scp/fixtures'
-import type { Invoice, Payment } from '@scp/types'
-import {
-  BILLING_PERIOD_LABEL,
-  INVOICE_STATUS_LABEL,
-  PAYMENT_CHANNELS,
-  PAYMENT_METHOD_LABEL,
-  PAYMENT_STATUS_LABEL,
-} from '@scp/types'
+import { fmtIdr, fmtNumber } from '@scp/fixtures'
+import { useFormat, useT } from '@scp/i18n'
+import type { Invoice, InvoiceStatus, Payment } from '@scp/types'
+import { PAYMENT_CHANNELS, PAYMENT_STATUSES } from '@scp/types'
 import {
   Button,
   Card,
@@ -17,7 +12,6 @@ import {
   PageHeader,
   StatCard,
   type Column,
-  type ComboboxOption,
 } from '@scp/ui'
 import { AlertTriangle, CalendarClock, CheckCircle2, FileText, Search, Wallet } from 'lucide-react'
 import { Link, useNavigate } from 'react-router'
@@ -25,21 +19,18 @@ import { InvoiceBadge, Mono, PaymentBadge, PaymentChannelLabel } from '../../com
 import {
   ClearFiltersButton,
   FilterCombobox,
-  applicationOptions,
-  labelOptions,
-  noMatches,
+  enumOptions,
+  useApplicationOptions,
   useFilterParams,
+  useNoMatches,
 } from '../../components/filters'
 import { OutstandingBanner } from '../../components/OutstandingBanner'
 import { useScoped } from '../../state/app-state'
 
 const DAY = 86_400_000
 type IssuedWindow = 'month' | '30d' | '90d'
-const ISSUED_LABEL: Record<IssuedWindow, string> = {
-  month: 'This month',
-  '30d': 'Last 30 days',
-  '90d': 'Last 90 days',
-}
+const ISSUED_WINDOWS: IssuedWindow[] = ['month', '30d', '90d']
+const INVOICE_STATUSES: InvoiceStatus[] = ['open', 'overdue', 'paid', 'draft', 'void']
 
 function issuedSince(window: string, now: number): number {
   if (window === 'month')
@@ -49,14 +40,12 @@ function issuedSince(window: string, now: number): number {
   return 0
 }
 
-const CHANNEL_OPTIONS: ComboboxOption[] = PAYMENT_CHANNELS.map((c) => ({
-  value: c.channel,
-  label: c.label,
-  group: PAYMENT_METHOD_LABEL[c.method],
-}))
-
 /** Blueprint §42, §44, §74: billing stays reachable whatever the subscription state. */
 export function BillingPage() {
+  const t = useT()
+  const { formatDate, formatAgo } = useFormat()
+  const noMatches = useNoMatches()
+  const applicationOptions = useApplicationOptions()
   const navigate = useNavigate()
   const { invoices, payments, applications, subscriptionsById, applicationsById } = useScoped()
   const invoiceFilters = useFilterParams(['q', 'status', 'app', 'issued'])
@@ -94,28 +83,33 @@ export function BillingPage() {
   const label = (inv: Invoice) => {
     const sub = subscriptionsById.get(inv.subscriptionId)
     return sub
-      ? `${applicationsById.get(sub.applicationId)?.name ?? sub.applicationId} · ${BILLING_PERIOD_LABEL[sub.billingPeriod]}`
+      ? `${applicationsById.get(sub.applicationId)?.name ?? sub.applicationId} · ${t(`period.${sub.billingPeriod}`)}`
       : '—'
   }
 
   const invoiceColumns: Column<Invoice>[] = [
     {
       key: 'number',
-      header: 'Invoice',
+      header: t('common.invoice'),
       sortValue: (i) => i.number,
       cell: (i) => <Mono className="font-semibold">{i.number}</Mono>,
     },
-    { key: 'sub', header: 'Application · period', cell: label },
+    { key: 'sub', header: t('billing.column.applicationPeriod'), cell: label },
     {
       key: 'issued',
-      header: 'Issued',
+      header: t('common.issued'),
       sortValue: (i) => i.issuedAt,
-      cell: (i) => fmtDate(i.issuedAt),
+      cell: (i) => formatDate(i.issuedAt),
     },
-    { key: 'due', header: 'Due', sortValue: (i) => i.dueDate, cell: (i) => fmtDate(i.dueDate) },
+    {
+      key: 'due',
+      header: t('common.due'),
+      sortValue: (i) => i.dueDate,
+      cell: (i) => formatDate(i.dueDate),
+    },
     {
       key: 'total',
-      header: 'Total',
+      header: t('common.total'),
       align: 'right',
       sortValue: (i) => i.total,
       cell: (i) => (
@@ -124,7 +118,7 @@ export function BillingPage() {
     },
     {
       key: 'status',
-      header: 'Status',
+      header: t('common.status'),
       sortValue: (i) => i.status,
       cell: (i) => <InvoiceBadge status={i.status} />,
     },
@@ -140,10 +134,10 @@ export function BillingPage() {
               onClick={(e) => e.stopPropagation()}
               className="text-accent text-xs font-semibold"
             >
-              Pay invoice
+              {t('common.payInvoice')}
             </Link>
           ) : null}
-          <Button variant="ghost" size="icon-sm" aria-label="Document" asChild>
+          <Button variant="ghost" size="icon-sm" aria-label={t('billing.document')} asChild>
             <Link to={`/billing/${i.id}/document`} onClick={(e) => e.stopPropagation()}>
               <FileText />
             </Link>
@@ -156,24 +150,28 @@ export function BillingPage() {
   const paymentColumns: Column<Payment>[] = [
     {
       key: 'channel',
-      header: 'Channel',
+      header: t('common.channel'),
       sortValue: (p) => p.channel,
       cell: (p) => <PaymentChannelLabel payment={p} />,
     },
-    { key: 'ref', header: 'Reference', cell: (p) => <Mono>{p.providerReference}</Mono> },
+    {
+      key: 'ref',
+      header: t('billing.column.reference'),
+      cell: (p) => <Mono>{p.providerReference}</Mono>,
+    },
     {
       key: 'amount',
-      header: 'Amount',
+      header: t('common.amount'),
       align: 'right',
       sortValue: (p) => p.amount,
       cell: (p) => <span className="tabular-nums">{fmtIdr(p.amount, p.currency)}</span>,
     },
-    { key: 'status', header: 'Status', cell: (p) => <PaymentBadge status={p.status} /> },
+    { key: 'status', header: t('common.status'), cell: (p) => <PaymentBadge status={p.status} /> },
     {
       key: 'created',
-      header: 'Created',
+      header: t('common.created'),
       sortValue: (p) => p.createdAt,
-      cell: (p) => fmtAgo(p.createdAt),
+      cell: (p) => formatAgo(p.createdAt),
     },
     {
       key: 'continue',
@@ -186,7 +184,7 @@ export function BillingPage() {
             onClick={(e) => e.stopPropagation()}
             className="text-accent text-xs font-semibold"
           >
-            Continue
+            {t('common.continue')}
           </Link>
         ) : p.status === 'success' ? (
           <Link
@@ -194,7 +192,7 @@ export function BillingPage() {
             onClick={(e) => e.stopPropagation()}
             className="text-muted hover:text-foreground text-xs font-semibold"
           >
-            Receipt
+            {t('common.receipt')}
           </Link>
         ) : null,
     },
@@ -202,77 +200,75 @@ export function BillingPage() {
 
   return (
     <div className="space-y-4">
-      <PageHeader title="Billing" description="Invoices and payments for your organization." />
+      <PageHeader title={t('nav.billing')} description={t('billing.description')} />
       <OutstandingBanner />
       <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
         <StatCard
-          label="Outstanding"
+          label={t('billing.outstanding')}
           value={fmtIdr(outstanding)}
-          hint={`${fmtNumber(open.length)} open ${open.length === 1 ? 'invoice' : 'invoices'}`}
+          hint={
+            open.length === 1
+              ? t('billing.openInvoiceOne')
+              : t('billing.openInvoiceMany', { count: fmtNumber(open.length) })
+          }
           icon={<Wallet />}
           tone={outstanding > 0 ? 'warning' : 'default'}
         />
         <StatCard
-          label="Overdue"
+          label={t('billing.overdue')}
           value={fmtNumber(overdue)}
-          hint="Invoices past due date"
+          hint={t('billing.overdueHint')}
           icon={<AlertTriangle />}
           tone={overdue > 0 ? 'danger' : 'default'}
         />
         <StatCard
-          label="Paid this year"
+          label={t('billing.paidThisYear')}
           value={fmtIdr(paidThisYear)}
           hint={String(year)}
           icon={<CheckCircle2 />}
           tone="success"
         />
         <StatCard
-          label="Next due date"
-          value={nextDue ? fmtDate(nextDue) : '—'}
-          hint={nextDue ? 'Earliest open invoice' : 'Nothing due'}
+          label={t('billing.nextDue')}
+          value={nextDue ? formatDate(nextDue) : '—'}
+          hint={nextDue ? t('billing.nextDueHint') : t('billing.nothingDue')}
           icon={<CalendarClock />}
           tone="info"
         />
       </div>
       <Card>
         <CardHeader className="gap-3">
-          <CardTitle>Invoices</CardTitle>
+          <CardTitle>{t('billing.invoices')}</CardTitle>
           <div className="flex flex-wrap items-center gap-2">
             <Input
               tone="nested"
               leftIcon={<Search />}
               value={invoiceFilters.values.q}
               onChange={(e) => invoiceFilters.set('q', e.target.value)}
-              placeholder="Search invoice number"
-              aria-label="Search invoices"
+              placeholder={t('billing.searchInvoiceNumber')}
+              aria-label={t('billing.searchInvoices')}
               className="w-full sm:w-60 [&_input]:rounded-full"
             />
             <FilterCombobox
               value={invoiceFilters.values.status}
               onChange={(v) => invoiceFilters.set('status', v)}
-              options={labelOptions(INVOICE_STATUS_LABEL, [
-                'open',
-                'overdue',
-                'paid',
-                'draft',
-                'void',
-              ])}
-              allLabel="All statuses"
-              searchPlaceholder="Search statuses"
+              options={enumOptions(INVOICE_STATUSES, (s) => t(`status.invoice.${s}`))}
+              allLabel={t('common.allStatuses')}
+              searchPlaceholder={t('common.searchStatuses')}
             />
             <FilterCombobox
               value={invoiceFilters.values.app}
               onChange={(v) => invoiceFilters.set('app', v)}
               options={applicationOptions(applications.filter((item) => item.subscription))}
-              allLabel="All applications"
-              searchPlaceholder="Search applications"
+              allLabel={t('common.allApplications')}
+              searchPlaceholder={t('common.searchApplications')}
             />
             <FilterCombobox
               value={invoiceFilters.values.issued}
               onChange={(v) => invoiceFilters.set('issued', v)}
-              options={labelOptions(ISSUED_LABEL)}
-              allLabel="All time"
-              searchPlaceholder="Search periods"
+              options={enumOptions(ISSUED_WINDOWS, (w) => t(`billing.issued.${w}`))}
+              allLabel={t('billing.allTime')}
+              searchPlaceholder={t('billing.searchPeriods')}
             />
             {invoiceFilters.active ? <ClearFiltersButton onClick={invoiceFilters.clear} /> : null}
           </div>
@@ -286,29 +282,33 @@ export function BillingPage() {
             invoiceFilters.active
               ? noMatches(invoiceFilters.clear)
               : {
-                  title: 'No invoices yet',
-                  description: 'Invoices appear here once a subscription starts.',
+                  title: t('billing.noInvoices'),
+                  description: t('billing.noInvoicesDescription'),
                 }
           }
         />
       </Card>
       <Card>
         <CardHeader className="gap-3">
-          <CardTitle>Payments</CardTitle>
+          <CardTitle>{t('billing.payments')}</CardTitle>
           <div className="flex flex-wrap items-center gap-2">
             <FilterCombobox
               value={paymentFilters.values.pstatus}
               onChange={(v) => paymentFilters.set('pstatus', v)}
-              options={labelOptions(PAYMENT_STATUS_LABEL)}
-              allLabel="All statuses"
-              searchPlaceholder="Search statuses"
+              options={enumOptions(PAYMENT_STATUSES, (s) => t(`status.payment.${s}`))}
+              allLabel={t('common.allStatuses')}
+              searchPlaceholder={t('common.searchStatuses')}
             />
             <FilterCombobox
               value={paymentFilters.values.channel}
               onChange={(v) => paymentFilters.set('channel', v)}
-              options={CHANNEL_OPTIONS}
-              allLabel="All channels"
-              searchPlaceholder="Search channels"
+              options={PAYMENT_CHANNELS.map((c) => ({
+                value: c.channel,
+                label: c.label,
+                group: t(`method.${c.method}`),
+              }))}
+              allLabel={t('billing.allChannels')}
+              searchPlaceholder={t('billing.searchChannels')}
             />
             {paymentFilters.active ? <ClearFiltersButton onClick={paymentFilters.clear} /> : null}
           </div>
@@ -322,8 +322,8 @@ export function BillingPage() {
             paymentFilters.active
               ? noMatches(paymentFilters.clear)
               : {
-                  title: 'No payments yet',
-                  description: 'Payments show up here after an invoice is settled.',
+                  title: t('billing.noPayments'),
+                  description: t('billing.noPaymentsDescription'),
                 }
           }
         />

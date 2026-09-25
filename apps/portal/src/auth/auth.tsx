@@ -1,3 +1,4 @@
+import { useT, type DictKey } from '@scp/i18n'
 import type { Session, Tenant, TenantMember, User } from '@scp/types'
 import * as React from 'react'
 import { Navigate, useLocation } from 'react-router'
@@ -21,7 +22,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>
 }
 
-type LoginOutcome = { ok: true } | { ok: false; error: string }
+/** Login failures carry a dictionary key so the login page can render them in the active language. */
+type LoginOutcome = { ok: true } | { ok: false; error: DictKey }
 
 interface AuthValue {
   session: StoredSession | null
@@ -83,24 +85,16 @@ export function useAuth(): AuthValue {
         !account.platformAdmin &&
         !state.members.some((m) => m.userId === account.id && m.status === 'active')
       )
-        return {
-          ok: false,
-          error:
-            'Accept your workspace invitation first. If your link expired, ask your admin to renew it.',
-        }
+        return { ok: false, error: 'auth.errorAcceptInvitation' }
       let result
       try {
         result = await api.login(email.trim())
       } catch {
-        return { ok: false, error: 'No account with that email.' }
+        return { ok: false, error: 'auth.errorNoAccount' }
       }
       if (result.user.platformAdmin) {
         await api.logout(result.session.id)
-        return {
-          ok: false,
-          error:
-            'This account is a platform admin. Use the admin console at http://localhost:5173.',
-        }
+        return { ok: false, error: 'auth.errorPlatformAdmin' }
       }
       const activeMemberships = state.members.filter(
         (m) => m.userId === result.user.id && m.status === 'active',
@@ -145,23 +139,26 @@ export function RequireWorkspaceAdmin({ children }: { children: React.ReactNode 
 }
 
 export function RequireAuth({ children }: { children: React.ReactNode }) {
+  const t = useT()
   const { session, user, member, logout, tenants, switchTenant } = useAuth()
   const location = useLocation()
   if (!session || !user) return <Navigate to="/login" replace state={{ from: location.pathname }} />
   if (user.status === 'disabled' || member?.status !== 'active')
     return (
       <div className="space-y-4 p-8">
-        <h1 className="text-xl font-bold">Workspace access unavailable</h1>
-        <p>
-          Your membership may need an invitation or have been removed. Contact your workspace admin.
-        </p>
-        {tenants.map((t) => (
-          <button className="block underline" key={t.id} onClick={() => switchTenant(t.id)}>
-            Switch to {t.name}
+        <h1 className="text-xl font-bold">{t('auth.accessUnavailable')}</h1>
+        <p>{t('auth.accessUnavailableBody')}</p>
+        {tenants.map((tenant) => (
+          <button
+            className="block underline"
+            key={tenant.id}
+            onClick={() => switchTenant(tenant.id)}
+          >
+            {t('auth.switchTo', { name: tenant.name })}
           </button>
         ))}
         <button className="underline" onClick={() => void logout()}>
-          Sign out
+          {t('common.signOut')}
         </button>
       </div>
     )

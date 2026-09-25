@@ -1,5 +1,6 @@
-import { fmtDate, fmtDateTime, fmtIdr, invoiceSubtotal, invoiceTax } from '@scp/fixtures'
-import { BILLING_PERIOD_LABEL, PAYMENT_CHANNEL_BY_ID } from '@scp/types'
+import { fmtIdr, invoiceSubtotal, invoiceTax } from '@scp/fixtures'
+import { useFormat, useT } from '@scp/i18n'
+import { PAYMENT_CHANNEL_BY_ID } from '@scp/types'
 import {
   Banner,
   Button,
@@ -16,6 +17,8 @@ import { InvoiceBadge, Mono, PaymentBadge, SubscriptionBadge } from '../../compo
 import { useScoped } from '../../state/app-state'
 
 export function InvoiceDetailPage() {
+  const t = useT()
+  const { formatDate, formatDateTime } = useFormat()
   const { id = '' } = useParams()
   const { invoicesById, payments, subscriptionsById, applicationsById } = useScoped()
   const invoice = invoicesById.get(id)
@@ -25,11 +28,11 @@ export function InvoiceDetailPage() {
       <Card>
         <EmptyState
           icon={<FileText />}
-          title="Invoice not found"
-          description="It may belong to another organization or has been removed."
+          title={t('common.invoiceNotFound')}
+          description={t('common.notFoundDescription')}
           action={
             <Button variant="outline" asChild>
-              <Link to="/billing">Back to billing</Link>
+              <Link to="/billing">{t('common.backToBilling')}</Link>
             </Button>
           }
         />
@@ -55,12 +58,12 @@ export function InvoiceDetailPage() {
         <div className="flex flex-wrap gap-2">
           <Button variant="outline" asChild>
             <Link to={`/billing/${invoice.id}/document`}>
-              <FileText /> View invoice
+              <FileText /> {t('common.viewInvoice')}
             </Link>
           </Button>
           {payable ? (
             <Button asChild>
-              <Link to={`/billing/${invoice.id}/pay`}>Pay invoice</Link>
+              <Link to={`/billing/${invoice.id}/pay`}>{t('common.payInvoice')}</Link>
             </Button>
           ) : null}
         </div>
@@ -70,15 +73,17 @@ export function InvoiceDetailPage() {
         <Banner
           tone="warning"
           icon={<Clock />}
-          title={`Waiting for ${PAYMENT_CHANNEL_BY_ID[pendingPayment.channel].label} payment.`}
+          title={t('invoice.waitingFor', {
+            channel: PAYMENT_CHANNEL_BY_ID[pendingPayment.channel].label,
+          })}
           description={
             pendingPayment.expiresAt
-              ? `Expires ${fmtDateTime(pendingPayment.expiresAt)}`
+              ? t('invoice.expiresAt', { date: formatDateTime(pendingPayment.expiresAt) })
               : undefined
           }
           action={
             <Button size="sm" asChild>
-              <Link to={`/payments/${pendingPayment.id}`}>View instructions</Link>
+              <Link to={`/payments/${pendingPayment.id}`}>{t('invoice.viewInstructions')}</Link>
             </Button>
           }
         />
@@ -92,21 +97,25 @@ export function InvoiceDetailPage() {
             </span>
             <div className="min-w-[12rem] flex-1">
               <p className="text-sm font-semibold">
-                Paid {fmtDateTime(invoice.paidAt)}.{' '}
-                {app ? `The ${app.name} subscription` : 'The subscription'} is Active.
+                {app
+                  ? t('invoice.paidSummary', {
+                      date: formatDateTime(invoice.paidAt),
+                      app: app.name,
+                    })
+                  : t('invoice.paidSummaryNoApp', { date: formatDateTime(invoice.paidAt) })}
               </p>
-              <p className="text-muted text-xs">Users can open the application straight away.</p>
+              <p className="text-muted text-xs">{t('invoice.usersCanOpen')}</p>
             </div>
             <div className="flex flex-wrap gap-2">
               {app ? (
                 <Button size="sm" asChild>
                   <a href={app.baseUrl} target="_blank" rel="noreferrer">
-                    Open {app.name}
+                    {t('common.openApp', { name: app.name })}
                   </a>
                 </Button>
               ) : null}
               <Button size="sm" variant="outline" asChild>
-                <Link to="/billing">Back to billing</Link>
+                <Link to="/billing">{t('common.backToBilling')}</Link>
               </Button>
             </div>
           </CardContent>
@@ -116,28 +125,31 @@ export function InvoiceDetailPage() {
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Details</CardTitle>
+            <CardTitle>{t('invoice.details')}</CardTitle>
           </CardHeader>
           <CardContent>
             <KeyValue
               dense
               rows={[
-                { label: 'Issued', value: fmtDate(invoice.issuedAt) },
-                { label: 'Due', value: fmtDate(invoice.dueDate) },
+                { label: t('common.issued'), value: formatDate(invoice.issuedAt) },
+                { label: t('common.due'), value: formatDate(invoice.dueDate) },
                 {
-                  label: 'Period',
-                  value: `${fmtDate(invoice.periodStart)} to ${fmtDate(invoice.periodEnd)}`,
+                  label: t('common.period'),
+                  value: t('common.dateRange', {
+                    from: formatDate(invoice.periodStart),
+                    to: formatDate(invoice.periodEnd),
+                  }),
                 },
                 {
-                  label: 'Paid at',
-                  value: invoice.paidAt ? fmtDateTime(invoice.paidAt) : 'Not yet',
+                  label: t('common.paidAt'),
+                  value: invoice.paidAt ? formatDateTime(invoice.paidAt) : t('common.notYet'),
                 },
                 {
-                  label: 'Subscription',
+                  label: t('common.subscription'),
                   value: sub ? (
                     <span className="flex flex-wrap items-center gap-2">
                       {app?.name ?? sub.applicationId} ·{' '}
-                      {BILLING_PERIOD_LABEL[invoice.billingPeriod ?? sub.billingPeriod]}{' '}
+                      {t(`period.${invoice.billingPeriod ?? sub.billingPeriod}`)}{' '}
                       <SubscriptionBadge status={sub.status} />
                     </span>
                   ) : (
@@ -145,8 +157,8 @@ export function InvoiceDetailPage() {
                   ),
                 },
                 {
-                  label: 'Access until',
-                  value: fmtDate(sub?.gracePeriodEnd ?? sub?.currentPeriodEnd),
+                  label: t('invoice.accessUntil'),
+                  value: formatDate(sub?.gracePeriodEnd ?? sub?.currentPeriodEnd),
                 },
               ]}
             />
@@ -154,7 +166,7 @@ export function InvoiceDetailPage() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Line items</CardTitle>
+            <CardTitle>{t('invoice.lineItems')}</CardTitle>
           </CardHeader>
           <CardContent>
             <ul className="divide-border divide-y text-sm">
@@ -165,19 +177,21 @@ export function InvoiceDetailPage() {
                 </li>
               ))}
               <li className="flex items-center justify-between gap-3 py-2.5">
-                <span className="text-muted">Subtotal</span>
+                <span className="text-muted">{t('common.subtotal')}</span>
                 <span className="tabular-nums">
                   {fmtIdr(invoiceSubtotal(invoice), invoice.currency)}
                 </span>
               </li>
               <li className="flex items-center justify-between gap-3 py-2.5">
-                <span className="text-muted">PPN {Math.round(invoice.taxRate * 100)}%</span>
+                <span className="text-muted">
+                  {t('common.ppn', { rate: Math.round(invoice.taxRate * 100) })}
+                </span>
                 <span className="tabular-nums">
                   {fmtIdr(invoiceTax(invoice), invoice.currency)}
                 </span>
               </li>
               <li className="flex items-center justify-between gap-3 py-3 font-semibold">
-                <span>Total</span>
+                <span>{t('common.total')}</span>
                 <span className="text-lg tabular-nums">
                   {fmtIdr(invoice.total, invoice.currency)}
                 </span>
@@ -189,11 +203,11 @@ export function InvoiceDetailPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Payments for this invoice</CardTitle>
+          <CardTitle>{t('invoice.paymentsFor')}</CardTitle>
         </CardHeader>
         <CardContent>
           {invoicePayments.length === 0 ? (
-            <p className="text-muted text-sm">No payment recorded yet.</p>
+            <p className="text-muted text-sm">{t('invoice.noPaymentRecorded')}</p>
           ) : (
             <ul className="divide-border divide-y text-sm">
               {invoicePayments.map((p) => (
@@ -207,7 +221,7 @@ export function InvoiceDetailPage() {
                     <span className="tabular-nums">{fmtIdr(p.amount, p.currency)}</span>
                     <PaymentBadge status={p.status} />
                     <span className="text-muted ml-auto text-xs">
-                      {fmtDateTime(p.paidAt ?? p.createdAt)}
+                      {formatDateTime(p.paidAt ?? p.createdAt)}
                     </span>
                   </Link>
                 </li>

@@ -112,6 +112,14 @@
     "applicationIds": ["app-iot", "app-crm"]
   },
   {
+    "id": "mem-alpha-lambda-operator",
+    "tenantId": "ten-alpha",
+    "userId": "usr-lambda-operator",
+    "workspaceRole": "member",
+    "status": "active",
+    "applicationIds": ["app-helpdesk"]
+  },
+  {
     "id": "mem-mu-mu-admin",
     "tenantId": "ten-mu",
     "userId": "usr-mu-admin",

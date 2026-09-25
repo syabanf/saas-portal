@@ -1,7 +1,15 @@
 import { avatarColor, fmtNumber, initials, newId, invitationFields } from '@scp/fixtures'
-import type { TenantMember, WorkspaceRole } from '@scp/types'
-import { USER_STATUS_LABEL, WORKSPACE_ROLE_LABEL } from '@scp/types'
+import { useT, type DictKey } from '@scp/i18n'
+import type { TenantMember, UserStatus, WorkspaceRole } from '@scp/types'
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
   InvitationDialog,
   InvitationLink,
   Avatar,
@@ -10,7 +18,6 @@ import {
   Card,
   Checkbox,
   Combobox,
-  ConfirmDelete,
   DataTable,
   Dialog,
   DialogContent,
@@ -47,10 +54,10 @@ import { UserBadge } from '../../components/badges'
 import {
   ClearFiltersButton,
   FilterCombobox,
-  applicationOptions,
-  labelOptions,
-  noMatches,
+  enumOptions,
+  useApplicationOptions,
   useFilterParams,
+  useNoMatches,
 } from '../../components/filters'
 import { useScoped, type MemberWithUser, type PortalApplication } from '../../state/app-state'
 
@@ -59,10 +66,12 @@ function assignableApplications(applications: PortalApplication[]): PortalApplic
   return applications.filter((a) => a.app.accessPolicy === 'free' || a.subscription !== null)
 }
 
-const ROLES: { value: WorkspaceRole; description: string }[] = [
-  { value: 'member', description: 'Opens the applications listed below.' },
-  { value: 'workspace_admin', description: 'Also manages users, subscriptions and billing.' },
+const ROLES: { value: WorkspaceRole; description: DictKey }[] = [
+  { value: 'member', description: 'users.role.memberDescription' },
+  { value: 'workspace_admin', description: 'users.role.adminDescription' },
 ]
+const ROLE_VALUES: WorkspaceRole[] = ['workspace_admin', 'member']
+const USER_STATUSES: UserStatus[] = ['active', 'invited', 'disabled']
 
 function InviteDialog({
   open,
@@ -122,6 +131,7 @@ function MemberAccessDialog({
   member: MemberWithUser | null
   onOpenChange: (open: boolean) => void
 }) {
+  const t = useT()
   const { applications, dispatch } = useScoped()
   const [draft, setDraft] = React.useState<TenantMember | null>(member)
   React.useEffect(() => setDraft(member), [member])
@@ -153,19 +163,16 @@ function MemberAccessDialog({
           <form onSubmit={submit}>
             <DialogHeader>
               <DialogTitle>{member.user.name}</DialogTitle>
-              <DialogDescription>
-                Application access decides which doors open. What they can do inside each
-                application is up to that application.
-              </DialogDescription>
+              <DialogDescription>{t('users.accessDialogDescription')}</DialogDescription>
             </DialogHeader>
             <div className="space-y-5">
               <div>
-                <p className="mb-2 text-sm font-medium">Application access</p>
+                <p className="mb-2 text-sm font-medium">{t('users.applicationAccess')}</p>
                 {assignable.length === 0 ? (
                   <EmptyState
                     className="py-6"
-                    title="No applications to assign"
-                    description="Subscribe to an application first. Free applications appear here automatically."
+                    title={t('users.noneToAssign')}
+                    description={t('users.noneToAssignDescription')}
                   />
                 ) : (
                   <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
@@ -181,7 +188,7 @@ function MemberAccessDialog({
                         <span className="min-w-0 flex-1">
                           <span className="block truncate font-medium">{a.app.name}</span>
                           <span className="text-muted block truncate text-xs">
-                            {pricingLine(a)}
+                            {pricingLine(t, a)}
                           </span>
                         </span>
                       </label>
@@ -190,14 +197,14 @@ function MemberAccessDialog({
                 )}
               </div>
               <div>
-                <p className="mb-2 text-sm font-medium">Workspace role</p>
+                <p className="mb-2 text-sm font-medium">{t('users.workspaceRole')}</p>
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                   {ROLES.map((r) => (
                     <OptionCard
                       key={r.value}
                       selected={draft.workspaceRole === r.value}
-                      title={WORKSPACE_ROLE_LABEL[r.value]}
-                      description={r.description}
+                      title={t(`role.${r.value}`)}
+                      description={t(r.description)}
                       onSelect={() => setDraft({ ...draft, workspaceRole: r.value })}
                     />
                   ))}
@@ -206,9 +213,9 @@ function MemberAccessDialog({
             </div>
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-                Cancel
+                {t('common.cancel')}
               </Button>
-              <Button type="submit">Save access</Button>
+              <Button type="submit">{t('users.saveAccess')}</Button>
             </DialogFooter>
           </form>
         ) : null}
@@ -218,6 +225,9 @@ function MemberAccessDialog({
 }
 
 export function UsersPage() {
+  const t = useT()
+  const noMatches = useNoMatches()
+  const applicationOptions = useApplicationOptions()
   const [params] = useSearchParams()
   const requestedApp = params.get('app')
   const { values, set, clear, active } = useFilterParams(['q', 'role', 'status', 'access'])
@@ -268,11 +278,11 @@ export function UsersPage() {
       <Card>
         <EmptyState
           icon={<ShieldAlert />}
-          title="Workspace admins only"
-          description="Ask a workspace admin if you need someone added or given access to an application."
+          title={t('users.adminsOnly')}
+          description={t('users.adminsOnlyDescription')}
           action={
             <Button variant="outline" asChild>
-              <Link to="/">Back to workspace</Link>
+              <Link to="/">{t('common.backToWorkspace')}</Link>
             </Button>
           }
         />
@@ -283,7 +293,7 @@ export function UsersPage() {
   const columns: Column<MemberWithUser>[] = [
     {
       key: 'name',
-      header: 'User',
+      header: t('users.column.user'),
       sortValue: (m) => m.user.name,
       cell: (m) => (
         <span className="flex items-center gap-3">
@@ -297,16 +307,18 @@ export function UsersPage() {
     },
     {
       key: 'role',
-      header: 'Workspace role',
+      header: t('users.column.role'),
       sortValue: (m) => m.workspaceRole,
-      cell: (m) => WORKSPACE_ROLE_LABEL[m.workspaceRole],
+      cell: (m) => t(`role.${m.workspaceRole}`),
     },
     {
       key: 'apps',
-      header: 'Application access',
+      header: t('users.column.access'),
       cell: (m) => (
         <span className="flex flex-wrap gap-1">
-          {m.applicationIds.length === 0 ? <span className="text-muted text-xs">None</span> : null}
+          {m.applicationIds.length === 0 ? (
+            <span className="text-muted text-xs">{t('common.none')}</span>
+          ) : null}
           {m.applicationIds.map((id) => (
             <Badge key={id} variant="default">
               {applicationsById.get(id)?.name ?? id}
@@ -317,7 +329,7 @@ export function UsersPage() {
     },
     {
       key: 'status',
-      header: 'Status',
+      header: t('common.status'),
       sortValue: (m) => m.status,
       cell: (m) => (
         <>
@@ -341,45 +353,46 @@ export function UsersPage() {
     <div className="space-y-4">
       {requestedApp && (
         <p role="status" className="bg-surface-2 rounded-2xl p-4">
-          Assign {applicationsById.get(requestedApp)?.name ?? 'application'} access using each
-          person’s Edit access button, or invite someone new.
+          {t('users.assignHint', {
+            app: applicationsById.get(requestedApp)?.name ?? t('common.application'),
+          })}
         </p>
       )}
       <PageHeader
-        title="Users"
-        description="Who belongs to your organization and which applications they may open."
+        title={t('nav.users')}
+        description={t('users.description')}
         actions={
           <Button onClick={() => setInviteOpen(true)}>
-            <UserPlus /> Invite user
+            <UserPlus /> {t('users.inviteUser')}
           </Button>
         }
       />
       <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
         <StatCard
-          label="Members"
+          label={t('users.members')}
           value={fmtNumber(members.length)}
-          hint="People in your organization"
+          hint={t('users.membersHint')}
           icon={<Users />}
           tone="ink"
         />
         <StatCard
-          label="Workspace admins"
+          label={t('users.admins')}
           value={countWhere((m) => m.workspaceRole === 'workspace_admin')}
-          hint="Manage users, subscriptions and billing"
+          hint={t('users.adminsHint')}
           icon={<ShieldCheck />}
           tone="info"
         />
         <StatCard
-          label="Invited"
+          label={t('users.invited')}
           value={countWhere((m) => m.status === 'invited')}
-          hint="Invitation not yet accepted"
+          hint={t('users.invitedHint')}
           icon={<Mail />}
           tone="warning"
         />
         <StatCard
-          label="No application access"
+          label={t('users.noAccess')}
           value={countWhere((m) => m.applicationIds.length === 0)}
-          hint="Members with nothing to open"
+          hint={t('users.noAccessHint')}
           icon={<UserX />}
         />
       </div>
@@ -388,45 +401,48 @@ export function UsersPage() {
           leftIcon={<Search />}
           value={values.q}
           onChange={(e) => set('q', e.target.value)}
-          placeholder="Search name or email"
-          aria-label="Search users"
+          placeholder={t('users.searchPlaceholder')}
+          aria-label={t('users.searchUsers')}
           className="[&_input]:shadow-card w-full sm:w-64 [&_input]:rounded-full [&_input]:border-0"
         />
         <FilterCombobox
           value={values.role}
           onChange={(v) => set('role', v)}
-          options={labelOptions(WORKSPACE_ROLE_LABEL)}
-          allLabel="All roles"
-          searchPlaceholder="Search roles"
+          options={enumOptions(ROLE_VALUES, (r) => t(`role.${r}`))}
+          allLabel={t('users.allRoles')}
+          searchPlaceholder={t('users.searchRoles')}
         />
         <FilterCombobox
           value={values.status}
           onChange={(v) => set('status', v)}
-          options={labelOptions(USER_STATUS_LABEL)}
-          allLabel="All statuses"
-          searchPlaceholder="Search statuses"
+          options={enumOptions(USER_STATUSES, (s) => t(`status.user.${s}`))}
+          allLabel={t('common.allStatuses')}
+          searchPlaceholder={t('common.searchStatuses')}
         />
         <FilterCombobox
           value={values.access}
           onChange={(v) => set('access', v)}
           options={applicationOptions(assignable)}
-          allLabel="All applications"
-          searchPlaceholder="Search applications"
+          allLabel={t('common.allApplications')}
+          searchPlaceholder={t('common.searchApplications')}
         />
         {active ? <ClearFiltersButton onClick={clear} /> : null}
       </div>
       {selected.size > 0 ? (
         <Card className="flex flex-wrap items-center gap-2 p-3">
           <p role="status" aria-live="polite" className="mr-auto text-sm font-semibold">
-            {selected.size} {selected.size === 1 ? 'user' : 'users'} selected
+            {selected.size === 1
+              ? t('users.selectedOne')
+              : t('users.selectedMany', { count: selected.size })}
           </p>
           <Combobox
             tone="nested"
             value={bulkApplicationId}
             onChange={setBulkApplicationId}
             options={applicationOptions(assignable)}
-            placeholder="Choose application"
-            searchPlaceholder="Search applications"
+            placeholder={t('users.chooseApplication')}
+            searchPlaceholder={t('common.searchApplications')}
+            emptyText={t('common.noMatches')}
             className="w-full sm:w-56"
           />
           <Button
@@ -434,7 +450,7 @@ export function UsersPage() {
             disabled={!bulkApplicationId}
             onClick={() => updateSelectedAccess(true)}
           >
-            <KeyRound /> Grant access
+            <KeyRound /> {t('users.grantAccess')}
           </Button>
           <Button
             size="sm"
@@ -442,12 +458,12 @@ export function UsersPage() {
             disabled={!bulkApplicationId}
             onClick={() => updateSelectedAccess(false)}
           >
-            <UserMinus /> Remove access
+            <UserMinus /> {t('users.removeAccess')}
           </Button>
           <Button
             size="icon-sm"
             variant="ghost"
-            aria-label="Clear selection"
+            aria-label={t('users.clearSelection')}
             onClick={() => setSelected(new Set())}
           >
             <X />
@@ -461,14 +477,14 @@ export function UsersPage() {
           rowKey={(m) => m.id}
           selectedKeys={selected}
           onSelectionChange={setSelected}
-          selectionLabel="Select user"
+          selectionLabel={t('users.selectUser')}
           onRowClick={setEditing}
           rowActions={(m) => (
             <>
               <Button
                 variant="ghost"
                 size="icon-sm"
-                aria-label="Edit access"
+                aria-label={t('users.editAccess')}
                 onClick={() => setEditing(m)}
               >
                 <Pencil />
@@ -477,7 +493,7 @@ export function UsersPage() {
                 variant="ghost"
                 size="icon-sm"
                 className="text-accent"
-                aria-label="Remove"
+                aria-label={t('users.remove')}
                 disabled={m.userId === user?.id}
                 onClick={() => setRemoving(m)}
               >
@@ -489,26 +505,38 @@ export function UsersPage() {
             active
               ? noMatches(clear)
               : {
-                  title: 'No users yet',
-                  description: 'Invite the first person to your organization.',
-                  action: <Button onClick={() => setInviteOpen(true)}>Invite user</Button>,
+                  title: t('users.empty'),
+                  description: t('users.emptyDescription'),
+                  action: (
+                    <Button onClick={() => setInviteOpen(true)}>{t('users.inviteUser')}</Button>
+                  ),
                 }
           }
         />
       </Card>
       <InviteDialog open={inviteOpen} onOpenChange={setInviteOpen} />
       <MemberAccessDialog member={editing} onOpenChange={(open) => !open && setEditing(null)} />
-      <ConfirmDelete
-        open={removing !== null}
-        onOpenChange={(open) => !open && setRemoving(null)}
-        title={`Remove ${removing?.user.name ?? 'user'}?`}
-        description="They lose access to every application of this organization immediately."
-        actionLabel="Remove"
-        onConfirm={() => {
-          if (removing) dispatch({ type: 'members/remove', id: removing.id })
-          setRemoving(null)
-        }}
-      />
+      <AlertDialog open={removing !== null} onOpenChange={(open) => !open && setRemoving(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {t('users.removeTitle', { name: removing?.user.name ?? t('users.column.user') })}
+            </AlertDialogTitle>
+            <AlertDialogDescription>{t('users.removeDescription')}</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                if (removing) dispatch({ type: 'members/remove', id: removing.id })
+                setRemoving(null)
+              }}
+            >
+              {t('users.remove')}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

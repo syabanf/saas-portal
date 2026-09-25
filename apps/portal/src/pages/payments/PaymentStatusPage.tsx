@@ -1,6 +1,7 @@
-import { fmtDateTime, fmtIdr } from '@scp/fixtures'
+import { fmtIdr } from '@scp/fixtures'
+import { useFormat, useT, type DictKey } from '@scp/i18n'
 import type { Payment, PaymentEventType, PaymentStatus } from '@scp/types'
-import { PAYMENT_CHANNEL_BY_ID, PAYMENT_EVENT_LABEL, PAYMENT_METHOD_LABEL } from '@scp/types'
+import { PAYMENT_CHANNEL_BY_ID } from '@scp/types'
 import {
   Banner,
   Button,
@@ -52,13 +53,6 @@ const HERO_TONE: Record<PaymentStatus, StatTone> = {
   expired: 'default',
   refunded: 'default',
 }
-const HERO_TITLE: Record<PaymentStatus, string> = {
-  pending: 'Waiting for payment',
-  success: 'Payment received',
-  failed: 'The payment failed',
-  expired: 'This payment request expired',
-  refunded: 'Refunded',
-}
 const HERO_ICON: Record<PaymentStatus, LucideIcon> = {
   pending: Clock,
   success: CheckCircle2,
@@ -67,11 +61,11 @@ const HERO_ICON: Record<PaymentStatus, LucideIcon> = {
   refunded: RotateCcw,
 }
 
-const VA_STEPS = [
-  'Open your mobile banking app',
-  'Choose transfer to virtual account',
-  'Enter the virtual account number',
-  'Confirm the amount and finish',
+const VA_STEPS: DictKey[] = [
+  'payment.va.step1',
+  'payment.va.step2',
+  'payment.va.step3',
+  'payment.va.step4',
 ]
 
 function pad(n: number): string {
@@ -91,9 +85,11 @@ function useCountdown(iso: string | null): number | null {
 }
 
 function Countdown({ expiresAt }: { expiresAt: string | null }) {
+  const t = useT()
   const seconds = useCountdown(expiresAt)
-  if (seconds === null) return <p className="text-muted text-sm">No expiry</p>
-  if (seconds === 0) return <p className="text-accent text-sm font-semibold">Expired</p>
+  if (seconds === null) return <p className="text-muted text-sm">{t('common.noExpiry')}</p>
+  if (seconds === 0)
+    return <p className="text-accent text-sm font-semibold">{t('payment.expired')}</p>
   const h = Math.floor(seconds / 3600)
   const m = Math.floor((seconds % 3600) / 60)
   const s = seconds % 60
@@ -104,12 +100,13 @@ function Countdown({ expiresAt }: { expiresAt: string | null }) {
         seconds < 300 ? 'text-accent font-semibold' : 'text-muted',
       )}
     >
-      Expires in {pad(h)}:{pad(m)}:{pad(s)}
+      {t('payment.expiresIn', { time: `${pad(h)}:${pad(m)}:${pad(s)}` })}
     </p>
   )
 }
 
 function CopyButton({ value }: { value: string }) {
+  const t = useT()
   const [copied, setCopied] = React.useState(false)
   async function copy() {
     try {
@@ -123,7 +120,7 @@ function CopyButton({ value }: { value: string }) {
   return (
     <Button variant="outline" size="sm" onClick={copy}>
       {copied ? <Check /> : <Copy />}
-      {copied ? 'Copied' : 'Copy'}
+      {copied ? t('payment.copied') : t('payment.copy')}
     </Button>
   )
 }
@@ -148,6 +145,7 @@ function finderCell(x: number, y: number): boolean | null {
 
 /** QR-looking placeholder: finder squares plus cells hashed from the QRIS string. */
 function QrPlaceholder({ value }: { value: string }) {
+  const t = useT()
   const cells: string[] = []
   let h = 2166136261
   for (let y = 0; y < QR_SIZE; y += 1) {
@@ -161,7 +159,7 @@ function QrPlaceholder({ value }: { value: string }) {
     <svg
       viewBox={`-1 -1 ${QR_SIZE + 2} ${QR_SIZE + 2}`}
       role="img"
-      aria-label="QRIS code"
+      aria-label={t('payment.qrisCode')}
       className="size-[200px] rounded-2xl bg-white"
     >
       <path d={cells.join('')} fill="#101112" />
@@ -170,6 +168,7 @@ function QrPlaceholder({ value }: { value: string }) {
 }
 
 function CardForm({ onPay }: { onPay: () => void }) {
+  const t = useT()
   const [number, setNumber] = React.useState('')
   const [expiry, setExpiry] = React.useState('')
   const [cvc, setCvc] = React.useState('')
@@ -182,7 +181,7 @@ function CardForm({ onPay }: { onPay: () => void }) {
         if (ready) onPay()
       }}
     >
-      <FormField label="Card number" htmlFor="card-number">
+      <FormField label={t('payment.cardNumber')} htmlFor="card-number">
         <Input
           id="card-number"
           tone="nested"
@@ -194,17 +193,17 @@ function CardForm({ onPay }: { onPay: () => void }) {
         />
       </FormField>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <FormField label="Expiry" htmlFor="card-expiry">
+        <FormField label={t('payment.cardExpiry')} htmlFor="card-expiry">
           <Input
             id="card-expiry"
             tone="nested"
             autoComplete="off"
-            placeholder="MM/YY"
+            placeholder={t('payment.cardExpiryPlaceholder')}
             value={expiry}
             onChange={(e) => setExpiry(e.target.value)}
           />
         </FormField>
-        <FormField label="CVC" htmlFor="card-cvc">
+        <FormField label={t('payment.cardCvc')} htmlFor="card-cvc">
           <Input
             id="card-cvc"
             tone="nested"
@@ -217,13 +216,14 @@ function CardForm({ onPay }: { onPay: () => void }) {
         </FormField>
       </div>
       <Button type="submit" disabled={!ready}>
-        Pay now
+        {t('payment.payNow')}
       </Button>
     </form>
   )
 }
 
 function Instructions({ payment, onCardPay }: { payment: Payment; onCardPay: () => void }) {
+  const t = useT()
   const option = PAYMENT_CHANNEL_BY_ID[payment.channel]
   const { accountNumber, paymentCode, qrString, checkoutUrl } = payment.instructions
   switch (payment.method) {
@@ -243,7 +243,7 @@ function Instructions({ payment, onCardPay }: { payment: Payment; onCardPay: () 
                 <span className="bg-ink text-on-ink flex size-6 shrink-0 items-center justify-center rounded-full text-[11px] font-bold">
                   {i + 1}
                 </span>
-                {step}
+                {t(step)}
               </li>
             ))}
           </ol>
@@ -253,20 +253,20 @@ function Instructions({ payment, onCardPay }: { payment: Payment; onCardPay: () 
       return (
         <div className="space-y-3">
           <div className="bg-surface-2 rounded-2xl p-4">
-            <Kicker>Payment code</Kicker>
+            <Kicker>{t('payment.paymentCode')}</Kicker>
             <div className="mt-1 flex flex-wrap items-center gap-2">
               <Mono className="text-xl font-semibold tracking-wider">{paymentCode}</Mono>
               {paymentCode ? <CopyButton value={paymentCode} /> : null}
             </div>
           </div>
-          <p className="text-sm">Show this code at the cashier of {option.label}.</p>
+          <p className="text-sm">{t('payment.showAtCashier', { channel: option.label })}</p>
         </div>
       )
     case 'qris':
       return (
         <div className="flex flex-col items-center gap-3 text-center">
           <QrPlaceholder value={qrString ?? payment.providerReference} />
-          <p className="text-sm font-semibold">Scan with any QRIS app</p>
+          <p className="text-sm font-semibold">{t('payment.scanQris')}</p>
           <Mono className="text-muted max-w-full truncate">{qrString}</Mono>
         </div>
       )
@@ -275,10 +275,10 @@ function Instructions({ payment, onCardPay }: { payment: Payment; onCardPay: () 
         <div className="space-y-3">
           <Button asChild>
             <a href={checkoutUrl ?? '#'} target="_blank" rel="noreferrer">
-              <ExternalLink /> Open {option.label} app
+              <ExternalLink /> {t('payment.openWallet', { channel: option.label })}
             </a>
           </Button>
-          <p className="text-sm">Approve the payment in the app.</p>
+          <p className="text-sm">{t('payment.approveInApp')}</p>
         </div>
       )
     case 'card':
@@ -287,6 +287,8 @@ function Instructions({ payment, onCardPay }: { payment: Payment; onCardPay: () 
 }
 
 export function PaymentStatusPage() {
+  const t = useT()
+  const { formatDateTime } = useFormat()
   const { paymentId = '' } = useParams()
   const user = useCurrentUser()
   const { payments, invoicesById, subscriptionsById, applicationsById, dispatch } = useScoped()
@@ -298,11 +300,11 @@ export function PaymentStatusPage() {
       <Card>
         <EmptyState
           icon={<Receipt />}
-          title="Payment not found"
-          description="It may belong to another organization or has been removed."
+          title={t('common.paymentNotFound')}
+          description={t('common.notFoundDescription')}
           action={
             <Button variant="outline" asChild>
-              <Link to="/billing">Back to billing</Link>
+              <Link to="/billing">{t('common.backToBilling')}</Link>
             </Button>
           }
         />
@@ -322,8 +324,8 @@ export function PaymentStatusPage() {
 
   const timeline: TimelineItem[] = payment.events.map((e, i) => ({
     id: `${e.at}-${i}`,
-    when: fmtDateTime(e.at),
-    title: PAYMENT_EVENT_LABEL[e.type],
+    when: formatDateTime(e.at),
+    title: t(`paymentEvent.${e.type}`),
     note: e.note,
     tone: EVENT_TONE[e.type] ?? 'default',
   }))
@@ -332,7 +334,7 @@ export function PaymentStatusPage() {
     <div className="space-y-4">
       <div className="flex items-center gap-3">
         <div className="min-w-0">
-          <h1 className="text-2xl font-bold tracking-tight">Payment</h1>
+          <h1 className="text-2xl font-bold tracking-tight">{t('payment.title')}</h1>
           <p className="text-muted text-sm">
             <Mono>{payment.externalId}</Mono>
           </p>
@@ -345,30 +347,31 @@ export function PaymentStatusPage() {
             <HeroIcon />
           </IconTile>
           <div className="min-w-0 flex-1">
-            <Kicker>{HERO_TITLE[payment.status]}</Kicker>
+            <Kicker>{t(`payment.hero.${payment.status}`)}</Kicker>
             <p className="text-[34px] leading-tight font-bold tracking-tight tabular-nums sm:text-[44px]">
               {fmtIdr(payment.amount, payment.currency)}
             </p>
             {pending ? (
               <div className="mt-2 flex flex-wrap items-center gap-3">
-                <StatusDot tone="warning" label="Pending" pulse />
+                <StatusDot tone="warning" label={t('payment.pending')} pulse />
                 <Countdown expiresAt={payment.expiresAt} />
               </div>
             ) : null}
             {payment.status === 'success' ? (
               <p className="text-muted mt-2 text-sm">
-                Paid {fmtDateTime(payment.paidAt)} · <Mono>{payment.providerReference}</Mono>
+                {t('payment.paidOn', { date: formatDateTime(payment.paidAt) })} ·{' '}
+                <Mono>{payment.providerReference}</Mono>
               </p>
             ) : null}
             {payment.status === 'expired' || payment.status === 'failed' ? (
               <div className="mt-3 flex flex-wrap gap-2">
                 {payment.invoiceId ? (
                   <Button asChild>
-                    <Link to={`/billing/${payment.invoiceId}/pay`}>Try again</Link>
+                    <Link to={`/billing/${payment.invoiceId}/pay`}>{t('payment.tryAgain')}</Link>
                   </Button>
                 ) : null}
                 <Button variant="outline" asChild>
-                  <Link to="/billing">Back to billing</Link>
+                  <Link to="/billing">{t('common.backToBilling')}</Link>
                 </Button>
               </div>
             ) : null}
@@ -380,25 +383,27 @@ export function PaymentStatusPage() {
         <Banner
           tone="success"
           icon={<CheckCircle2 />}
-          title={`${app.name} subscription is Active.`}
-          description="Users can open the application straight away."
+          title={t('payment.subscriptionActive', { app: app.name })}
+          description={t('invoice.usersCanOpen')}
           action={
             <div className="flex flex-wrap gap-2">
               <Button size="sm" asChild>
                 <a href={app.baseUrl} target="_blank" rel="noreferrer">
-                  Open {app.name}
+                  {t('common.openApp', { name: app.name })}
                 </a>
               </Button>
               <Button size="sm" variant="outline" asChild>
-                <Link to={`/payments/${payment.id}/receipt`}>Receipt</Link>
+                <Link to={`/payments/${payment.id}/receipt`}>{t('common.receipt')}</Link>
               </Button>
               {payment.invoiceId ? (
                 <Button size="sm" variant="outline" asChild>
-                  <Link to={`/billing/${payment.invoiceId}/document`}>View invoice</Link>
+                  <Link to={`/billing/${payment.invoiceId}/document`}>
+                    {t('common.viewInvoice')}
+                  </Link>
                 </Button>
               ) : null}
               <Button size="sm" variant="outline" asChild>
-                <Link to="/billing">Back to billing</Link>
+                <Link to="/billing">{t('common.backToBilling')}</Link>
               </Button>
             </div>
           }
@@ -408,15 +413,15 @@ export function PaymentStatusPage() {
       {pending ? (
         <Card>
           <CardHeader>
-            <CardTitle>Instructions</CardTitle>
+            <CardTitle>{t('payment.instructions')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <Instructions payment={payment} onCardPay={() => setStatus('success')} />
             <div className="border-border flex flex-wrap items-center gap-3 border-t pt-4">
               <Button variant="outline" onClick={() => setChecked(true)}>
-                I have paid, check status
+                {t('payment.checkStatus')}
               </Button>
-              {checked ? <p className="text-muted text-xs">Still waiting for Xendit.</p> : null}
+              {checked ? <p className="text-muted text-xs">{t('payment.stillWaiting')}</p> : null}
             </div>
           </CardContent>
         </Card>
@@ -425,7 +430,7 @@ export function PaymentStatusPage() {
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Payment timeline</CardTitle>
+            <CardTitle>{t('payment.timeline')}</CardTitle>
           </CardHeader>
           <CardContent>
             <Timeline items={timeline} />
@@ -433,34 +438,36 @@ export function PaymentStatusPage() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Details</CardTitle>
+            <CardTitle>{t('payment.details')}</CardTitle>
           </CardHeader>
           <CardContent>
             <KeyValue
               dense
               rows={[
-                { label: 'Xendit id', value: <Mono>{payment.providerReference}</Mono> },
-                { label: 'External id', value: <Mono>{payment.externalId}</Mono> },
+                { label: t('common.xenditId'), value: <Mono>{payment.providerReference}</Mono> },
+                { label: t('common.externalId'), value: <Mono>{payment.externalId}</Mono> },
                 {
-                  label: 'Method',
-                  value: `${PAYMENT_METHOD_LABEL[payment.method]} · ${option.label}`,
+                  label: t('common.method'),
+                  value: `${t(`method.${payment.method}`)} · ${option.label}`,
                 },
                 {
-                  label: 'Amount',
+                  label: t('common.amount'),
                   value: (
                     <span className="font-semibold">
                       {fmtIdr(payment.amount, payment.currency)}
                     </span>
                   ),
                 },
-                { label: 'Created', value: fmtDateTime(payment.createdAt) },
+                { label: t('common.created'), value: formatDateTime(payment.createdAt) },
                 {
-                  label: 'Expires',
-                  value: payment.expiresAt ? fmtDateTime(payment.expiresAt) : 'No expiry',
+                  label: t('common.expires'),
+                  value: payment.expiresAt
+                    ? formatDateTime(payment.expiresAt)
+                    : t('common.noExpiry'),
                 },
-                { label: 'Status', value: <PaymentBadge status={payment.status} /> },
+                { label: t('common.status'), value: <PaymentBadge status={payment.status} /> },
                 {
-                  label: 'Invoice',
+                  label: t('common.invoice'),
                   value: invoice ? (
                     <Link to={`/billing/${invoice.id}`} className="text-accent font-semibold">
                       {invoice.number}
@@ -478,20 +485,18 @@ export function PaymentStatusPage() {
       {pending ? (
         <Card>
           <CardHeader>
-            <CardTitle>Simulate Xendit callback</CardTitle>
-            <CardDescription>
-              In production Xendit calls the backend webhook. Use these to see each outcome.
-            </CardDescription>
+            <CardTitle>{t('payment.simulate')}</CardTitle>
+            <CardDescription>{t('payment.simulateDescription')}</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-wrap gap-2">
             <Button variant="outline" onClick={() => setStatus('success')}>
-              Paid
+              {t('payment.simulatePaid')}
             </Button>
             <Button variant="outline" onClick={() => setStatus('expired')}>
-              Expired
+              {t('payment.simulateExpired')}
             </Button>
             <Button variant="outline" onClick={() => setStatus('failed')}>
-              Failed
+              {t('payment.simulateFailed')}
             </Button>
           </CardContent>
         </Card>

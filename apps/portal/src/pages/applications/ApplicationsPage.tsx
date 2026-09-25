@@ -1,10 +1,6 @@
 import { fmtNumber } from '@scp/fixtures'
+import { useT } from '@scp/i18n'
 import type { AppAccessState, ApplicationType } from '@scp/types'
-import {
-  APPLICATION_TYPE_LABEL,
-  APP_ACCESS_STATE_LABEL,
-  SUBSCRIPTION_STATUS_LABEL,
-} from '@scp/types'
 import {
   Badge,
   Card,
@@ -28,9 +24,9 @@ import { SubscriptionBadge } from '../../components/badges'
 import {
   ClearFiltersButton,
   FilterCombobox,
-  labelOptions,
-  noMatches,
+  enumOptions,
   useFilterParams,
+  useNoMatches,
 } from '../../components/filters'
 import { useScoped, type PortalApplication } from '../../state/app-state'
 
@@ -46,12 +42,7 @@ const TAB_STATES: Record<Tab, AppAccessState[] | null> = {
 const TYPES: ApplicationType[] = ['web', 'mobile', 'external']
 
 type Billing = 'monthly' | 'annual' | 'free' | 'not_subscribed'
-const BILLING_LABEL: Record<Billing, string> = {
-  monthly: 'Monthly',
-  annual: 'Annual',
-  free: 'Free',
-  not_subscribed: 'Not subscribed',
-}
+const BILLINGS: Billing[] = ['monthly', 'annual', 'free', 'not_subscribed']
 
 function billingOf({ app, subscription }: PortalApplication): Billing {
   if (app.accessPolicy === 'free') return 'free'
@@ -69,6 +60,7 @@ function DetailsSheet({
   item: PortalApplication | null
   onOpenChange: (open: boolean) => void
 }) {
+  const t = useT()
   const { member } = useAuth()
   const isAdmin = member?.workspaceRole === 'workspace_admin'
   return (
@@ -78,29 +70,29 @@ function DetailsSheet({
           <>
             <SheetTitle className="text-lg font-semibold">{item.app.name}</SheetTitle>
             <SheetDescription className="text-muted text-sm">
-              {APPLICATION_TYPE_LABEL[item.app.type]}
+              {t(`appType.${item.app.type}`)}
             </SheetDescription>
             <KeyValue
               className="mt-4"
               rows={[
                 ...(isAdmin
                   ? [
-                      { label: 'Billing', value: pricingLine(item) },
+                      { label: t('applications.details.billing'), value: pricingLine(t, item) },
                       {
-                        label: 'Subscription',
+                        label: t('common.subscription'),
                         value: item.subscription ? (
                           <SubscriptionBadge status={item.subscription.status} />
                         ) : (
-                          <Badge variant="muted">Not subscribed</Badge>
+                          <Badge variant="muted">{t('common.notSubscribed')}</Badge>
                         ),
                       },
                       {
-                        label: 'Allowed when',
+                        label: t('applications.details.allowedWhen'),
                         value: (
                           <span className="flex flex-wrap gap-1">
                             {item.app.allowedStatuses.map((s) => (
                               <Badge key={s} variant="default">
-                                {SUBSCRIPTION_STATUS_LABEL[s]}
+                                {t(`status.subscription.${s}`)}
                               </Badge>
                             ))}
                           </span>
@@ -109,10 +101,10 @@ function DetailsSheet({
                     ]
                   : []),
                 {
-                  label: 'Your access',
+                  label: t('applications.details.yourAccess'),
                   value: (
                     <Badge variant={ACCESS_TONE[item.access.state]}>
-                      {APP_ACCESS_STATE_LABEL[item.access.state]}
+                      {t(`status.access.${item.access.state}`)}
                     </Badge>
                   ),
                 },
@@ -129,6 +121,8 @@ function DetailsSheet({
 }
 
 export function ApplicationsPage() {
+  const t = useT()
+  const noMatches = useNoMatches()
   const { values, set, clear, active } = useFilterParams(['view', 'q', 'type', 'billing'])
   const { applications } = useScoped()
   const [selected, setSelected] = React.useState<string | null>(null)
@@ -148,67 +142,78 @@ export function ApplicationsPage() {
   const count = (list: AppAccessState[]) =>
     fmtNumber(applications.filter((item) => list.includes(item.access.state)).length)
 
+  const billingLabel = (value: Billing) =>
+    value === 'free'
+      ? t('applications.billing.free')
+      : value === 'not_subscribed'
+        ? t('common.notSubscribed')
+        : t(`period.${value}`)
+
   return (
     <div className="space-y-4">
       <PageHeader
-        title="Applications"
+        title={t('nav.applications')}
         description={
           q
-            ? `Results for "${q}" · ${visible.length} of ${applications.length} applications`
-            : 'Every application your organization can reach and where its subscription stands.'
+            ? t('applications.results', {
+                query: q,
+                visible: visible.length,
+                total: applications.length,
+              })
+            : t('applications.description')
         }
       />
       <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
         <StatCard
-          label="Available"
+          label={t('applications.available')}
           value={count(['active', 'trial'])}
-          hint="Active or on trial"
+          hint={t('applications.availableHint')}
           icon={<CheckCircle2 />}
           tone="success"
         />
         <StatCard
-          label="Needs attention"
+          label={t('applications.attention')}
           value={count(['payment_required', 'suspended', 'expired'])}
-          hint="Payment required, suspended or expired"
+          hint={t('applications.attentionHint')}
           icon={<AlertTriangle />}
           tone="warning"
         />
         <StatCard
-          label="Not subscribed"
+          label={t('common.notSubscribed')}
           value={count(['not_subscribed'])}
-          hint="Available to subscribe"
+          hint={t('applications.notSubscribedHint')}
           icon={<Receipt />}
         />
         <StatCard
-          label="Total"
+          label={t('applications.total')}
           value={fmtNumber(applications.length)}
-          hint="Published to your organization"
+          hint={t('applications.totalHint')}
           icon={<LayoutGrid />}
           tone="ink"
         />
       </div>
       <Tabs variant="underline" value={tab} onValueChange={(v) => set('view', v)}>
         <TabsList>
-          <TabsTrigger value="all">All</TabsTrigger>
-          <TabsTrigger value="available">Available</TabsTrigger>
-          <TabsTrigger value="attention">Needs attention</TabsTrigger>
-          <TabsTrigger value="not_subscribed">Not subscribed</TabsTrigger>
+          <TabsTrigger value="all">{t('applications.tab.all')}</TabsTrigger>
+          <TabsTrigger value="available">{t('applications.available')}</TabsTrigger>
+          <TabsTrigger value="attention">{t('applications.attention')}</TabsTrigger>
+          <TabsTrigger value="not_subscribed">{t('common.notSubscribed')}</TabsTrigger>
         </TabsList>
       </Tabs>
       <div className="flex flex-wrap items-center gap-2">
         <FilterCombobox
           value={values.type}
           onChange={(v) => set('type', v)}
-          options={labelOptions(APPLICATION_TYPE_LABEL, TYPES)}
-          allLabel="All types"
-          searchPlaceholder="Search types"
+          options={enumOptions(TYPES, (type) => t(`appType.${type}`))}
+          allLabel={t('applications.allTypes')}
+          searchPlaceholder={t('applications.searchTypes')}
         />
         <FilterCombobox
           value={values.billing}
           onChange={(v) => set('billing', v)}
-          options={labelOptions(BILLING_LABEL)}
-          allLabel="All billing"
-          searchPlaceholder="Search billing"
+          options={enumOptions(BILLINGS, billingLabel)}
+          allLabel={t('applications.allBilling')}
+          searchPlaceholder={t('applications.searchBilling')}
         />
         {active ? <ClearFiltersButton onClick={clear} /> : null}
       </div>
@@ -219,8 +224,8 @@ export function ApplicationsPage() {
           ) : (
             <EmptyState
               icon={<AppWindow />}
-              title="No applications yet"
-              description="Applications appear here as soon as the platform publishes them."
+              title={t('home.noApplications')}
+              description={t('home.noApplicationsDescription')}
             />
           )}
         </Card>

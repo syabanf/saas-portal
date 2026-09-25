@@ -1,3 +1,4 @@
+import { useT } from '@scp/i18n'
 import { Badge, Input, Sheet, SheetContent, SheetDescription, SheetTitle } from '@scp/ui'
 import { CreditCard, FileText, Search, Shapes, Users } from 'lucide-react'
 import * as React from 'react'
@@ -12,6 +13,7 @@ export function PortalCommandPalette({
   open: boolean
   onOpenChange: (open: boolean) => void
 }) {
+  const t = useT()
   const { applications, invoices, members } = useScoped()
   const { member } = useAuth()
   const navigate = useNavigate()
@@ -22,19 +24,19 @@ export function PortalCommandPalette({
     ...applications.map((item) => ({
       key: item.app.id,
       label: item.app.name,
-      meta: item.access.state.replaceAll('_', ' '),
+      meta: t(`status.access.${item.access.state}`),
       to: `/applications?q=${encodeURIComponent(item.app.name)}`,
       icon: Shapes,
-      group: 'Application',
+      group: t('palette.group.application'),
     })),
     ...(admin
       ? invoices.map((item) => ({
           key: item.id,
           label: item.number,
-          meta: item.status,
+          meta: t(`status.invoice.${item.status}`),
           to: `/billing/${item.id}`,
           icon: FileText,
-          group: 'Invoice',
+          group: t('palette.group.invoice'),
         }))
       : []),
     ...(admin
@@ -44,7 +46,7 @@ export function PortalCommandPalette({
           meta: item.user.email,
           to: '/users',
           icon: Users,
-          group: 'User',
+          group: t('palette.group.user'),
         }))
       : []),
     ...(admin
@@ -52,11 +54,11 @@ export function PortalCommandPalette({
           .filter((item) => item.subscription)
           .map((item) => ({
             key: `sub-${item.app.id}`,
-            label: `${item.app.name} subscription`,
-            meta: item.subscription!.status.replaceAll('_', ' '),
+            label: t('palette.subscriptionOf', { name: item.app.name }),
+            meta: t(`status.subscription.${item.subscription!.status}`),
             to: `/subscription?app=${item.app.id}`,
             icon: CreditCard,
-            group: 'Subscription',
+            group: t('palette.group.subscription'),
           }))
       : []),
   ]
@@ -71,20 +73,20 @@ export function PortalCommandPalette({
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="right" className="p-5">
-        <SheetTitle className="text-xl font-bold">Search workspace</SheetTitle>
+        <SheetTitle className="text-xl font-bold">{t('palette.title')}</SheetTitle>
         <SheetDescription className="text-muted mt-1 text-sm">
-          Find applications{admin ? ', users, subscriptions and invoices' : ''}.
+          {admin ? t('palette.descriptionAdmin') : t('palette.description')}
         </SheetDescription>
         <Input
           autoFocus
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           leftIcon={<Search />}
-          placeholder="Type to search…"
+          placeholder={t('palette.placeholder')}
           className="mt-5"
         />
         <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">
-          {results.length} results
+          {t('palette.results', { count: results.length })}
         </p>
         <div className="mt-4 space-y-2">
           {results.length ? (
@@ -106,7 +108,7 @@ export function PortalCommandPalette({
               </button>
             ))
           ) : (
-            <p className="text-muted py-10 text-center text-sm">No matches found.</p>
+            <p className="text-muted py-10 text-center text-sm">{t('palette.noMatches')}</p>
           )}
         </div>
       </SheetContent>

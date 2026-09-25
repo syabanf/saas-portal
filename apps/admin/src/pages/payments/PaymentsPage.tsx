@@ -38,6 +38,7 @@ import { useNavigate } from 'react-router'
 import { useCurrentUser } from '../../auth/auth'
 import { Mono, PaymentBadge } from '../../components/badges'
 import { actorOf, useScoped } from '../../state/app-state'
+import { useAdminPrefs } from '../../state/prefs'
 import { isThisMonth } from '../billing/dates'
 import {
   PILL_COMBOBOX,
@@ -65,6 +66,7 @@ export function PaymentsPage() {
   const navigate = useNavigate()
   const user = useCurrentUser()
   const { payments, tenants, tenantsById, dispatch } = useScoped()
+  const [prefs] = useAdminPrefs()
   const filters = useUrlFilters(FILTER_KEYS)
   const status = filters.get('status')
   const method = filters.get('method')
@@ -182,12 +184,14 @@ export function PaymentsPage() {
       />
 
       <div className="space-y-4">
-        <Banner
-          tone="info"
-          icon={<Webhook />}
-          title="Xendit calls the backend webhook when a payment settles."
-          description="This console reflects the resulting status. Subscription status, not payment status, decides access."
-        />
+        {prefs.demoHints ? (
+          <Banner
+            tone="info"
+            icon={<Webhook />}
+            title="Xendit calls the backend webhook when a payment settles."
+            description="This console reflects the resulting status. Subscription status, not payment status, decides access."
+          />
+        ) : null}
 
         <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
           <StatCard

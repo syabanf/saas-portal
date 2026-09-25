@@ -1,5 +1,4 @@
 import {
-  DEFAULT_TAX_RATE,
   buildInvoice,
   fmtDate,
   fmtIdr,
@@ -7,6 +6,7 @@ import {
   invoiceTax,
   newId,
   nextInvoiceNumber,
+  platformOf,
 } from '@scp/fixtures'
 import {
   Button,
@@ -41,13 +41,13 @@ function todayInput(): string {
   return dateInput(new Date(now.getTime() - now.getTimezoneOffset() * 60_000).toISOString())
 }
 
-function emptyDraft(): Draft {
+function emptyDraft(taxRate: number): Draft {
   return {
     tenantId: '',
     subscriptionId: '',
     periodStart: '',
     issuedAt: todayInput(),
-    taxPercent: Math.round(DEFAULT_TAX_RATE * 100),
+    taxPercent: Math.round(taxRate * 100),
   }
 }
 
@@ -58,11 +58,13 @@ export interface InvoiceDialogProps {
 
 /** Creates one invoice for a billing period of a subscription; the amounts come from `buildInvoice`. */
 export function InvoiceDialog({ open, onOpenChange }: InvoiceDialogProps) {
-  const { tenants, invoices, subscriptionsByTenant, applicationsById, dispatch } = useScoped()
-  const [draft, setDraft] = React.useState<Draft>(emptyDraft)
+  const { state, tenants, invoices, subscriptionsByTenant, applicationsById, dispatch } =
+    useScoped()
+  const { taxRate } = platformOf(state)
+  const [draft, setDraft] = React.useState<Draft>(() => emptyDraft(taxRate))
   React.useEffect(() => {
-    if (open) setDraft(emptyDraft())
-  }, [open])
+    if (open) setDraft(emptyDraft(taxRate))
+  }, [open, taxRate])
 
   const tenantSubs = subscriptionsByTenant.get(draft.tenantId) ?? []
   const subscription = tenantSubs.find((s) => s.id === draft.subscriptionId)

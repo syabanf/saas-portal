@@ -1,3 +1,4 @@
+import { useFormat, useT } from '@scp/i18n'
 import { Badge, Button, Sheet, SheetContent, SheetDescription, SheetTitle } from '@scp/ui'
 import { Bell, CheckCircle2, CreditCard, ShieldAlert, UserRoundPlus } from 'lucide-react'
 import { useNavigate } from 'react-router'
@@ -11,6 +12,8 @@ export function PortalActionCenter({
   open: boolean
   onOpenChange: (open: boolean) => void
 }) {
+  const t = useT()
+  const { formatDate } = useFormat()
   const { subscriptions, invoices, applications, members } = useScoped()
   const { member } = useAuth()
   const navigate = useNavigate()
@@ -21,10 +24,13 @@ export function PortalActionCenter({
           .filter((invoice) => invoice.status === 'overdue' || invoice.status === 'open')
           .map((invoice) => ({
             key: `invoice-${invoice.id}`,
-            title: `${invoice.number} is ${invoice.status}`,
-            description: `Due ${new Date(invoice.dueDate).toLocaleDateString()}`,
+            title: t('actionCenter.invoiceTitle', {
+              number: invoice.number,
+              status: t(`status.invoice.${invoice.status}`).toLowerCase(),
+            }),
+            description: t('actionCenter.due', { date: formatDate(invoice.dueDate) }),
             to: `/billing/${invoice.id}`,
-            label: 'Review invoice',
+            label: t('actionCenter.reviewInvoice'),
             urgent: invoice.status === 'overdue',
             icon: CreditCard,
           })),
@@ -32,12 +38,14 @@ export function PortalActionCenter({
           .filter((sub) => ['past_due', 'grace_period', 'suspended'].includes(sub.status))
           .map((sub) => ({
             key: `sub-${sub.id}`,
-            title: `Subscription is ${sub.status.replaceAll('_', ' ')}`,
+            title: t('actionCenter.subscriptionTitle', {
+              status: t(`status.subscription.${sub.status}`).toLowerCase(),
+            }),
             description:
               applications.find((item) => item.app.id === sub.applicationId)?.app.name ??
-              'Application',
+              t('common.application'),
             to: `/subscription?app=${sub.applicationId}`,
-            label: 'Review subscription',
+            label: t('common.reviewSubscription'),
             urgent: true,
             icon: ShieldAlert,
           })),
@@ -45,10 +53,10 @@ export function PortalActionCenter({
           .filter((item) => item.status === 'invited')
           .map((item) => ({
             key: `member-${item.id}`,
-            title: `${item.user.name} has not joined`,
+            title: t('actionCenter.notJoined', { name: item.user.name }),
             description: item.user.email,
             to: '/users',
-            label: 'Manage invitation',
+            label: t('actionCenter.manageInvitation'),
             urgent: false,
             icon: UserRoundPlus,
           })),
@@ -57,10 +65,10 @@ export function PortalActionCenter({
         .filter((item) => item.access.state !== 'active' && item.access.state !== 'trial')
         .map((item) => ({
           key: item.app.id,
-          title: `${item.app.name} is unavailable`,
-          description: item.access.state.replaceAll('_', ' '),
+          title: t('actionCenter.appUnavailable', { name: item.app.name }),
+          description: t(`status.access.${item.access.state}`),
           to: '/applications',
-          label: 'View access details',
+          label: t('actionCenter.viewAccess'),
           urgent: ['payment_required', 'suspended', 'expired'].includes(item.access.state),
           icon: ShieldAlert,
         }))
@@ -73,9 +81,9 @@ export function PortalActionCenter({
             <Bell className="size-4" />
           </span>
           <div>
-            <SheetTitle className="text-xl font-bold">Action center</SheetTitle>
+            <SheetTitle className="text-xl font-bold">{t('actionCenter.title')}</SheetTitle>
             <SheetDescription className="text-muted text-sm">
-              Tasks related to your workspace and application access.
+              {t('actionCenter.description')}
             </SheetDescription>
           </div>
         </div>
@@ -89,7 +97,7 @@ export function PortalActionCenter({
                     <div className="flex flex-wrap items-center gap-2">
                       <p className="text-sm font-semibold">{item.title}</p>
                       <Badge variant={item.urgent ? 'danger' : 'warning'}>
-                        {item.urgent ? 'Action needed' : 'Review'}
+                        {item.urgent ? t('actionCenter.actionNeeded') : t('actionCenter.review')}
                       </Badge>
                     </div>
                     <p className="text-muted mt-1 text-xs">{item.description}</p>
@@ -111,8 +119,8 @@ export function PortalActionCenter({
           ) : (
             <div className="py-16 text-center">
               <CheckCircle2 className="text-success mx-auto size-8" />
-              <p className="mt-3 font-semibold">You’re all caught up</p>
-              <p className="text-muted mt-1 text-sm">There are no tasks waiting for you.</p>
+              <p className="mt-3 font-semibold">{t('actionCenter.caughtUp')}</p>
+              <p className="text-muted mt-1 text-sm">{t('actionCenter.noTasks')}</p>
             </div>
           )}
         </div>
